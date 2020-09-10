@@ -1,11 +1,17 @@
 package Presentación;
 
+import Negocio.Entidades.Usuario;
+import Negocio.NegocioUsuario;
 import Negocio.UtilidadJFrame;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -13,11 +19,13 @@ import javax.swing.SwingConstants;
 public class InicioSesion extends javax.swing.JFrame {
 
     UtilidadJFrame utilidadJframe;
+    NegocioUsuario negocioUsuario;
 
     public InicioSesion() {
-        
+
         initComponents();
-        
+
+        negocioUsuario = new NegocioUsuario();
         //Singleton
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Iniciar sesión", this);
@@ -69,6 +77,14 @@ public class InicioSesion extends javax.swing.JFrame {
         componentesPanel.add(lblO);
         componentesPanel.add(jtbnRegistrarse);
 
+    }
+
+    private void limpiarCampos() {
+        jtfUsuario.setText(null);
+    }
+
+    private void limpiarContraseña() {
+        jtfContraseña.setText(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -206,12 +222,51 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void jbtnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnIniciarSesionActionPerformed
 
+        String usuario = jtfUsuario.getText();
+        String contraseña = jtfContraseña.getText();
 
+        String mensaje = negocioUsuario.validarInicioSesion(usuario, contraseña);
+        String titulo = "Inicio de sesión";
+
+        if (!mensaje.equals("ok")) {
+            JOptionPane.showConfirmDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+
+            limpiarContraseña();
+
+        } else {
+
+            String contraseñaCifrada = "";
+
+            try {
+                contraseñaCifrada = negocioUsuario.encriptarContraseñaUsuario(contraseña);
+            } catch (UnsupportedEncodingException ex) {
+                System.out.println(ex);
+            }
+
+            System.out.println(contraseñaCifrada);
+            List<Usuario> usuarios = negocioUsuario.buscarUsuario(usuario, contraseñaCifrada);
+
+            // Si existe el usuario
+            if (usuarios.size() > 0) {
+
+                Usuario usuarioIniciado = usuarios.get(0);
+                JOptionPane.showConfirmDialog(null, "¡Bienvenido " + usuarioIniciado.getNombre() + "!", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                limpiarCampos();
+
+            } else {
+                JOptionPane.showConfirmDialog(null, "Usuario o contraseña incorrecta.", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
+
+            limpiarContraseña();
+        }
     }//GEN-LAST:event_jbtnIniciarSesionActionPerformed
 
     private void jtbnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnRegistrarseActionPerformed
 
-
+        Registro JframeRegistro = new Registro();
+        JframeRegistro.setVisible(true);
+        //Este Jframe se destruye y elimina de memoria ram y SO
+        this.dispose();
     }//GEN-LAST:event_jtbnRegistrarseActionPerformed
 
     /**

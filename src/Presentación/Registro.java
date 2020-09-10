@@ -1,11 +1,16 @@
 package Presentación;
 
+import Negocio.Entidades.Usuario;
+import Negocio.NegocioUsuario;
 import Negocio.UtilidadJFrame;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.RollbackException;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -13,11 +18,13 @@ import javax.swing.SwingConstants;
 public class Registro extends javax.swing.JFrame {
 
     UtilidadJFrame utilidadJframe;
+    NegocioUsuario negocioUsuario;
 
     public Registro() {
 
         initComponents();
 
+        negocioUsuario = new NegocioUsuario();
         //Singleton
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Registrarse", this);
@@ -78,6 +85,18 @@ public class Registro extends javax.swing.JFrame {
         componentesPanel.add(jbtnIniciarSesion);
     }
 
+    private void limpiarCamposForm() {
+        jtfNombre.setText(null);
+        jtfApellido.setText(null);
+        jtfEmail.setText(null);
+        jtfUsuario.setText(null);
+    }
+
+    private void limpiarContraseñas() {
+        jtfContraseña.setText(null);
+        jtfConfirmarContraseña.setText(null);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -94,12 +113,12 @@ public class Registro extends javax.swing.JFrame {
         jtfEmail = new javax.swing.JTextField();
         jtfApellido = new javax.swing.JTextField();
         jtfUsuario = new javax.swing.JTextField();
-        jtfContraseña = new javax.swing.JTextField();
-        jtfConfirmarContraseña = new javax.swing.JTextField();
         jbtnRegistrarse = new javax.swing.JButton();
         lblO = new javax.swing.JLabel();
         jbtnIniciarSesion = new javax.swing.JButton();
         jbtnSalir = new javax.swing.JButton();
+        jtfContraseña = new javax.swing.JPasswordField();
+        jtfConfirmarContraseña = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,12 +149,6 @@ public class Registro extends javax.swing.JFrame {
         jtfUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfUsuarioActionPerformed(evt);
-            }
-        });
-
-        jtfContraseña.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfContraseñaActionPerformed(evt);
             }
         });
 
@@ -199,15 +212,13 @@ public class Registro extends javax.swing.JFrame {
                                     .addComponent(jtfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(357, 357, 357)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(lblConfirmarContraseña)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jtfContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lblContraseña))
-                                        .addComponent(jtfConfirmarContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jtfContraseña)
+                                    .addComponent(jtfEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                                    .addComponent(jtfUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                                    .addComponent(lblContraseña)
+                                    .addComponent(jtfConfirmarContraseña)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(356, 356, 356)
                                 .addComponent(jtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -250,9 +261,9 @@ public class Registro extends javax.swing.JFrame {
                 .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblContraseña)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtfContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(lblConfirmarContraseña)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtfConfirmarContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -274,22 +285,61 @@ public class Registro extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfUsuarioActionPerformed
 
-    private void jtfContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfContraseñaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtfContraseñaActionPerformed
-
     private void jbtnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalirActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jbtnSalirActionPerformed
 
     private void jbtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnRegistrarseActionPerformed
 
+        String nombre = jtfNombre.getText();
+        String apellido = jtfApellido.getText();
+        String email = jtfEmail.getText();
+        String nombreUsuario = jtfUsuario.getText();
+        String contraseña = jtfContraseña.getText();
+        String confirmacionContraseña = jtfConfirmarContraseña.getText();
+
+        Usuario usuario = new Usuario(nombre, apellido, email, nombreUsuario, contraseña, confirmacionContraseña);
+
+        String mensaje = negocioUsuario.validarRegistro(usuario);
+        String titulo = "Registro de usuario";
+
+        if (mensaje.equals("ok")) {
+
+            String contraseñaCifrada = "";
+
+            try {
+                contraseñaCifrada = negocioUsuario.encriptarContraseñaUsuario(usuario.getContraseña());
+                usuario.setContraseña(contraseñaCifrada);
+                usuario.setActivo(1);
+            } catch (UnsupportedEncodingException ex) {
+                System.out.println(ex);
+            }
+
+            try {
+
+                negocioUsuario.crearUsuario(usuario);
+                JOptionPane.showConfirmDialog(null, "Usuario registrado exitosamente.", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                limpiarCamposForm();
+
+            } catch (RollbackException rbe) {
+                mensaje = "El email o usuario ingresado ya está registrado, pruebe con otro.";
+                JOptionPane.showConfirmDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
+
+            limpiarContraseñas();
+
+        } else {
+            JOptionPane.showConfirmDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            limpiarContraseñas();
+        }
 
     }//GEN-LAST:event_jbtnRegistrarseActionPerformed
 
     private void jbtnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnIniciarSesionActionPerformed
-
-
+        InicioSesion JframeInicioSesion = new InicioSesion();
+        JframeInicioSesion.setVisible(true);
+        //Este Jframe se destruye y elimina de memoria ram y SO
+        this.dispose();
     }//GEN-LAST:event_jbtnIniciarSesionActionPerformed
 
     /**
@@ -332,8 +382,8 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JButton jbtnRegistrarse;
     private javax.swing.JButton jbtnSalir;
     private javax.swing.JTextField jtfApellido;
-    private javax.swing.JTextField jtfConfirmarContraseña;
-    private javax.swing.JTextField jtfContraseña;
+    private javax.swing.JPasswordField jtfConfirmarContraseña;
+    private javax.swing.JPasswordField jtfContraseña;
     private javax.swing.JTextField jtfEmail;
     private javax.swing.JTextField jtfNombre;
     private javax.swing.JTextField jtfUsuario;
