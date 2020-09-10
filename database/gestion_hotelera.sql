@@ -31,9 +31,11 @@ CREATE TABLE `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unico_email` (`email`),
   UNIQUE KEY `unico_usuario` (`usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `usuarios` */
+
+insert  into `usuarios`(`id`,`nombre`,`apellido`,`email`,`usuario`,`contraseña`,`activo`) values (1,'Tomás','Ortiz','admin_hotel@hotmail.com','admin','YWRtaW4xMjM=',1),(7,'pepito','sanchez','admin_hotel2@hotmail.com','admin2','dG9taXMyMTIz',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
