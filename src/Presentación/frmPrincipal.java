@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Negocio.NegocioHabitacion;
+import Negocio.UtilidadGeneral;
 import Negocio.UtilidadJTable;
+import Negocio.sesionUsuario;
 import javax.swing.JOptionPane;
 
 public class frmPrincipal extends javax.swing.JFrame {
@@ -25,9 +27,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Gestión hotelera", this);
 
-        utilidadJframe.guardarPanelesPrincipal(jpHabitaciones, jpClientes, jpReservas, jpProductos);
+        utilidadJframe.guardarPanelesPrincipal(jpHabitaciones, jpClientes, jpReservas, jpProductos, jpInicio);
 
-        utilidadJframe.activarPanelPrincipal(true, false, false, false);
+        utilidadJframe.activarPanelPrincipal(true, false, false, false, false);
 
         dtmHabitaciones = (DefaultTableModel) jtbHabitaciones.getModel();
 
@@ -37,15 +39,34 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         utilidadJtable.centrarElementosTable(jtbHabitaciones);
 
-        activarPanelHabitaciones();
+        activarPanelInicio();
     }
 
     private void activarPanelHabitaciones() {
 
-        utilidadJframe.activarPanelPrincipal(true, false, false, false);
+        utilidadJframe.activarPanelPrincipal(true, false, false, false, false);
         activarBotonesPanelHabitaciones(false, false);
         agregarDatosTablaHabitaciones();
         contabilizarEstadosHabitacion();
+    }
+
+    private void activarPanelInicio() {
+        try {
+
+            utilidadJframe.activarPanelPrincipal(false, false, false, false, true);
+            String nombreUsuario = sesionUsuario.getSesionUsuario().getUsuario().getUsuario();
+            lblBienvenida.setText("¡Bienvenido usuario " + nombreUsuario + "!");
+            setFechaHoraInicio();
+
+        } catch (Exception e) {
+            System.err.println("Error, el usuario todavía no ha iniciado sesión.");
+            System.exit(0);
+        }
+    }
+
+    private void setFechaHoraInicio() {
+        lblFecha.setText("Fecha: " + UtilidadGeneral.getFechaActual());
+        lblHora.setText("Hora: " + UtilidadGeneral.getHoraActual());
     }
 
     private void activarBotonesPanelHabitaciones(boolean modificarHabitacion, boolean EliminarHabitacion) {
@@ -72,6 +93,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jtbnProductos = new javax.swing.JButton();
         jbtnReservas = new javax.swing.JButton();
         jbtnHabitaciones = new javax.swing.JButton();
+        jbtnInicio = new javax.swing.JButton();
         jpHabitaciones = new javax.swing.JPanel();
         lblTituloHabitaciones = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -95,6 +117,13 @@ public class frmPrincipal extends javax.swing.JFrame {
         jpProductos = new javax.swing.JPanel();
         jpTitulo = new javax.swing.JPanel();
         lblTituloPrincipal = new javax.swing.JLabel();
+        jpInicio = new javax.swing.JPanel();
+        jSeparator3 = new javax.swing.JSeparator();
+        lblTituloInicio = new javax.swing.JLabel();
+        lblBienvenida = new javax.swing.JLabel();
+        lblFecha = new javax.swing.JLabel();
+        lblHora = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -151,23 +180,35 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jbtnInicio.setBackground(new java.awt.Color(255, 255, 255));
+        jbtnInicio.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        jbtnInicio.setText("Inicio");
+        jbtnInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnInicioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpBotoneraNavegacionLayout = new javax.swing.GroupLayout(jpBotoneraNavegacion);
         jpBotoneraNavegacion.setLayout(jpBotoneraNavegacionLayout);
         jpBotoneraNavegacionLayout.setHorizontalGroup(
             jpBotoneraNavegacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpBotoneraNavegacionLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(22, 22, 22)
                 .addGroup(jpBotoneraNavegacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jbtnHabitaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jbtnReservas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jbtnClientes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jtbnProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(jtbnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnInicio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         jpBotoneraNavegacionLayout.setVerticalGroup(
             jpBotoneraNavegacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpBotoneraNavegacionLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpBotoneraNavegacionLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jbtnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(jbtnHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(jbtnReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,10 +216,10 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addComponent(jbtnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(jtbnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addGap(76, 76, 76))
         );
 
-        getContentPane().add(jpBotoneraNavegacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, -1, 526));
+        getContentPane().add(jpBotoneraNavegacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 116, -1, 526));
 
         jpHabitaciones.setBackground(new java.awt.Color(255, 255, 255));
         jpHabitaciones.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -251,13 +292,13 @@ public class frmPrincipal extends javax.swing.JFrame {
             jtbHabitaciones.getColumnModel().getColumn(5).setPreferredWidth(1);
         }
 
-        lblDisponibles.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblDisponibles.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblDisponibles.setText("Disponibles:");
 
-        lblOcupadas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblOcupadas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblOcupadas.setText("Ocupadas: ");
 
-        lblRegistradas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblRegistradas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblRegistradas.setText("Registradas:");
 
         jLabel1.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
@@ -306,10 +347,10 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
 
-        lblLimpieza.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblLimpieza.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblLimpieza.setText("Limpieza:");
 
-        lblReparación.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblReparación.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblReparación.setText("Reparación:");
 
         javax.swing.GroupLayout jpHabitacionesLayout = new javax.swing.GroupLayout(jpHabitaciones);
@@ -325,7 +366,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addGap(84, 84, 84)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 1017, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jpHabitacionesLayout.createSequentialGroup()
-                        .addGap(131, 131, 131)
+                        .addGap(98, 98, 98)
                         .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpHabitacionesLayout.createSequentialGroup()
                                 .addComponent(lblRegistradas)
@@ -350,7 +391,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                                         .addComponent(jtfBuscarHabitacion))
                                     .addComponent(jspHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jbtnActualizarTabla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(18, 18, 18)
                                 .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jtbnCrearHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jtbnModificarHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -359,7 +400,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         );
         jpHabitacionesLayout.setVerticalGroup(
             jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpHabitacionesLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpHabitacionesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTituloHabitaciones)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -370,7 +411,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                     .addComponent(jcbFiltroHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBuscar)
                     .addComponent(jtfBuscarHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDisponibles)
                     .addComponent(lblOcupadas)
@@ -453,12 +494,86 @@ public class frmPrincipal extends javax.swing.JFrame {
         jpTituloLayout.setVerticalGroup(
             jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpTituloLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(35, 35, 35)
                 .addComponent(lblTituloPrincipal)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(35, 35, 35))
         );
 
-        getContentPane().add(jpTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 1360, -1));
+        getContentPane().add(jpTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -4, 1360, 120));
+
+        jpInicio.setBackground(new java.awt.Color(255, 255, 255));
+        jpInicio.setForeground(new java.awt.Color(255, 255, 255));
+
+        jSeparator3.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblTituloInicio.setBackground(new java.awt.Color(255, 255, 255));
+        lblTituloInicio.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
+        lblTituloInicio.setText("Inicio");
+        lblTituloInicio.setPreferredSize(new java.awt.Dimension(133, 30));
+
+        lblBienvenida.setBackground(new java.awt.Color(255, 255, 255));
+        lblBienvenida.setFont(new java.awt.Font("Maiandra GD", 3, 24)); // NOI18N
+        lblBienvenida.setForeground(new java.awt.Color(255, 153, 153));
+        lblBienvenida.setText("¡Bienvenido usuario!");
+        lblBienvenida.setPreferredSize(new java.awt.Dimension(133, 30));
+
+        lblFecha.setBackground(new java.awt.Color(255, 255, 255));
+        lblFecha.setFont(new java.awt.Font("Maiandra GD", 2, 30)); // NOI18N
+        lblFecha.setForeground(new java.awt.Color(153, 204, 255));
+        lblFecha.setText("Fecha:");
+        lblFecha.setPreferredSize(new java.awt.Dimension(133, 30));
+
+        lblHora.setBackground(new java.awt.Color(255, 255, 255));
+        lblHora.setFont(new java.awt.Font("Maiandra GD", 2, 30)); // NOI18N
+        lblHora.setForeground(new java.awt.Color(153, 204, 255));
+        lblHora.setText("Hora:");
+        lblHora.setPreferredSize(new java.awt.Dimension(133, 30));
+
+        jSeparator4.setForeground(new java.awt.Color(0, 0, 0));
+
+        javax.swing.GroupLayout jpInicioLayout = new javax.swing.GroupLayout(jpInicio);
+        jpInicio.setLayout(jpInicioLayout);
+        jpInicioLayout.setHorizontalGroup(
+            jpInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpInicioLayout.createSequentialGroup()
+                .addGroup(jpInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpInicioLayout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addGroup(jpInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 1017, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jpInicioLayout.createSequentialGroup()
+                                .addGap(418, 418, 418)
+                                .addComponent(lblTituloInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jpInicioLayout.createSequentialGroup()
+                        .addGap(326, 326, 326)
+                        .addGroup(jpInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jpInicioLayout.createSequentialGroup()
+                        .addGap(373, 373, 373)
+                        .addComponent(lblBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(89, Short.MAX_VALUE))
+        );
+        jpInicioLayout.setVerticalGroup(
+            jpInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpInicioLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(lblTituloInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(lblBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(96, 96, 96)
+                .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(162, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jpInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(183, 118, 1180, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -468,7 +583,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnSalirActionPerformed
 
     private void jbtnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnClientesActionPerformed
-        utilidadJframe.activarPanelPrincipal(false, true, false, false);
+        utilidadJframe.activarPanelPrincipal(false, true, false, false, false);
     }//GEN-LAST:event_jbtnClientesActionPerformed
 
     private void jbtnHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHabitacionesActionPerformed
@@ -478,13 +593,13 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void jbtnReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnReservasActionPerformed
 
-        utilidadJframe.activarPanelPrincipal(false, false, true, false);
+        utilidadJframe.activarPanelPrincipal(false, false, true, false, false);
 
     }//GEN-LAST:event_jbtnReservasActionPerformed
 
     private void jtbnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnProductosActionPerformed
 
-        utilidadJframe.activarPanelPrincipal(false, false, false, true);
+        utilidadJframe.activarPanelPrincipal(false, false, false, true, false);
 
     }//GEN-LAST:event_jtbnProductosActionPerformed
 
@@ -557,6 +672,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         agregarDatosTablaHabitaciones();
     }//GEN-LAST:event_jcbFiltroHabitacionesActionPerformed
 
+    private void jbtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnInicioActionPerformed
+
+        activarPanelInicio();
+    }//GEN-LAST:event_jbtnInicioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -597,15 +717,19 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JButton jbtnActualizarTabla;
     private javax.swing.JButton jbtnClientes;
     private javax.swing.JButton jbtnHabitaciones;
+    private javax.swing.JButton jbtnInicio;
     private javax.swing.JButton jbtnReservas;
     private javax.swing.JButton jbtnSalir;
     private javax.swing.JComboBox jcbFiltroHabitaciones;
     private javax.swing.JPanel jpBotoneraNavegacion;
     private javax.swing.JPanel jpClientes;
     private javax.swing.JPanel jpHabitaciones;
+    private javax.swing.JPanel jpInicio;
     private javax.swing.JPanel jpProductos;
     private javax.swing.JPanel jpReservas;
     private javax.swing.JPanel jpTitulo;
@@ -616,13 +740,17 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jtbnModificarHabitacion;
     private javax.swing.JButton jtbnProductos;
     private javax.swing.JTextField jtfBuscarHabitacion;
+    private javax.swing.JLabel lblBienvenida;
     private javax.swing.JLabel lblBuscar;
     private javax.swing.JLabel lblDisponibles;
+    private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblHora;
     private javax.swing.JLabel lblLimpieza;
     private javax.swing.JLabel lblOcupadas;
     private javax.swing.JLabel lblRegistradas;
     private javax.swing.JLabel lblReparación;
     private javax.swing.JLabel lblTituloHabitaciones;
+    private javax.swing.JLabel lblTituloInicio;
     private javax.swing.JLabel lblTituloPrincipal;
     // End of variables declaration//GEN-END:variables
 }

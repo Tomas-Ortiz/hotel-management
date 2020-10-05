@@ -1,7 +1,5 @@
 package Negocio;
 
-import Negocio.Entidades.Habitacion;
-import java.util.List;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;

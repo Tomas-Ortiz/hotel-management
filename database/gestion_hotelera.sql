@@ -16,6 +16,24 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`gestion_hotelera` /*!40100 DEFAULT CHAR
 
 USE `gestion_hotelera`;
 
+/*Table structure for table `clientes` */
+
+DROP TABLE IF EXISTS `clientes`;
+
+CREATE TABLE `clientes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombres` varchar(70) DEFAULT NULL,
+  `apellidos` varchar(70) DEFAULT NULL,
+  `dni` int(11) DEFAULT NULL,
+  `nacionalidad` varchar(70) DEFAULT NULL,
+  `mail` varchar(70) DEFAULT NULL,
+  `domicilio` varchar(70) DEFAULT NULL,
+  `nroTelefono` varchar(70) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `clientes` */
+
 /*Table structure for table `habitaciones` */
 
 DROP TABLE IF EXISTS `habitaciones`;
@@ -33,6 +51,23 @@ CREATE TABLE `habitaciones` (
 /*Data for the table `habitaciones` */
 
 insert  into `habitaciones`(`id`,`numero`,`tipo`,`estado`,`detalles`,`precioDia`) values (1,1,'Individual','Disponible','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(2,2,'Individual','Disponible','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(3,3,'Individual','Disponible','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(4,4,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(5,5,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(6,6,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(7,7,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2000),(8,8,'Matrimonial','Limpieza','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(9,9,'Matrimonial','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(10,10,'Matrimonial','Limpieza','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2500),(11,11,'Doble','Limpieza','2 camas\n1 TV\nSin aire acondicionado\nSin balcón\nTodos los servicios',1300),(12,12,'Matrimonial','Reparación','2 Camas\n1 TV\nAire acondicionado\nSin balcón\nTodos los servicios',2300),(13,13,'Doble','Reparación','2 Camas\n1 TV\nAire acondicionado\nCon balcón\nTodos los servicios\n',1860),(34,14,'Individual','Limpieza','1 cama\n1 aire acondicionado\ntodos los servicios\ncon balcón',2300);
+
+/*Table structure for table `reservas` */
+
+DROP TABLE IF EXISTS `reservas`;
+
+CREATE TABLE `reservas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fechaEntrada` varchar(50) NOT NULL,
+  `fechaSalida` varchar(50) NOT NULL,
+  `clienteId` int(11) NOT NULL,
+  `habitacionId` int(11) NOT NULL,
+  `tipoPago` varchar(50) DEFAULT NULL,
+  `precioTotal` float NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `reservas` */
 
 /*Table structure for table `usuarios` */
 

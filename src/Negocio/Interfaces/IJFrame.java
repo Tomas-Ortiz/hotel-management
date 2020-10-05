@@ -18,7 +18,7 @@ public interface IJFrame extends IJFrameLogin, IJFrameRegistro {
 
     public Rectangle getLimitesMaxPantalla();
     
-    public void guardarPanelesPrincipal(JPanel habitaciones, JPanel clientes, JPanel reservas, JPanel productos);
+    public void guardarPanelesPrincipal(JPanel habitaciones, JPanel clientes, JPanel reservas, JPanel productos, JPanel inicio);
     
-    public void activarPanelPrincipal(boolean activarHabitacion, boolean activarCliente, boolean activarReservas, boolean activarProductos);
+    public void activarPanelPrincipal(boolean activarHabitacion, boolean activarCliente, boolean activarReservas, boolean activarProductos, boolean activarInicio);
 }

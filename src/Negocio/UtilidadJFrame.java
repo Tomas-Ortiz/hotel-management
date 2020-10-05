@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 public class UtilidadJFrame implements IJFrame {
 
     private int panelX, panelY, ancho, alto;
-    private JPanel jpHabitaciones, jpClientes, jpReservas, jpProductos;
+    private JPanel jpHabitaciones, jpClientes, jpReservas, jpProductos, jpInicio;
 
     //SINGLETON
     private static UtilidadJFrame utilidadJframe;
@@ -121,20 +121,22 @@ public class UtilidadJFrame implements IJFrame {
     }
 
     @Override
-    public void guardarPanelesPrincipal(JPanel habitaciones, JPanel clientes, JPanel reservas, JPanel productos) {
+    public void guardarPanelesPrincipal(JPanel habitaciones, JPanel clientes, JPanel reservas, JPanel productos, JPanel inicio) {
         this.jpHabitaciones = habitaciones;
         this.jpClientes = clientes;
         this.jpReservas = reservas;
         this.jpProductos = productos;
+        this.jpInicio = inicio;
     }
 
     @Override
-    public void activarPanelPrincipal(boolean activarHabitacion, boolean activarCliente, boolean activarReservas, boolean activarProductos) {
+    public void activarPanelPrincipal(boolean activarHabitacion, boolean activarCliente, boolean activarReservas, boolean activarProductos, boolean activarInicio) {
 
         jpHabitaciones.setVisible(activarHabitacion);
         jpClientes.setVisible(activarCliente);
         jpReservas.setVisible(activarReservas);
         jpProductos.setVisible(activarProductos);
+        jpInicio.setVisible(activarInicio);
     }
 
 }

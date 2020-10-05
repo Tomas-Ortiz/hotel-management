@@ -3,6 +3,7 @@ package Presentación;
 import Negocio.Entidades.Usuario;
 import Negocio.NegocioUsuario;
 import Negocio.UtilidadJFrame;
+import Negocio.sesionUsuario;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.UnsupportedEncodingException;
@@ -15,51 +16,56 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 public class frmInicioSesion extends javax.swing.JFrame {
-
+    
     UtilidadJFrame utilidadJframe;
     NegocioUsuario negocioUsuario;
-
+    frmPrincipal frmPrincipal;
+    sesionUsuario sesionUsuario;
+    
     public frmInicioSesion() {
-
+        
         initComponents();
-
+        
         negocioUsuario = new NegocioUsuario();
         //Singleton
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Iniciar sesión", this);
+        
+        sesionUsuario = sesionUsuario.getSesionUsuario();
+        
         iniciarPanelTitulo();
         iniciarPanelLogin();
     }
-
+    
     private void iniciarPanelTitulo() {
-
+        
         JPanel jpTitulo = new JPanel();
-
+        
         utilidadJframe.setPanelTitulo(jpTitulo, lblTituloHotel, getContentPane());
     }
-
+    
     private void iniciarPanelLogin() {
-
+        
         JPanel jpInicioSesion = new JPanel(new GridLayout(9, 1, 0, 3));
         List<JComponent> componentesPanel = new ArrayList<JComponent>();
-
+        
         utilidadJframe.setTamañoPanelLogin(jpInicioSesion);
         utilidadJframe.setConfiguracionPanel(jpInicioSesion);
-
+        
         lblIniciarSesion.setHorizontalAlignment(SwingConstants.CENTER);
         lblO.setHorizontalAlignment(SwingConstants.CENTER);
-
+        
         agregarComponentesArray(componentesPanel);
-
+        
         utilidadJframe.agregarComponentesPanelLogin(jpInicioSesion, componentesPanel);
-
+        
         this.getContentPane().add(jpInicioSesion, BorderLayout.CENTER);
     }
-
+    
     private void agregarComponentesArray(List<JComponent> componentesPanel) {
-
+        
         JSeparator separatorLogin = new JSeparator(SwingConstants.HORIZONTAL);
-
+        
         componentesPanel.add(lblIniciarSesion);
         componentesPanel.add(separatorLogin);
         componentesPanel.add(lblUsuario);
@@ -69,17 +75,23 @@ public class frmInicioSesion extends javax.swing.JFrame {
         componentesPanel.add(jbtnIniciarSesion);
         componentesPanel.add(lblO);
         componentesPanel.add(jtbnRegistrarse);
-
+        
     }
-
+    
     private void limpiarCampos() {
         jtfUsuario.setText(null);
     }
-
+    
     private void limpiarContraseña() {
         jtfContraseña.setText(null);
     }
-
+    
+    private void mostrarVentanaPrincipal() {
+        frmPrincipal = new frmPrincipal();
+        frmPrincipal.setVisible(true);
+        this.dispose();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -217,54 +229,56 @@ public class frmInicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalirActionPerformed
-
+        
         System.exit(0);
 
     }//GEN-LAST:event_jbtnSalirActionPerformed
 
     private void jbtnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnIniciarSesionActionPerformed
-
+        
         String usuario = jtfUsuario.getText();
         String contraseña = jtfContraseña.getText();
-
+        
         String mensaje = negocioUsuario.validarInicioSesion(usuario, contraseña);
         String titulo = "Inicio de sesión";
-
+        
         if (!mensaje.equals("ok")) {
             JOptionPane.showConfirmDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-
+            
             limpiarContraseña();
-
+            
         } else {
-
+            
             String contraseñaCifrada = "";
-
+            
             try {
                 contraseñaCifrada = negocioUsuario.encriptarContraseña(contraseña);
             } catch (UnsupportedEncodingException ex) {
                 System.out.println(ex);
             }
-
+            
             List<Usuario> usuarios = negocioUsuario.buscarUsuario(usuario, contraseñaCifrada);
 
             // Si existe el usuario
             if (usuarios.size() > 0) {
-
+                
                 Usuario usuarioIniciado = usuarios.get(0);
                 JOptionPane.showConfirmDialog(null, "¡Bienvenido " + usuarioIniciado.getNombre() + "!", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 limpiarCampos();
-
+                
+                sesionUsuario.setUsuario(usuarioIniciado);
+                mostrarVentanaPrincipal();
                 // Si no existe o activo = 0
             } else {
                 JOptionPane.showConfirmDialog(null, "Usuario o contraseña incorrectos.", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
-
+            
             limpiarContraseña();
         }
     }//GEN-LAST:event_jbtnIniciarSesionActionPerformed
 
     private void jtbnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnRegistrarseActionPerformed
-
+        
         frmRegistro JframeRegistro = new frmRegistro();
         JframeRegistro.setVisible(true);
         //Este Jframe se destruye y elimina de memoria ram y SO
