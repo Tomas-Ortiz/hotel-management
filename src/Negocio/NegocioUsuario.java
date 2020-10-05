@@ -2,11 +2,12 @@ package Negocio;
 
 import Datos.UsuarioJpaController;
 import Negocio.Entidades.Usuario;
+import Negocio.Interfaces.IUsuario;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.List;
 
-public class NegocioUsuario {
+public class NegocioUsuario implements IUsuario {
 
     private UsuarioJpaController usuarioController;
 
@@ -14,6 +15,7 @@ public class NegocioUsuario {
         usuarioController = new UsuarioJpaController();
     }
 
+    @Override
     public void crearUsuario(Usuario usuario) {
 
         if (usuario != null) {
@@ -21,6 +23,7 @@ public class NegocioUsuario {
         }
     }
 
+    @Override
     public String validarRegistro(Usuario usuario) {
 
         String mensaje = "ok";
@@ -28,7 +31,7 @@ public class NegocioUsuario {
         if (usuario.getNombre().equals("") || usuario.getApellido().equals("") || usuario.getEmail().equals("")
                 || usuario.getUsuario().equals("") || usuario.getContraseña().equals("")
                 || usuario.getConfirmacionContraseña().equals("")) {
-            mensaje = "Debe completar todos los campos.";
+            mensaje = "Debes completar todos los campos.";
         } else if (!usuario.getContraseña().equals(usuario.getConfirmacionContraseña())) {
 
             mensaje = "Las contraseñas no coinciden.";
@@ -45,6 +48,7 @@ public class NegocioUsuario {
         return mensaje;
     }
 
+    @Override
     public String validarInicioSesion(String usuario, String contraseña) {
 
         String mensaje = "ok";
@@ -54,11 +58,13 @@ public class NegocioUsuario {
         return mensaje;
     }
 
+    @Override
     public List<Usuario> buscarUsuario(String usuario, String contraseña) {
         return usuarioController.findUsuario(usuario, contraseña);
     }
 
-    public String encriptarContraseñaUsuario(String contraseña) throws UnsupportedEncodingException {
+    @Override
+    public String encriptarContraseña(String contraseña) throws UnsupportedEncodingException {
 
         return Base64.getEncoder().encodeToString(contraseña.getBytes("utf-8"));
 

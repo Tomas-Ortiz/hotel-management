@@ -8,20 +8,18 @@ import java.awt.GridLayout;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-public class InicioSesion extends javax.swing.JFrame {
+public class frmInicioSesion extends javax.swing.JFrame {
 
     UtilidadJFrame utilidadJframe;
     NegocioUsuario negocioUsuario;
 
-    public InicioSesion() {
+    public frmInicioSesion() {
 
         initComponents();
 
@@ -37,12 +35,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
         JPanel jpTitulo = new JPanel();
 
-        this.lblTituloHotel.setHorizontalAlignment(SwingConstants.CENTER);
-        jpTitulo.add(lblTituloHotel);
-
-        utilidadJframe.setConfiguracionPanelTitulo(jpTitulo);
-
-        this.getContentPane().add(jpTitulo, BorderLayout.PAGE_START);
+        utilidadJframe.setPanelTitulo(jpTitulo, lblTituloHotel, getContentPane());
     }
 
     private void iniciarPanelLogin() {
@@ -101,10 +94,11 @@ public class InicioSesion extends javax.swing.JFrame {
         jtbnRegistrarse = new javax.swing.JButton();
         lblO = new javax.swing.JLabel();
         jbtnSalir = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblTituloHotel.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 36)); // NOI18N
+        lblTituloHotel.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
         lblTituloHotel.setText("MyHotel");
 
         lblIniciarSesion.setFont(new java.awt.Font("Microsoft JhengHei Light", 1, 24)); // NOI18N
@@ -149,6 +143,8 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -181,8 +177,12 @@ public class InicioSesion extends javax.swing.JFrame {
                             .addComponent(jtfContraseña))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(1257, Short.MAX_VALUE)
                 .addComponent(jbtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -206,7 +206,9 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addComponent(lblO)
                 .addGap(2, 2, 2)
                 .addComponent(jtbnRegistrarse)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -238,12 +240,11 @@ public class InicioSesion extends javax.swing.JFrame {
             String contraseñaCifrada = "";
 
             try {
-                contraseñaCifrada = negocioUsuario.encriptarContraseñaUsuario(contraseña);
+                contraseñaCifrada = negocioUsuario.encriptarContraseña(contraseña);
             } catch (UnsupportedEncodingException ex) {
                 System.out.println(ex);
             }
 
-            System.out.println(contraseñaCifrada);
             List<Usuario> usuarios = negocioUsuario.buscarUsuario(usuario, contraseñaCifrada);
 
             // Si existe el usuario
@@ -253,8 +254,9 @@ public class InicioSesion extends javax.swing.JFrame {
                 JOptionPane.showConfirmDialog(null, "¡Bienvenido " + usuarioIniciado.getNombre() + "!", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 limpiarCampos();
 
+                // Si no existe o activo = 0
             } else {
-                JOptionPane.showConfirmDialog(null, "Usuario o contraseña incorrecta.", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showConfirmDialog(null, "Usuario o contraseña incorrectos.", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
 
             limpiarContraseña();
@@ -263,7 +265,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void jtbnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnRegistrarseActionPerformed
 
-        Registro JframeRegistro = new Registro();
+        frmRegistro JframeRegistro = new frmRegistro();
         JframeRegistro.setVisible(true);
         //Este Jframe se destruye y elimina de memoria ram y SO
         this.dispose();
@@ -286,25 +288,27 @@ public class InicioSesion extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmInicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmInicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmInicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmInicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InicioSesion().setVisible(true);
+                new frmInicioSesion().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jbtnIniciarSesion;
     private javax.swing.JButton jbtnSalir;
     private javax.swing.JButton jtbnRegistrarse;

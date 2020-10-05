@@ -1,7 +1,7 @@
 package Datos;
 
 import Datos.exceptions.NonexistentEntityException;
-import Negocio.Entidades.Usuario;
+import Negocio.Entidades.Habitacion;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -12,11 +12,11 @@ import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-public class UsuarioJpaController implements Serializable {
+public class HabitacionJpaController implements Serializable {
 
     private EntityManagerFactory emf = null;
 
-    public UsuarioJpaController() {
+    public HabitacionJpaController() {
         this.emf = Persistence.createEntityManagerFactory("Gestion_HoteleraPU");
     }
 
@@ -24,12 +24,12 @@ public class UsuarioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Usuario usuario) {
+    public void create(Habitacion habitacion) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(usuario);
+            em.persist(habitacion);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -38,19 +38,19 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public void edit(Usuario usuario) throws NonexistentEntityException, Exception {
+    public void edit(Habitacion habitacion) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            usuario = em.merge(usuario);
+            habitacion = em.merge(habitacion);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = usuario.getId();
-                if (findUsuario(id) == null) {
-                    throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.");
+                Long id = habitacion.getId();
+                if (findHabitacion(id) == null) {
+                    throw new NonexistentEntityException("The habitacion with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -66,14 +66,14 @@ public class UsuarioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario usuario;
+            Habitacion habitacion;
             try {
-                usuario = em.getReference(Usuario.class, id);
-                usuario.getId();
+                habitacion = em.getReference(Habitacion.class, id);
+                habitacion.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The habitacion with id " + id + " no longer exists.", enfe);
             }
-            em.remove(usuario);
+            em.remove(habitacion);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -82,19 +82,19 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public List<Usuario> findUsuarioEntities() {
-        return findUsuarioEntities(true, -1, -1);
+    public List<Habitacion> findHabitacionEntities() {
+        return findHabitacionEntities(true, -1, -1);
     }
 
-    public List<Usuario> findUsuarioEntities(int maxResults, int firstResult) {
-        return findUsuarioEntities(false, maxResults, firstResult);
+    public List<Habitacion> findHabitacionEntities(int maxResults, int firstResult) {
+        return findHabitacionEntities(false, maxResults, firstResult);
     }
 
-    private List<Usuario> findUsuarioEntities(boolean all, int maxResults, int firstResult) {
+    private List<Habitacion> findHabitacionEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Habitacion.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -106,43 +106,53 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public Usuario findUsuario(Long id) {
+    public Habitacion findHabitacion(Long id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Usuario.class, id);
+            return em.find(Habitacion.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<Usuario> findUsuario(String usuario, String contraseña) {
-
-        EntityManager em = getEntityManager();
-
-        try {
-            Query nativeQuery = em.createNativeQuery("SELECT * FROM usuarios WHERE "
-                    + "usuario = ? AND contraseña = ? AND activo = ?", Usuario.class);
-
-            nativeQuery.setParameter(1, usuario);
-            nativeQuery.setParameter(2, contraseña);
-            nativeQuery.setParameter(3, 1);
-
-            return nativeQuery.getResultList();
-
-        } finally {
-            em.close();
-        }
-    }
-
-    public int getUsuarioCount() {
+    public int getHabitacionCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Usuario> rt = cq.from(Usuario.class
-            );
+            Root<Habitacion> rt = cq.from(Habitacion.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+
+    public int getHabitacionesByState(String estado) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT COUNT(*) FROM habitaciones WHERE estado = ?");
+
+            nativeQuery.setParameter(1, estado);
+
+            return ((Number) nativeQuery.getSingleResult()).intValue();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Habitacion> habitacionesOrderBy(String campo) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM habitaciones ORDER BY " + campo, Habitacion.class);
+
+            return nativeQuery.getResultList();
+
         } finally {
             em.close();
         }

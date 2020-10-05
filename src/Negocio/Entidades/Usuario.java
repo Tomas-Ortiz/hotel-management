@@ -16,7 +16,7 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nombre, apellido, email, usuario, contraseña;
+    private String nombre, apellido, email, usuario, contraseña, rol;
     private int activo;
 
     @Transient
@@ -25,13 +25,14 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, String email, String usuario, String contraseña, String confirmacionContraseña) {
+    public Usuario(String nombre, String apellido, String email, String usuario, String contraseña, String confirmacionContraseña, String rol) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.usuario = usuario;
         this.contraseña = contraseña;
         this.confirmacionContraseña = confirmacionContraseña;
+        this.rol = rol;
     }
 
     public Long getId() {
@@ -82,6 +83,14 @@ public class Usuario implements Serializable {
         this.contraseña = contraseña;
     }
 
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
     public int getActivo() {
         return activo;
     }
@@ -96,7 +105,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + ", usuario=" + usuario + ", contrase\u00f1a=" + contraseña + ", activo=" + activo + '}';
+        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + ", usuario=" + usuario + ", contrase\u00f1a=" + contraseña + ", rol=" + rol + ", activo=" + activo + ", confirmacionContrase\u00f1a=" + confirmacionContraseña + '}';
     }
 
 }

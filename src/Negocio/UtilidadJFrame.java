@@ -1,15 +1,19 @@
 package Negocio;
 
 import Negocio.Interfaces.IJFrame;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -17,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 public class UtilidadJFrame implements IJFrame {
 
     private int panelX, panelY, ancho, alto;
+    private JPanel jpHabitaciones, jpClientes, jpReservas, jpProductos;
 
     //SINGLETON
     private static UtilidadJFrame utilidadJframe;
@@ -63,10 +68,10 @@ public class UtilidadJFrame implements IJFrame {
     @Override
     public void setTamañoPanelRegistro(JPanel jpRegistro) {
         panelX = (int) ((getLimitesMaxPantalla().width) / 2.69);
-        panelY = (int) ((getLimitesMaxPantalla().height) / 6.5);
+        panelY = (int) ((getLimitesMaxPantalla().height) / 8.5);
 
         ancho = (int) ((getLimitesMaxPantalla().width) / 4);
-        alto = (int) ((getLimitesMaxPantalla().height) / 1.3);
+        alto = (int) ((getLimitesMaxPantalla().height) / 1.35);
 
         jpRegistro.setBounds(panelX, panelY, ancho, alto);
     }
@@ -85,7 +90,7 @@ public class UtilidadJFrame implements IJFrame {
 
     @Override
     public void setConfiguracionPanelTitulo(JPanel panel) {
-        panel.setBackground(Color.lightGray);
+        panel.setBackground(Color.black);
         panel.setBounds(0, 0, getLimitesMaxPantalla().width, 75);
     }
 
@@ -101,6 +106,35 @@ public class UtilidadJFrame implements IJFrame {
         for (Component c : componentesPanel) {
             jpRegistro.add(c);
         }
+    }
+
+    @Override
+    public void setPanelTitulo(JPanel panel, JLabel label, Container contentPane) {
+
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setForeground(Color.white);
+        panel.add(label);
+
+        setConfiguracionPanelTitulo(panel);
+
+        contentPane.add(panel, BorderLayout.PAGE_START);
+    }
+
+    @Override
+    public void guardarPanelesPrincipal(JPanel habitaciones, JPanel clientes, JPanel reservas, JPanel productos) {
+        this.jpHabitaciones = habitaciones;
+        this.jpClientes = clientes;
+        this.jpReservas = reservas;
+        this.jpProductos = productos;
+    }
+
+    @Override
+    public void activarPanelPrincipal(boolean activarHabitacion, boolean activarCliente, boolean activarReservas, boolean activarProductos) {
+
+        jpHabitaciones.setVisible(activarHabitacion);
+        jpClientes.setVisible(activarCliente);
+        jpReservas.setVisible(activarReservas);
+        jpProductos.setVisible(activarProductos);
     }
 
 }
