@@ -128,7 +128,7 @@ public class HabitacionJpaController implements Serializable {
         }
     }
 
-    public int getHabitacionesByState(String estado) {
+    public int getCountHabitacionesByState(String estado) {
 
         EntityManager em = getEntityManager();
 
@@ -150,6 +150,22 @@ public class HabitacionJpaController implements Serializable {
 
         try {
             Query nativeQuery = em.createNativeQuery("SELECT * FROM habitaciones ORDER BY " + campo, Habitacion.class);
+
+            return nativeQuery.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Habitacion> getHabitacionesByValorEstado(String valor) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM habitaciones WHERE estado = ?", Habitacion.class);
+
+            nativeQuery.setParameter(1, valor);
 
             return nativeQuery.getResultList();
 

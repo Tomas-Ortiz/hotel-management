@@ -24,15 +24,14 @@ CREATE TABLE `clientes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombres` varchar(70) DEFAULT NULL,
   `apellidos` varchar(70) DEFAULT NULL,
-  `dni` int(11) DEFAULT NULL,
+  `dni` bigint(20) DEFAULT NULL,
   `nacionalidad` varchar(70) DEFAULT NULL,
-  `mail` varchar(70) DEFAULT NULL,
-  `domicilio` varchar(70) DEFAULT NULL,
-  `nroTelefono` varchar(70) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `clientes` */
+  `correo` varchar(70) DEFAULT NULL,
+  `nroTelefono` bigint(20) DEFAULT NULL,
+  `fechaNacimiento` varchar(70) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `dni` (`dni`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `habitaciones` */
 
@@ -46,11 +45,11 @@ CREATE TABLE `habitaciones` (
   `detalles` varchar(500) DEFAULT NULL,
   `precioDia` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `habitaciones` */
 
-insert  into `habitaciones`(`id`,`numero`,`tipo`,`estado`,`detalles`,`precioDia`) values (1,1,'Individual','Disponible','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(2,2,'Individual','Disponible','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(3,3,'Individual','Disponible','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(4,4,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(5,5,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(6,6,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(7,7,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2000),(8,8,'Matrimonial','Limpieza','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(9,9,'Matrimonial','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(10,10,'Matrimonial','Limpieza','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2500),(11,11,'Doble','Limpieza','2 camas\n1 TV\nSin aire acondicionado\nSin balcón\nTodos los servicios',1300),(12,12,'Matrimonial','Reparación','2 Camas\n1 TV\nAire acondicionado\nSin balcón\nTodos los servicios',2300),(13,13,'Doble','Reparación','2 Camas\n1 TV\nAire acondicionado\nCon balcón\nTodos los servicios\n',1860),(34,14,'Individual','Limpieza','1 cama\n1 aire acondicionado\ntodos los servicios\ncon balcón',2300);
+insert  into `habitaciones`(`id`,`numero`,`tipo`,`estado`,`detalles`,`precioDia`) values (1,1,'Individual','Ocupada','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(2,2,'Individual','Ocupada','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(3,3,'Individual','Disponible','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(4,4,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(5,5,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(6,6,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(7,7,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2000),(8,8,'Matrimonial','Limpieza','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(9,9,'Matrimonial','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(10,10,'Matrimonial','Limpieza','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2500),(11,11,'Doble','Limpieza','2 camas\n1 TV\nSin aire acondicionado\nSin balcón\nTodos los servicios',1300),(12,12,'Matrimonial','Reparación','2 Camas\n1 TV\nAire acondicionado\nSin balcón\nTodos los servicios',2300),(13,13,'Doble','Reparación','2 Camas\n1 TV\nAire acondicionado\nCon balcón\nTodos los servicios\n',1860),(34,14,'Individual','Limpieza','1 cama\n1 aire acondicionado\ntodos los servicios\ncon balcón',2300),(36,15,'Individual','Ocupada','1 cama',1300);
 
 /*Table structure for table `reservas` */
 
@@ -60,14 +59,15 @@ CREATE TABLE `reservas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fechaEntrada` varchar(50) NOT NULL,
   `fechaSalida` varchar(50) NOT NULL,
-  `clienteId` int(11) NOT NULL,
-  `habitacionId` int(11) NOT NULL,
+  `horaEntrada` time DEFAULT NULL,
+  `horaSalida` time DEFAULT NULL,
+  `fk_cliente` int(11) NOT NULL,
+  `fk_habitacion` int(11) NOT NULL,
   `tipoPago` varchar(50) DEFAULT NULL,
+  `estado` enum('Cobrado','Pendiente') DEFAULT NULL,
   `precioTotal` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `reservas` */
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `usuarios` */
 
@@ -87,9 +87,6 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `unico_usuario` (`usuario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
-/*Data for the table `usuarios` */
-
-insert  into `usuarios`(`id`,`nombre`,`apellido`,`email`,`usuario`,`contraseña`,`rol`,`activo`) values (8,'Tomás','Ortiz','admin@hotel.com','admin','dG9taXMyMTIz','admin',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

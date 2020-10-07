@@ -6,8 +6,8 @@ import javax.swing.JPanel;
 
 public interface IJFrameLogin {
 
-    public void setTamañoPanelLogin(JPanel jpInicioSesion);
+    void setTamañoPanelLogin(JPanel jpInicioSesion);
 
-    public void agregarComponentesPanelLogin(JPanel jpInicioSesion, List<JComponent> componentesPanel);
+    void agregarComponentesPanelLogin(JPanel jpInicioSesion, List<JComponent> componentesPanel);
 
 }

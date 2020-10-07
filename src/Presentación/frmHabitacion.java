@@ -227,7 +227,7 @@ public class frmHabitacion extends javax.swing.JFrame {
 
             if (!mensaje.equals("ok")) {
                 datosValidos = false;
-                JOptionPane.showConfirmDialog(null, "Debes completar todos los campos.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showConfirmDialog(null, mensaje, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             } else {
                 tipo = (String) jcbTipoHabitacion.getSelectedItem();
                 numero = Integer.parseInt(jtfNumeroHabitacion.getText());

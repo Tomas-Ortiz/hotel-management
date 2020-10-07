@@ -5,6 +5,7 @@ import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Habitacion;
 import Negocio.Interfaces.IHabitacion;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
@@ -68,7 +69,7 @@ public class NegocioHabitacion implements IHabitacion {
 
     @Override
     public int getCantHabitacionesEstado(String estado) {
-        return habitacionController.getHabitacionesByState(estado);
+        return habitacionController.getCountHabitacionesByState(estado);
     }
 
     @Override
@@ -93,5 +94,29 @@ public class NegocioHabitacion implements IHabitacion {
             habitaciones = negocioHabitacion.getHabitaciones();
         }
         negocioHabitacion.mostrarHabitaciones(habitaciones, dtmHabitaciones);
+    }
+
+    @Override
+    public List<Habitacion> getHabitacionesPorValorEstado(String valor) {
+        return habitacionController.getHabitacionesByValorEstado(valor);
+    }
+
+    @Override
+    public void cargarHabitacionesDisponibles(List<Habitacion> habitacionesDisponibles, JComboBox jcbNroHabitacion) {
+        
+        for (Habitacion habitacion : habitacionesDisponibles) {
+            jcbNroHabitacion.addItem(habitacion.getNumero());
+        }
+    }
+
+    @Override
+    public Habitacion getHabitacionSeleccionada(List<Habitacion> habitacionesDisponibles, int nroHabitacion) {
+
+        for (Habitacion habitacion : habitacionesDisponibles) {
+            if (habitacion.getNumero() == nroHabitacion) {
+                return habitacion;
+            }
+        }
+        return null;
     }
 }

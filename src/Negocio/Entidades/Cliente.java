@@ -15,18 +15,19 @@ public class Cliente implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nombres, apellidos, nacionalidad, email, domicilio, nroTelefono;
-    private int dni;
+    private String nombres, apellidos, nacionalidad, correo, fechaNacimiento;
+    private Long dni, nroTelefono;
 
     public Cliente() {
+
     }
 
-    public Cliente(String nombres, String apellidos, String nacionalidad, String email, String domicilio, String nroTelefono, int dni) {
+    public Cliente(String nombres, String apellidos, String nacionalidad, String correo, String fechaNacimiento, Long nroTelefono, Long dni) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.nacionalidad = nacionalidad;
-        this.email = email;
-        this.domicilio = domicilio;
+        this.correo = correo;
+        this.fechaNacimiento = fechaNacimiento;
         this.nroTelefono = nroTelefono;
         this.dni = dni;
     }
@@ -63,41 +64,41 @@ public class Cliente implements Serializable {
         this.nacionalidad = nacionalidad;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
-    public String getDomicilio() {
-        return domicilio;
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setDomicilio(String domicilio) {
-        this.domicilio = domicilio;
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getNroTelefono() {
+    public Long getNroTelefono() {
         return nroTelefono;
     }
 
-    public void setNroTelefono(String nroTelefono) {
+    public void setNroTelefono(Long nroTelefono) {
         this.nroTelefono = nroTelefono;
     }
 
-    public int getDni() {
+    public Long getDni() {
         return dni;
     }
 
-    public void setDni(int dni) {
+    public void setDni(Long dni) {
         this.dni = dni;
     }
 
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + id + ", nombres=" + nombres + ", apellidos=" + apellidos + ", nacionalidad=" + nacionalidad + ", email=" + email + ", domicilio=" + domicilio + ", nroTelefono=" + nroTelefono + ", dni=" + dni + '}';
+        return "Cliente{" + "id=" + id + ", nombres=" + nombres + ", apellidos=" + apellidos + ", nacionalidad=" + nacionalidad + ", correo=" + correo + ", fechaNacimiento=" + fechaNacimiento + ", dni=" + dni + ", nroTelefono=" + nroTelefono + '}';
     }
 
 }

@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface IUsuario {
 
-    public void crearUsuario(Usuario usuario);
+    void crearUsuario(Usuario usuario);
 
-    public List<Usuario> buscarUsuario(String usuario, String contraseña);
+    List<Usuario> buscarUsuario(String usuario, String contraseña);
 
-    public String validarRegistro(Usuario usuario);
+    String validarRegistro(Usuario usuario);
 
-    public String validarInicioSesion(String usuario, String contraseña);
+    String validarInicioSesion(String usuario, String contraseña);
 
-    public String encriptarContraseña(String contraseña) throws UnsupportedEncodingException;
+    String encriptarContraseña(String contraseña) throws UnsupportedEncodingException;
 }

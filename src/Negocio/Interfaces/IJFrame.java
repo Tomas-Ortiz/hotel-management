@@ -8,17 +8,17 @@ import javax.swing.JPanel;
 
 public interface IJFrame extends IJFrameLogin, IJFrameRegistro {
 
-    public void configurarFrame(String titulo, JFrame frame);
-    
-    public void setPanelTitulo(JPanel panel,JLabel label, Container contentPane);
+    void configurarFrame(String titulo, JFrame frame);
 
-    public void setConfiguracionPanel(JPanel panel);
+    void setPanelTitulo(JPanel panel, JLabel label, Container contentPane);
 
-    public void setConfiguracionPanelTitulo(JPanel panel);
+    void setConfiguracionPanel(JPanel panel);
 
-    public Rectangle getLimitesMaxPantalla();
-    
-    public void guardarPanelesPrincipal(JPanel habitaciones, JPanel clientes, JPanel reservas, JPanel productos, JPanel inicio);
-    
-    public void activarPanelPrincipal(boolean activarHabitacion, boolean activarCliente, boolean activarReservas, boolean activarProductos, boolean activarInicio);
+    void setConfiguracionPanelTitulo(JPanel panel);
+
+    Rectangle getLimitesMaxPantalla();
+
+    void guardarPanelesPrincipal(JPanel habitaciones, JPanel clientes, JPanel reservas, JPanel productos, JPanel inicio);
+
+    void activarPanelPrincipal(boolean activarHabitacion, boolean activarCliente, boolean activarReservas, boolean activarProductos, boolean activarInicio);
 }

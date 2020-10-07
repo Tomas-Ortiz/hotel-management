@@ -263,7 +263,7 @@ public class frmInicioSesion extends javax.swing.JFrame {
             if (usuarios.size() > 0) {
                 
                 Usuario usuarioIniciado = usuarios.get(0);
-                JOptionPane.showConfirmDialog(null, "¡Bienvenido " + usuarioIniciado.getNombre() + "!", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showConfirmDialog(null, "¡Bienvenido " + usuarioIniciado.getNombre() + "!", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 limpiarCampos();
                 
                 sesionUsuario.setUsuario(usuarioIniciado);

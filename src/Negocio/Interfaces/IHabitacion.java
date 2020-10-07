@@ -4,29 +4,35 @@ import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Habitacion;
 import Negocio.NegocioHabitacion;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 public interface IHabitacion {
 
-    public void crearHabitacion(Habitacion habitacion);
+    void crearHabitacion(Habitacion habitacion);
 
-    public void modificarHabitacion(Habitacion habitacion) throws Exception;
+    void modificarHabitacion(Habitacion habitacion) throws Exception;
 
-    public void eliminarHabitacion(Long id) throws NonexistentEntityException;
+    void eliminarHabitacion(Long id) throws NonexistentEntityException;
 
-    public String validarHabitacion(String numero, String detalles, String precio);
+    String validarHabitacion(String numero, String detalles, String precio);
 
-    public List<Habitacion> getHabitaciones();
+    List<Habitacion> getHabitaciones();
 
-    public void mostrarHabitaciones(List<Habitacion> habitaciones, DefaultTableModel dtmHabitaciones);
+    void mostrarHabitaciones(List<Habitacion> habitaciones, DefaultTableModel dtmHabitaciones);
 
-    public int getCantHabitacionesEstado(String estado);
+    int getCantHabitacionesEstado(String estado);
 
-    public void contabilizarEstadosHabitaciones(JLabel lblRegistradas, JLabel lblDisponibles, JLabel lblOcupadas, JLabel lblLimpieza, JLabel lblReparación);
+    void contabilizarEstadosHabitaciones(JLabel lblRegistradas, JLabel lblDisponibles, JLabel lblOcupadas, JLabel lblLimpieza, JLabel lblReparación);
 
-    public List<Habitacion> ordenarHabitaciones(String campo);
+    List<Habitacion> ordenarHabitaciones(String campo);
 
-    public void agregarDatosTablaHabitaciones(List<Habitacion> habitaciones, NegocioHabitacion negocioHabitacion, DefaultTableModel dtmHabitaciones);
+    void agregarDatosTablaHabitaciones(List<Habitacion> habitaciones, NegocioHabitacion negocioHabitacion, DefaultTableModel dtmHabitaciones);
 
+    List<Habitacion> getHabitacionesPorValorEstado(String valor);
+
+    void cargarHabitacionesDisponibles(List<Habitacion> habitacionesDisponibles, JComboBox jcbNroHabitacion);
+
+    public Habitacion getHabitacionSeleccionada(List<Habitacion> habitacionesDisponibles, int nroHabitacion);
 }
