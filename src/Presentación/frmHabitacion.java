@@ -257,12 +257,12 @@ public class frmHabitacion extends javax.swing.JFrame {
                         this.habitacionModificada.setPrecioDia(precio);
 
                         negocioHabitacion.modificarHabitacion(this.habitacionModificada);
-                        mensaje = "Habitación modificada exitosamente.";
+                        mensaje = "¡Habitación modificada exitosamente!";
                         modificarHabitacion = false;
                     }
 
-                } catch (Exception ex) {
-                    mensaje = "Error al modificar la habitación." + ex.getMessage();
+                } catch (Exception e) {
+                    mensaje = "Error al modificar la habitación." + e.getMessage();
                 }
 
             } else {
@@ -271,7 +271,7 @@ public class frmHabitacion extends javax.swing.JFrame {
                 if (confirmado == JOptionPane.YES_OPTION) {
                     Habitacion nuevaHabitacion = new Habitacion(numero, tipo, estado, detalles, precio);
                     negocioHabitacion.crearHabitacion(nuevaHabitacion);
-                    mensaje = "Habitación registrada exitosamente.";
+                    mensaje = "¡Habitación registrada exitosamente!";
                 }
             }
 

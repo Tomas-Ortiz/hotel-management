@@ -42,7 +42,7 @@ public class Reserva implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Cliente cliente;
 
-    @JoinColumn(name = "fk_habitacion", updatable = false, nullable = false)
+    @JoinColumn(name = "fk_habitacion", nullable = false)
     @OneToOne
     private Habitacion habitacion;
 
@@ -125,9 +125,24 @@ public class Reserva implements Serializable {
         this.estado = enumEstado.valueOf(estado);
     }
 
+    public String getHoraEntrada() {
+        return horaEntrada;
+    }
+
+    public void setHoraEntrada(String horaEntrada) {
+        this.horaEntrada = horaEntrada;
+    }
+
+    public String getHoraSalida() {
+        return horaSalida;
+    }
+
+    public void setHoraSalida(String horaSalida) {
+        this.horaSalida = horaSalida;
+    }
+
     @Override
     public String toString() {
         return "Reserva{" + "id=" + id + ", fechaEntrada=" + fechaEntrada + ", fechaSalida=" + fechaSalida + ", tipoPago=" + tipoPago + ", horaEntrada=" + horaEntrada + ", horaSalida=" + horaSalida + ", precioTotal=" + precioTotal + ", estado=" + estado + ", cliente=" + cliente + ", habitacion=" + habitacion + '}';
     }
-
 }

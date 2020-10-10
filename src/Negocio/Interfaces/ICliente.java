@@ -10,4 +10,6 @@ public interface ICliente {
     String validarCliente(String nombre, String apellido, String pais, String correo, String nroTelefono, String dni, JDateChooser fechaNacimiento);
 
     Cliente verificarExistenciaCliente(long dni);
+
+    void modificarCliente(Cliente cliente) throws Exception;
 }

@@ -8,7 +8,11 @@ import Negocio.NegocioHabitacion;
 import Negocio.NegocioReserva;
 import Negocio.UtilidadGeneral;
 import Negocio.UtilidadJFrame;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.JOptionPane;
 
 public class frmReserva extends javax.swing.JFrame {
@@ -18,6 +22,8 @@ public class frmReserva extends javax.swing.JFrame {
     NegocioCliente negocioCliente;
     NegocioHabitacion negocioHabitacion;
     List<Habitacion> habitacionesDisponibles;
+    boolean modificarReserva = false;
+    Reserva reservaModificada;
 
     public frmReserva() {
         initComponents();
@@ -27,8 +33,42 @@ public class frmReserva extends javax.swing.JFrame {
         negocioReserva = new NegocioReserva();
         negocioCliente = new NegocioCliente();
         negocioHabitacion = new NegocioHabitacion();
+        reservaModificada = new Reserva();
 
         cargarHabitacionesDisponibles();
+    }
+
+    public void setReserva(Reserva reserva) throws ParseException {
+
+        jbtnGuardarReserva.setText("Modificar");
+        modificarReserva = true;
+        reservaModificada = reserva;
+
+        jtfNombre.setText(reserva.getCliente().getNombres());
+        jtfApellido.setText(reserva.getCliente().getApellidos());
+        jtfDni.setText(String.valueOf(reserva.getCliente().getDni()));
+        jtfCorreo.setText(reserva.getCliente().getCorreo());
+        jtfTelefono.setText(String.valueOf(reserva.getCliente().getNroTelefono()));
+        jtfNacionalidad.setText(reserva.getCliente().getNacionalidad());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        Date fechaNacimiento = sdf.parse(reserva.getCliente().getFechaNacimiento());
+        jdcFechaNacimiento.setDate(fechaNacimiento);
+
+        Date fechaEntrada = sdf.parse(reserva.getFechaEntrada());
+        jdcFechaEntrada.setDate(fechaEntrada);
+
+        Date fechaSalida = sdf.parse(reserva.getFechaSalida());
+        jdcFechaSalida.setDate(fechaSalida);
+
+        jcbTipoPago.setSelectedItem(reserva.getTipoPago());
+
+        tpHoraEntrada.setText(reserva.getHoraEntrada());
+        tpHoraSalida.setText(reserva.getHoraSalida());
+
+        jcbNroHabitacion.addItem(reserva.getHabitacion().getNumero());
+        jcbNroHabitacion.setSelectedItem(reserva.getHabitacion().getNumero());
     }
 
     private void cargarHabitacionesDisponibles() {
@@ -93,10 +133,10 @@ public class frmReserva extends javax.swing.JFrame {
 
         jpTitulo.setBackground(new java.awt.Color(0, 0, 0));
 
-        lblTituloPrincipal.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
-        lblTituloPrincipal.setForeground(new java.awt.Color(255, 255, 255));
         lblTituloPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTituloPrincipal.setText("Reserva");
+        lblTituloPrincipal.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
+        lblTituloPrincipal.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jpTituloLayout = new javax.swing.GroupLayout(jpTitulo);
         jpTitulo.setLayout(jpTituloLayout);
@@ -115,24 +155,24 @@ public class frmReserva extends javax.swing.JFrame {
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
-        jbtnGuardarReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnGuardarReserva.setText("Reservar");
+        jbtnGuardarReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnGuardarReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnGuardarReservaActionPerformed(evt);
             }
         });
 
-        jtbnCancelarReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnCancelarReserva.setText("Salir");
+        jtbnCancelarReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnCancelarReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnCancelarReservaActionPerformed(evt);
             }
         });
 
-        lblNombre.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblNombre.setText("Nombre");
+        lblNombre.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
         jtfNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,13 +180,13 @@ public class frmReserva extends javax.swing.JFrame {
             }
         });
 
-        lblTipoHabitacion2.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblTipoHabitacion2.setText("Nro. habitación");
+        lblTipoHabitacion2.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
         jcbNroHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        lblApellido.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblApellido.setText("Apellido");
+        lblApellido.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
         jtfApellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,11 +194,11 @@ public class frmReserva extends javax.swing.JFrame {
             }
         });
 
-        lblDatosCliente.setFont(new java.awt.Font("Maiandra GD", 3, 22)); // NOI18N
         lblDatosCliente.setText("Cliente");
+        lblDatosCliente.setFont(new java.awt.Font("Maiandra GD", 3, 22)); // NOI18N
 
-        lblHabitacion.setFont(new java.awt.Font("Maiandra GD", 3, 22)); // NOI18N
         lblHabitacion.setText("Habitación");
+        lblHabitacion.setFont(new java.awt.Font("Maiandra GD", 3, 22)); // NOI18N
 
         jtfDni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,14 +206,14 @@ public class frmReserva extends javax.swing.JFrame {
             }
         });
 
-        lblDocumento.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblDocumento.setText("Documento");
+        lblDocumento.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        lblFechaNacimiento.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblFechaNacimiento.setText("Fecha de nacimiento");
+        lblFechaNacimiento.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        lblNacionalidad.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblNacionalidad.setText("Nacionalidad");
+        lblNacionalidad.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
         jtfNacionalidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,34 +227,34 @@ public class frmReserva extends javax.swing.JFrame {
             }
         });
 
-        lblCorreo.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblCorreo.setText("Correo electrónico");
+        lblCorreo.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        lblHabitacion1.setFont(new java.awt.Font("Maiandra GD", 3, 22)); // NOI18N
         lblHabitacion1.setText("Pago");
+        lblHabitacion1.setFont(new java.awt.Font("Maiandra GD", 3, 22)); // NOI18N
 
-        lblNumeroHabitacion6.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblNumeroHabitacion6.setText("Tipo de pago");
+        lblNumeroHabitacion6.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        jcbTipoPago.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         jcbTipoPago.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Efectivo", "Tarjeta de crédito" }));
+        jcbTipoPago.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        lblHabitacion2.setFont(new java.awt.Font("Maiandra GD", 3, 22)); // NOI18N
         lblHabitacion2.setText("Alojamiento");
+        lblHabitacion2.setFont(new java.awt.Font("Maiandra GD", 3, 22)); // NOI18N
 
-        lblNumeroHabitacion7.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblNumeroHabitacion7.setText("Fecha de entrada");
+        lblNumeroHabitacion7.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        lblNumeroHabitacion8.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblNumeroHabitacion8.setText("Fecha de salida");
+        lblNumeroHabitacion8.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
         jdcFechaEntrada.setBackground(new java.awt.Color(255, 255, 255));
         jdcFechaEntrada.setPreferredSize(new java.awt.Dimension(87, 25));
 
         jdcFechaSalida.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblNroTeléfono.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblNroTeléfono.setText("Nro. teléfono");
+        lblNroTeléfono.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
         jtfTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -266,82 +306,81 @@ public class frmReserva extends javax.swing.JFrame {
                     .addComponent(lblDatosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(92, 92, 92)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(lblHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(lblNumeroHabitacion7)
-                                                .addComponent(lblNumeroHabitacion8)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jdcFechaSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jdcFechaEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(lblNumeroHabitacion6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jcbTipoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(lblTipoHabitacion2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jcbNroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tpHoraEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                                    .addComponent(tpHoraSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(246, 246, 246))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+                                .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGap(10, 10, 10)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(lblTipoHabitacion2)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jcbNroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(lblNumeroHabitacion6)
+                                            .addGap(47, 47, 47)
+                                            .addComponent(jcbTipoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(lblHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(128, 650, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblNumeroHabitacion7)
+                                    .addComponent(lblNumeroHabitacion8))
+                                .addGap(0, 0, 0)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jdcFechaSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jdcFechaEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(tpHoraEntrada, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tpHoraSalida, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(lblHabitacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblHabitacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(lblHabitacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSeparator2))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(536, 536, 536)
                     .addComponent(jbtnGuardarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
                     .addComponent(jtbnCancelarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(582, Short.MAX_VALUE))
+                    .addContainerGap(750, Short.MAX_VALUE))
                 .addComponent(jpTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(149, 149, 149)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblHabitacion2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblNumeroHabitacion7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tpHoraEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jdcFechaEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(jdcFechaEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblNumeroHabitacion8)
-                                .addGap(68, 68, 68)
-                                .addComponent(lblHabitacion))
+                            .addComponent(lblNumeroHabitacion8)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jdcFechaSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tpHoraSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(tpHoraSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblHabitacion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jcbNroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblTipoHabitacion2))
-                        .addGap(51, 51, 51)
+                        .addGap(47, 47, 47)
                         .addComponent(lblHabitacion1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -407,7 +446,9 @@ public class frmReserva extends javax.swing.JFrame {
         String horaEntrada = "", horaSalida = "";
         Long dni = -1L, nroTelefono = -1L;
         int nroHabitacion = -1;
-
+        float precioTotal;
+        Habitacion habitacionSeleccionada;
+        Cliente clienteAux;
         boolean datosValidos = true;
 
         try {
@@ -442,7 +483,6 @@ public class frmReserva extends javax.swing.JFrame {
 
                 horaEntrada = tpHoraEntrada.getText();
                 horaSalida = tpHoraSalida.getText();
-
             }
 
         } catch (NumberFormatException nfe) {
@@ -451,49 +491,98 @@ public class frmReserva extends javax.swing.JFrame {
         }
 
         if (datosValidos) {
-            int confirmado = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas crear la reserva?", "Confirmar creación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-            if (confirmado == JOptionPane.YES_OPTION) {
-
-                Habitacion habitacionSeleccionada = getHabitacionSeleccionada(nroHabitacion);
-
-                float precioTotal = negocioReserva.calcularPrecioTotal(habitacionSeleccionada, jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
-
-                Cliente clienteNuevo = new Cliente(nombre, apellido, nacionalidad, correo, fechaNacimiento, nroTelefono, dni);
-
-                habitacionSeleccionada.setEstado("Ocupada");
-
+            if (modificarReserva) {
                 try {
-                    negocioHabitacion.modificarHabitacion(habitacionSeleccionada);
-                } catch (Exception ex) {
-                    System.out.println("Error al modificar el estado de la habitación: " + ex.getMessage());
+                    int confirmado = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas modificar la reserva con id " + reservaModificada.getId() + "?", "Confirmar modificación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                    if (confirmado == JOptionPane.YES_OPTION) {
+
+                        reservaModificada.setFechaEntrada(fechaEntrada);
+                        reservaModificada.setFechaSalida(fechaSalida);
+                        reservaModificada.setHoraEntrada(horaEntrada);
+                        reservaModificada.setHoraSalida(horaSalida);
+                        reservaModificada.setTipoPago(tipoPago);
+
+                        reservaModificada.getCliente().setNombres(nombre);
+                        reservaModificada.getCliente().setApellidos(apellido);
+                        reservaModificada.getCliente().setDni(dni);
+                        reservaModificada.getCliente().setFechaNacimiento(fechaNacimiento);
+                        reservaModificada.getCliente().setCorreo(correo);
+                        reservaModificada.getCliente().setNacionalidad(nacionalidad);
+                        reservaModificada.getCliente().setNroTelefono(nroTelefono);
+
+                        negocioCliente.modificarCliente(reservaModificada.getCliente());
+
+                        // Si se modifico la habitación
+                        if (reservaModificada.getHabitacion().getNumero() != nroHabitacion) {
+                            reservaModificada.getHabitacion().setEstado("Disponible");
+                            negocioHabitacion.modificarHabitacion(reservaModificada.getHabitacion());
+
+                            reservaModificada.setHabitacion(null);
+
+                            habitacionSeleccionada = getHabitacionSeleccionada(nroHabitacion);
+                            habitacionSeleccionada.setEstado("Ocupada");
+                            negocioHabitacion.modificarHabitacion(habitacionSeleccionada);
+
+                            reservaModificada.setHabitacion(habitacionSeleccionada);
+                        }
+
+                        precioTotal = negocioReserva.calcularPrecioTotal(reservaModificada.getHabitacion(), jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
+                        reservaModificada.setPrecioTotal(precioTotal);
+
+                        negocioReserva.modificarReserva(reservaModificada);
+                        mensaje = "¡Reserva modificada exitosamente!";
+                        modificarReserva = false;
+                    }
+
+                } catch (Exception e) {
+                    mensaje = "Error al modificar la reserva." + e.getMessage();
                 }
+            } else {
 
-                Cliente cliente;
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas crear la reserva?", "Confirmar creación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-                Cliente clienteExistente = negocioCliente.verificarExistenciaCliente(dni);
+                if (confirmado == JOptionPane.YES_OPTION) {
 
-                //Si no existe ya el cliente ingresado
-                if (clienteExistente == null) {
-                    cliente = clienteNuevo;
-                    negocioCliente.crearCliente(clienteNuevo);
-                } else {
-                    cliente = clienteExistente;
+                    habitacionSeleccionada = getHabitacionSeleccionada(nroHabitacion);
+
+                    precioTotal = negocioReserva.calcularPrecioTotal(habitacionSeleccionada, jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
+
+                    Cliente clienteNuevo = new Cliente(nombre, apellido, nacionalidad, correo, fechaNacimiento, nroTelefono, dni);
+
+                    habitacionSeleccionada.setEstado("Ocupada");
+
+                    try {
+                        negocioHabitacion.modificarHabitacion(habitacionSeleccionada);
+                    } catch (Exception ex) {
+                        System.out.println("Error al modificar el estado de la habitación: " + ex.getMessage());
+                    }
+
+                    Cliente clienteExistente = negocioCliente.verificarExistenciaCliente(dni);
+
+                    //Si no existe ya el cliente ingresado
+                    if (clienteExistente == null) {
+                        clienteAux = clienteNuevo;
+                        negocioCliente.crearCliente(clienteNuevo);
+                    } else {
+                        clienteAux = clienteExistente;
+                    }
+
+                    String estado = "Pendiente";
+                    Reserva reserva = new Reserva(fechaEntrada, fechaSalida, tipoPago, horaEntrada, horaSalida, precioTotal, estado, clienteAux, habitacionSeleccionada);
+                    negocioReserva.crearReserva(reserva);
+
+                    mensaje = "¡Reserva creada exitosamente!";
                 }
-
-                String estado = "Pendiente";
-                Reserva reserva = new Reserva(fechaEntrada, fechaSalida, tipoPago, horaEntrada, horaSalida, precioTotal, estado, cliente, habitacionSeleccionada);
-                negocioReserva.crearReserva(reserva);
-
-                //actualizar las habitaciones disponibles
-                cargarHabitacionesDisponibles();
-
-                JOptionPane.showConfirmDialog(null, "¡Reserva creada exitosamente!", "Reserva", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-
-                this.dispose();
             }
-        }
+            //actualizar las habitaciones disponibles
+            cargarHabitacionesDisponibles();
 
+            if (!mensaje.equals("")) {
+                JOptionPane.showConfirmDialog(null, mensaje, "Reserva", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            }
+            this.dispose();
+        }
     }//GEN-LAST:event_jbtnGuardarReservaActionPerformed
 
     private void jtbnCancelarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCancelarReservaActionPerformed
@@ -533,7 +622,7 @@ public class frmReserva extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

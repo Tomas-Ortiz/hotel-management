@@ -28,7 +28,7 @@ public interface IHabitacion {
 
     List<Habitacion> ordenarHabitaciones(String campo);
 
-    void agregarDatosTablaHabitaciones(List<Habitacion> habitaciones, NegocioHabitacion negocioHabitacion, DefaultTableModel dtmHabitaciones);
+    void agregarDatosTablaHabitaciones(List<Habitacion> habitaciones, DefaultTableModel dtmHabitaciones);
 
     List<Habitacion> getHabitacionesPorValorEstado(String valor);
 

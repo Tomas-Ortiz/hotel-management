@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class NegocioHabitacion implements IHabitacion {
 
-    private HabitacionJpaController habitacionController;
+    private final HabitacionJpaController habitacionController;
 
     public NegocioHabitacion() {
         habitacionController = new HabitacionJpaController();
@@ -61,9 +61,8 @@ public class NegocioHabitacion implements IHabitacion {
 
         dtmHabitaciones.setRowCount(0);
 
-        for (int i = 0; i < habitaciones.size(); i++) {
-            dtmHabitaciones.addRow(new Object[]{habitaciones.get(i).getId(), habitaciones.get(i).getNumero(), habitaciones.get(i).getTipo(),
-                habitaciones.get(i).getEstado(), habitaciones.get(i).getDetalles(), habitaciones.get(i).getPrecioDia()});
+        for (Habitacion habitacion : habitaciones) {
+            dtmHabitaciones.addRow(new Object[]{habitacion.getId(), habitacion.getNumero(), habitacion.getTipo(), habitacion.getEstado(), habitacion.getDetalles(), habitacion.getPrecioDia()});
         }
     }
 
@@ -88,12 +87,12 @@ public class NegocioHabitacion implements IHabitacion {
     }
 
     @Override
-    public void agregarDatosTablaHabitaciones(List<Habitacion> habitaciones, NegocioHabitacion negocioHabitacion, DefaultTableModel dtmHabitaciones) {
+    public void agregarDatosTablaHabitaciones(List<Habitacion> habitaciones, DefaultTableModel dtmHabitaciones) {
 
         if (habitaciones.isEmpty()) {
-            habitaciones = negocioHabitacion.getHabitaciones();
+            habitaciones = getHabitaciones();
         }
-        negocioHabitacion.mostrarHabitaciones(habitaciones, dtmHabitaciones);
+        mostrarHabitaciones(habitaciones, dtmHabitaciones);
     }
 
     @Override
@@ -103,7 +102,7 @@ public class NegocioHabitacion implements IHabitacion {
 
     @Override
     public void cargarHabitacionesDisponibles(List<Habitacion> habitacionesDisponibles, JComboBox jcbNroHabitacion) {
-        
+
         for (Habitacion habitacion : habitacionesDisponibles) {
             jcbNroHabitacion.addItem(habitacion.getNumero());
         }

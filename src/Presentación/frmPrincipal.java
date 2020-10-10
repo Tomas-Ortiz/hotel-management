@@ -11,6 +11,9 @@ import Negocio.NegocioHabitacion;
 import Negocio.NegocioReserva;
 import Negocio.UtilidadGeneral;
 import Negocio.UtilidadJTable;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class frmPrincipal extends javax.swing.JFrame implements Runnable {
@@ -69,6 +72,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         contabilizarEstadosHabitacion();
     }
 
+    private void activarPanelReservas() {
+        utilidadJframe.activarPanelPrincipal(false, false, true, false, false);
+        activarBotonesPanelReservas(false, false, false, false);
+        agregarDatosTablaReservas();
+        contabilizarEstadosReserva();
+    }
+
     private void activarPanelInicio() {
         try {
 
@@ -108,11 +118,26 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }
 
     private void agregarDatosTablaHabitaciones() {
-        negocioHabitacion.agregarDatosTablaHabitaciones(habitaciones, negocioHabitacion, dtmHabitaciones);
+        negocioHabitacion.agregarDatosTablaHabitaciones(habitaciones, dtmHabitaciones);
+    }
+
+    private void agregarDatosTablaReservas() {
+        negocioReserva.agregarDatosTablaReservas(reservas, dtmReservas);
     }
 
     private void contabilizarEstadosHabitacion() {
         negocioHabitacion.contabilizarEstadosHabitaciones(lblRegistradas, lblDisponibles, lblOcupadas, lblLimpieza, lblReparación);
+    }
+
+    private void contabilizarEstadosReserva() {
+        negocioReserva.contabilizarEstadosReserva(lblOcupadasReserva, lblCobradasReserva, lblPendientesReserva);
+    }
+
+    private void activarBotonesPanelReservas(boolean modificarReserva, boolean cobrar, boolean verDetalles, boolean venderProducto) {
+        jtbnModificarReserva.setEnabled(modificarReserva);
+        jtbnCobrar.setEnabled(cobrar);
+        jtbnVerDetalles.setEnabled(verDetalles);
+        jbtnVenderProducto.setEnabled(venderProducto);
     }
 
     @SuppressWarnings("unchecked")
@@ -162,9 +187,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblBuscar1 = new javax.swing.JLabel();
         jSeparator7 = new javax.swing.JSeparator();
         jtbnCobrar = new javax.swing.JButton();
-        lblOcupadas1 = new javax.swing.JLabel();
-        lblOcupadas2 = new javax.swing.JLabel();
-        lblOcupadas3 = new javax.swing.JLabel();
+        lblOcupadasReserva = new javax.swing.JLabel();
+        lblCobradasReserva = new javax.swing.JLabel();
+        lblPendientesReserva = new javax.swing.JLabel();
+        jbtnVenderProducto = new javax.swing.JButton();
         jpProductos = new javax.swing.JPanel();
         jpTitulo = new javax.swing.JPanel();
         lblTituloPrincipal = new javax.swing.JLabel();
@@ -197,8 +223,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         jpBotoneraNavegacion.setBackground(new java.awt.Color(0, 102, 153));
 
-        jbtnClientes.setBackground(new java.awt.Color(255, 255, 255));
-        jbtnClientes.setFont(new java.awt.Font("Maiandra GD", 3, 18)); // NOI18N
+        jbtnClientes.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnClientes.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jbtnClientes.setForeground(new java.awt.Color(255, 255, 255));
         jbtnClientes.setText("Clientes");
         jbtnClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,8 +233,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jtbnProductos.setBackground(new java.awt.Color(255, 255, 255));
-        jtbnProductos.setFont(new java.awt.Font("Maiandra GD", 3, 18)); // NOI18N
+        jtbnProductos.setBackground(new java.awt.Color(0, 0, 0));
+        jtbnProductos.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jtbnProductos.setForeground(new java.awt.Color(255, 255, 255));
         jtbnProductos.setText("Productos");
         jtbnProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,8 +243,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jbtnReservas.setBackground(new java.awt.Color(255, 255, 255));
-        jbtnReservas.setFont(new java.awt.Font("Maiandra GD", 3, 18)); // NOI18N
+        jbtnReservas.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnReservas.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jbtnReservas.setForeground(new java.awt.Color(255, 255, 255));
         jbtnReservas.setText("Reservas");
         jbtnReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -224,8 +253,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jbtnHabitaciones.setBackground(new java.awt.Color(255, 255, 255));
-        jbtnHabitaciones.setFont(new java.awt.Font("Maiandra GD", 3, 18)); // NOI18N
+        jbtnHabitaciones.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnHabitaciones.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jbtnHabitaciones.setForeground(new java.awt.Color(255, 255, 255));
         jbtnHabitaciones.setText("Habitaciones");
         jbtnHabitaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -233,8 +263,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jbtnInicio.setBackground(new java.awt.Color(255, 255, 255));
-        jbtnInicio.setFont(new java.awt.Font("Maiandra GD", 3, 18)); // NOI18N
+        jbtnInicio.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnInicio.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jbtnInicio.setForeground(new java.awt.Color(255, 255, 255));
         jbtnInicio.setText("Inicio");
         jbtnInicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -425,7 +456,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                                 .addGap(18, 18, 18)
                                 .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jtbnCrearHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jtbnModificarHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                                    .addComponent(jtbnModificarHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jtbnEliminarHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jpHabitacionesLayout.createSequentialGroup()
                                 .addGap(5, 5, 5)
@@ -461,7 +492,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jcbFiltroHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(18, 18, 18))
+                .addContainerGap())
         );
         jpHabitacionesLayout.setVerticalGroup(
             jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -645,14 +676,22 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        lblOcupadas1.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
-        lblOcupadas1.setText("Ocupadas: ");
+        lblOcupadasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblOcupadasReserva.setText("Ocupadas: ");
 
-        lblOcupadas2.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
-        lblOcupadas2.setText("Cobradas:");
+        lblCobradasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblCobradasReserva.setText("Cobradas:");
 
-        lblOcupadas3.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
-        lblOcupadas3.setText("Pendientes:");
+        lblPendientesReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblPendientesReserva.setText("Pendientes:");
+
+        jbtnVenderProducto.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnVenderProducto.setText("Vender producto");
+        jbtnVenderProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnVenderProductoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpReservasLayout = new javax.swing.GroupLayout(jpReservas);
         jpReservas.setLayout(jpReservasLayout);
@@ -662,11 +701,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 .addGap(49, 49, 49)
                 .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpReservasLayout.createSequentialGroup()
-                        .addComponent(lblOcupadas1)
+                        .addComponent(lblOcupadasReserva)
                         .addGap(56, 56, 56)
-                        .addComponent(lblOcupadas2)
+                        .addComponent(lblCobradasReserva)
                         .addGap(56, 56, 56)
-                        .addComponent(lblOcupadas3)
+                        .addComponent(lblPendientesReserva)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jpReservasLayout.createSequentialGroup()
                         .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -697,10 +736,15 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jtfBuscarHabitacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jspReservas, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addGap(19, 19, 19)
                 .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jtbnModificarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtbnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtbnModificarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtbnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jbtnVenderProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22))
         );
         jpReservasLayout.setVerticalGroup(
@@ -723,18 +767,20 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                                 .addGap(24, 24, 24)
                                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(lblOcupadas1))
+                                .addComponent(lblOcupadasReserva))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpReservasLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblOcupadas3))))
-                    .addComponent(lblOcupadas2))
+                                .addComponent(lblPendientesReserva))))
+                    .addComponent(lblCobradasReserva))
                 .addGap(18, 18, 18)
                 .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpReservasLayout.createSequentialGroup()
                         .addComponent(jtbnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jtbnModificarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(134, 134, 134))
+                        .addGap(18, 18, 18)
+                        .addComponent(jbtnVenderProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(63, 63, 63))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpReservasLayout.createSequentialGroup()
                         .addComponent(jspReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
@@ -897,8 +943,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private void jbtnReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnReservasActionPerformed
 
-        utilidadJframe.activarPanelPrincipal(false, false, true, false, false);
-
+        activarPanelReservas();
     }//GEN-LAST:event_jbtnReservasActionPerformed
 
     private void jtbnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnProductosActionPerformed
@@ -918,7 +963,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private void jbtnActualizarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaActionPerformed
 
         activarBotonesPanelHabitaciones(false, false);
-        negocioHabitacion.agregarDatosTablaHabitaciones(habitaciones, negocioHabitacion, dtmHabitaciones);
+        negocioHabitacion.agregarDatosTablaHabitaciones(habitaciones, dtmHabitaciones);
         contabilizarEstadosHabitacion();
 
     }//GEN-LAST:event_jbtnActualizarTablaActionPerformed
@@ -937,9 +982,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         habitaciones = negocioHabitacion.getHabitaciones();
 
         Long habitacionId = Long.parseLong(dtmHabitaciones.getValueAt(filaIndice, 0).toString());
-        for (int i = 0; i < habitaciones.size(); i++) {
-            if (habitaciones.get(i).getId().equals(habitacionId)) {
-                habitacion.setHabitacion(habitaciones.get(i));
+        for (Habitacion habitacione : habitaciones) {
+            if (habitacione.getId().equals(habitacionId)) {
+                habitacion.setHabitacion(habitacione);
             }
         }
 
@@ -986,7 +1031,8 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jcbFiltroReservasActionPerformed
 
     private void jtbReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbReservasMouseClicked
-        // TODO add your handling code here:
+
+        activarBotonesPanelReservas(true, true, true, true);
     }//GEN-LAST:event_jtbReservasMouseClicked
 
     private void jtbnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCrearReservaActionPerformed
@@ -998,11 +1044,32 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnCrearReservaActionPerformed
 
     private void jtbnModificarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnModificarReservaActionPerformed
-        // TODO add your handling code here:
+
+        frmReserva reserva = new frmReserva();
+
+        int filaIndice = jtbReservas.getSelectedRow();
+
+        reservas = negocioReserva.getReservas();
+
+        Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
+
+        for (Reserva r : reservas) {
+            if (r.getId().equals(reservaId)) {
+                try {
+                    reserva.setReserva(r);
+                } catch (ParseException ex) {
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        reserva.setVisible(true);
     }//GEN-LAST:event_jtbnModificarReservaActionPerformed
 
     private void jbtnActualizarTablaReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaReservasActionPerformed
-        // TODO add your handling code here:
+
+        activarBotonesPanelReservas(false, false, false, false);
+        negocioReserva.agregarDatosTablaReservas(reservas, dtmReservas);
+        contabilizarEstadosReserva();
     }//GEN-LAST:event_jbtnActualizarTablaReservasActionPerformed
 
     private void jtbnVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnVerDetallesActionPerformed
@@ -1012,6 +1079,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private void jtbnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCobrarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtbnCobrarActionPerformed
+
+    private void jbtnVenderProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnVenderProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnVenderProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1066,6 +1137,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton jbtnInicio;
     private javax.swing.JButton jbtnReservas;
     private javax.swing.JButton jbtnSalir;
+    private javax.swing.JButton jbtnVenderProducto;
     private com.toedter.calendar.JCalendar jcCalendarioInicio;
     private javax.swing.JComboBox jcbFiltroHabitaciones;
     private javax.swing.JComboBox jcbFiltroReservas;
@@ -1093,14 +1165,14 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel lblBienvenida;
     private javax.swing.JLabel lblBuscar;
     private javax.swing.JLabel lblBuscar1;
+    private javax.swing.JLabel lblCobradasReserva;
     private javax.swing.JLabel lblDisponibles;
     private javax.swing.JLabel lblFechaHora;
     private javax.swing.JLabel lblFechaHoraTitulo;
     private javax.swing.JLabel lblLimpieza;
     private javax.swing.JLabel lblOcupadas;
-    private javax.swing.JLabel lblOcupadas1;
-    private javax.swing.JLabel lblOcupadas2;
-    private javax.swing.JLabel lblOcupadas3;
+    private javax.swing.JLabel lblOcupadasReserva;
+    private javax.swing.JLabel lblPendientesReserva;
     private javax.swing.JLabel lblRegistradas;
     private javax.swing.JLabel lblReparación;
     private javax.swing.JLabel lblTituloHabitaciones;
