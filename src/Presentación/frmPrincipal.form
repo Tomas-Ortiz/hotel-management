@@ -108,6 +108,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="jbtnClientes">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Clientes"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
@@ -117,7 +118,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Clientes"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnClientesActionPerformed"/>
@@ -125,6 +125,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jtbnProductos">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Productos"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
@@ -134,7 +135,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Productos"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbnProductosActionPerformed"/>
@@ -142,6 +142,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jbtnReservas">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Reservas"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
@@ -151,7 +152,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Reservas"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnReservasActionPerformed"/>
@@ -159,6 +159,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jbtnHabitaciones">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Habitaciones"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
@@ -168,7 +169,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Habitaciones"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnHabitacionesActionPerformed"/>
@@ -176,6 +176,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jbtnInicio">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Inicio"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
@@ -185,7 +186,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Inicio"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnInicioActionPerformed"/>
@@ -326,13 +326,13 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblTituloHabitaciones">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Habitaciones"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="24" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Habitaciones"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator2">
@@ -351,9 +351,6 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="jtbHabitaciones">
               <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Maiandra GD" size="14" style="0"/>
-                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="14">
                     <Column editable="false" title="Id" type="java.lang.Integer"/>
@@ -398,6 +395,9 @@
                     </Column>
                   </TableColumnModel>
                 </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Maiandra GD" size="14" style="0"/>
+                </Property>
                 <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
@@ -421,41 +421,38 @@
         </Container>
         <Component class="javax.swing.JLabel" name="lblDisponibles">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Disponibles:"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Disponibles:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblOcupadas">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Ocupadas: "/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Ocupadas: "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblRegistradas">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Registradas:"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Registradas:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Filtrar por "/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Filtrar por "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jcbFiltroHabitaciones">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Maiandra GD" size="14" style="0"/>
-            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="5">
                 <StringItem index="0" value="Id"/>
@@ -465,6 +462,9 @@
                 <StringItem index="4" value="Precio"/>
               </StringArray>
             </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Maiandra GD" size="14" style="0"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jcbFiltroHabitacionesActionPerformed"/>
@@ -472,10 +472,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="jtbnCrearHabitacion">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Crear habitaci&#xf3;n"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Crear habitaci&#xf3;n"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbnCrearHabitacionActionPerformed"/>
@@ -483,20 +483,20 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblBuscar">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Buscar"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Buscar"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfBuscarHabitacion">
         </Component>
         <Component class="javax.swing.JButton" name="jtbnModificarHabitacion">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Modificar habitaci&#xf3;n"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Modificar habitaci&#xf3;n"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbnModificarHabitacionActionPerformed"/>
@@ -504,10 +504,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="jtbnEliminarHabitacion">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Eliminar habitaci&#xf3;n"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Eliminar habitaci&#xf3;n"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbnEliminarHabitacionActionPerformed"/>
@@ -515,10 +515,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="jbtnActualizarTabla">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Actualizar tabla"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Actualizar tabla"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnActualizarTablaActionPerformed"/>
@@ -526,18 +526,18 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblLimpieza">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Limpieza:"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Limpieza:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblReparaci&#xf3;n">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Reparaci&#xf3;n:"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Reparaci&#xf3;n:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator6">
@@ -715,13 +715,13 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblTituloReservas">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Reservas"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="24" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Reservas"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator5">
@@ -733,20 +733,23 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="jcbFiltroReservas">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Maiandra GD" size="14" style="0"/>
-            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="8">
+              <StringArray count="11">
                 <StringItem index="0" value="Id"/>
                 <StringItem index="1" value="Nombre"/>
                 <StringItem index="2" value="Apellido"/>
-                <StringItem index="3" value="Nro. habitaci&#xf3;n"/>
-                <StringItem index="4" value="Estado"/>
+                <StringItem index="3" value="DNI"/>
+                <StringItem index="4" value="Nro. habitaci&#xf3;n"/>
                 <StringItem index="5" value="Fecha entrada"/>
                 <StringItem index="6" value="Fecha salida"/>
-                <StringItem index="7" value="Precio total"/>
+                <StringItem index="7" value="Hora entrada"/>
+                <StringItem index="8" value="Hora salida"/>
+                <StringItem index="9" value="Estado"/>
+                <StringItem index="10" value="Precio total"/>
               </StringArray>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
           </Properties>
           <Events>
@@ -762,14 +765,12 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="jtbReservas">
               <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Maiandra GD" size="14" style="0"/>
-                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="10" rowCount="14">
+                  <Table columnCount="11" rowCount="14">
                     <Column editable="false" title="Id" type="java.lang.Integer"/>
                     <Column editable="false" title="Nombre" type="java.lang.String"/>
                     <Column editable="false" title="Apellido" type="java.lang.String"/>
+                    <Column editable="false" title="DNI" type="java.lang.Long"/>
                     <Column editable="false" title="Nro. habitaci&#xf3;n" type="java.lang.Integer"/>
                     <Column editable="false" title="Fecha entrada" type="java.lang.String"/>
                     <Column editable="false" title="Fecha salida" type="java.lang.String"/>
@@ -831,7 +832,15 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                   </TableColumnModel>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Maiandra GD" size="14" style="0"/>
                 </Property>
                 <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="0" red="0" type="rgb"/>
@@ -856,10 +865,10 @@
         </Container>
         <Component class="javax.swing.JButton" name="jtbnCrearReserva">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Crear reserva"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Crear reserva"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbnCrearReservaActionPerformed"/>
@@ -867,10 +876,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="jtbnModificarReserva">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Modificar reserva"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Modificar reserva"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbnModificarReservaActionPerformed"/>
@@ -878,10 +887,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="jbtnActualizarTablaReservas">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Actualizar tabla"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Actualizar tabla"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnActualizarTablaReservasActionPerformed"/>
@@ -889,18 +898,18 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Filtrar por "/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Filtrar por "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jtbnVerDetalles">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Ver detalles"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Ver detalles"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbnVerDetallesActionPerformed"/>
@@ -910,10 +919,10 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblBuscar1">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Buscar"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Buscar"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator7">
@@ -925,10 +934,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="jtbnCobrar">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Cobrar"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Cobrar"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbnCobrarActionPerformed"/>
@@ -936,34 +945,34 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblOcupadasReserva">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Ocupadas: "/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Ocupadas: "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblCobradasReserva">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Cobradas:"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Cobradas:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblPendientesReserva">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Pendientes:"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Pendientes:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jbtnVenderProducto">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Vender producto"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Vender producto"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnVenderProductoActionPerformed"/>
@@ -1038,18 +1047,19 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblTituloPrincipal">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="MyHotel"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="36" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="MyHotel"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblUsuarioLogueado">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Usuario:"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
@@ -1059,7 +1069,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Usuario:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFechaHoraTitulo">
@@ -1158,13 +1167,13 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblTituloInicio">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Inicio"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="24" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Inicio"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[133, 30]"/>
             </Property>
@@ -1172,6 +1181,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblBienvenida">
           <Properties>
+            <Property name="text" type="java.lang.String" value="&#xa1;Bienvenido usuario!"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
@@ -1181,7 +1191,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&#xa1;Bienvenido usuario!"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[133, 30]"/>
             </Property>
@@ -1189,13 +1198,13 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblFechaHora">
           <Properties>
+            <Property name="text" type="java.lang.String" value="FechaHora"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Maiandra GD" size="26" style="2"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="FechaHora"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[133, 30]"/>
             </Property>

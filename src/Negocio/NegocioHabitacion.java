@@ -67,7 +67,7 @@ public class NegocioHabitacion implements IHabitacion {
     }
 
     @Override
-    public int getCantHabitacionesEstado(String estado) {
+    public int getCountHabitacionesByEstado(String estado) {
         return habitacionController.getCountHabitacionesByState(estado);
     }
 
@@ -75,10 +75,10 @@ public class NegocioHabitacion implements IHabitacion {
     public void contabilizarEstadosHabitaciones(JLabel lblRegistradas, JLabel lblDisponibles, JLabel lblOcupadas, JLabel lblLimpieza, JLabel lblReparación) {
 
         lblRegistradas.setText("Registradas (" + getHabitaciones().size() + ")");
-        lblDisponibles.setText("Disponibles (" + getCantHabitacionesEstado("Disponible") + ")");
-        lblOcupadas.setText("Ocupadas (" + getCantHabitacionesEstado("Ocupada") + ")");
-        lblLimpieza.setText("Limpieza (" + getCantHabitacionesEstado("Limpieza") + ")");
-        lblReparación.setText("Reparación (" + getCantHabitacionesEstado("Reparación") + ")");
+        lblDisponibles.setText("Disponibles (" + getCountHabitacionesByEstado("Disponible") + ")");
+        lblOcupadas.setText("Ocupadas (" + getCountHabitacionesByEstado("Ocupada") + ")");
+        lblLimpieza.setText("Limpieza (" + getCountHabitacionesByEstado("Limpieza") + ")");
+        lblReparación.setText("Reparación (" + getCountHabitacionesByEstado("Reparación") + ")");
     }
 
     @Override
@@ -93,6 +93,10 @@ public class NegocioHabitacion implements IHabitacion {
             habitaciones = getHabitaciones();
         }
         mostrarHabitaciones(habitaciones, dtmHabitaciones);
+    }
+
+    public void actualizarDatosTablaHabitaciones(DefaultTableModel dtmHabitaciones) {
+        mostrarHabitaciones(getHabitaciones(), dtmHabitaciones);
     }
 
     @Override

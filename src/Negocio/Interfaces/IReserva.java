@@ -25,6 +25,11 @@ public interface IReserva {
 
     void agregarDatosTablaReservas(List<Reserva> reservas, DefaultTableModel dtmReservas);
 
+    void actualizarDatosTablaReservas(DefaultTableModel dtmReservas);
+
     void contabilizarEstadosReserva(JLabel lblOcupadas, JLabel cobradas, JLabel pendientes);
 
+    List<Reserva> ordenarReservas(String campo, boolean otraTabla);
+    
+    int getCountReservasByEstado(String estado);
 }

@@ -17,129 +17,129 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class frmPrincipal extends javax.swing.JFrame implements Runnable {
-
+    
     UtilidadJFrame utilidadJframe;
     UtilidadJTable utilidadJtable;
-
+    
     DefaultTableModel dtmHabitaciones;
     List<Habitacion> habitaciones;
     NegocioHabitacion negocioHabitacion;
-
+    
     DefaultTableModel dtmReservas;
     List<Reserva> reservas;
     NegocioReserva negocioReserva;
-
+    
     Thread hilo;
-
+    
     public frmPrincipal() {
-
+        
         initComponents();
-
+        
         hilo = new Thread(this);
         hilo.start();
-
+        
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Gestión hotelera", this);
-
+        
         utilidadJframe.guardarPanelesPrincipal(jpHabitaciones, jpClientes, jpReservas, jpProductos, jpInicio);
-
+        
         utilidadJframe.activarPanelPrincipal(true, false, false, false, false);
-
+        
         setUsuariologueado();
-
+        
         dtmHabitaciones = (DefaultTableModel) jtbHabitaciones.getModel();
         dtmReservas = (DefaultTableModel) jtbReservas.getModel();
-
+        
         habitaciones = new ArrayList<>();
         negocioHabitacion = new NegocioHabitacion();
-
+        
         utilidadJtable = new UtilidadJTable();
-
+        
         reservas = new ArrayList<>();
         negocioReserva = new NegocioReserva();
-
+        
         utilidadJtable.centrarElementosTable(jtbHabitaciones);
         utilidadJtable.centrarElementosTable(jtbReservas);
-
+        
         activarPanelInicio();
     }
-
+    
     private void activarPanelHabitaciones() {
-
+        
         utilidadJframe.activarPanelPrincipal(true, false, false, false, false);
         activarBotonesPanelHabitaciones(false, false);
         agregarDatosTablaHabitaciones();
         contabilizarEstadosHabitacion();
     }
-
+    
     private void activarPanelReservas() {
         utilidadJframe.activarPanelPrincipal(false, false, true, false, false);
         activarBotonesPanelReservas(false, false, false, false);
         agregarDatosTablaReservas();
         contabilizarEstadosReserva();
     }
-
+    
     private void activarPanelInicio() {
         try {
-
+            
             utilidadJframe.activarPanelPrincipal(false, false, false, false, true);
             //String nombreUsuario = sesionUsuario.getSesionUsuario().getUsuario().getUsuario();
             String nombreUsuario = "temporal";
             lblBienvenida.setText("¡Bienvenido usuario " + nombreUsuario + "!");
             setFechaHoraInicio();
-
+            
         } catch (Exception e) {
             System.err.println("Error, el usuario todavía no ha iniciado sesión.");
             System.exit(0);
         }
     }
-
+    
     private void setFechaHoraInicio() {
         lblFechaHora.setText(UtilidadGeneral.getFechaActual() + ", " + UtilidadGeneral.getHoraActual());
         lblFechaHoraTitulo.setText(UtilidadGeneral.getFechaActual() + ", " + UtilidadGeneral.getHoraActual());
     }
-
+    
     private void setUsuariologueado() {
-
+        
         try {
             //String nombreUsuario = sesionUsuario.getSesionUsuario().getUsuario().getUsuario();
             String nombreUsuario = "temporal";
             lblUsuarioLogueado.setText("Usuario: " + nombreUsuario);
-
+            
         } catch (Exception e) {
             System.err.println("Error, el usuario todavía no ha iniciado sesión.");
             System.exit(0);
         }
     }
-
+    
     private void activarBotonesPanelHabitaciones(boolean modificarHabitacion, boolean EliminarHabitacion) {
         jtbnModificarHabitacion.setEnabled(modificarHabitacion);
         jtbnEliminarHabitacion.setEnabled(EliminarHabitacion);
     }
-
+    
     private void agregarDatosTablaHabitaciones() {
         negocioHabitacion.agregarDatosTablaHabitaciones(habitaciones, dtmHabitaciones);
     }
-
+    
     private void agregarDatosTablaReservas() {
         negocioReserva.agregarDatosTablaReservas(reservas, dtmReservas);
     }
-
+    
     private void contabilizarEstadosHabitacion() {
         negocioHabitacion.contabilizarEstadosHabitaciones(lblRegistradas, lblDisponibles, lblOcupadas, lblLimpieza, lblReparación);
     }
-
+    
     private void contabilizarEstadosReserva() {
         negocioReserva.contabilizarEstadosReserva(lblOcupadasReserva, lblCobradasReserva, lblPendientesReserva);
     }
-
+    
     private void activarBotonesPanelReservas(boolean modificarReserva, boolean cobrar, boolean verDetalles, boolean venderProducto) {
         jtbnModificarReserva.setEnabled(modificarReserva);
         jtbnCobrar.setEnabled(cobrar);
         jtbnVerDetalles.setEnabled(verDetalles);
         jbtnVenderProducto.setEnabled(venderProducto);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -223,50 +223,50 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         jpBotoneraNavegacion.setBackground(new java.awt.Color(0, 102, 153));
 
+        jbtnClientes.setText("Clientes");
         jbtnClientes.setBackground(new java.awt.Color(0, 0, 0));
         jbtnClientes.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
         jbtnClientes.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnClientes.setText("Clientes");
         jbtnClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnClientesActionPerformed(evt);
             }
         });
 
+        jtbnProductos.setText("Productos");
         jtbnProductos.setBackground(new java.awt.Color(0, 0, 0));
         jtbnProductos.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
         jtbnProductos.setForeground(new java.awt.Color(255, 255, 255));
-        jtbnProductos.setText("Productos");
         jtbnProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnProductosActionPerformed(evt);
             }
         });
 
+        jbtnReservas.setText("Reservas");
         jbtnReservas.setBackground(new java.awt.Color(0, 0, 0));
         jbtnReservas.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
         jbtnReservas.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnReservas.setText("Reservas");
         jbtnReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnReservasActionPerformed(evt);
             }
         });
 
+        jbtnHabitaciones.setText("Habitaciones");
         jbtnHabitaciones.setBackground(new java.awt.Color(0, 0, 0));
         jbtnHabitaciones.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
         jbtnHabitaciones.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnHabitaciones.setText("Habitaciones");
         jbtnHabitaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnHabitacionesActionPerformed(evt);
             }
         });
 
+        jbtnInicio.setText("Inicio");
         jbtnInicio.setBackground(new java.awt.Color(0, 0, 0));
         jbtnInicio.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
         jbtnInicio.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnInicio.setText("Inicio");
         jbtnInicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnInicioActionPerformed(evt);
@@ -308,13 +308,12 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jpHabitaciones.setBackground(new java.awt.Color(255, 255, 255));
         jpHabitaciones.setPreferredSize(new java.awt.Dimension(200, 200));
 
+        lblTituloHabitaciones.setText("Habitaciones");
         lblTituloHabitaciones.setBackground(new java.awt.Color(255, 255, 255));
         lblTituloHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
-        lblTituloHabitaciones.setText("Habitaciones");
 
         jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
 
-        jtbHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbHabitaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -351,6 +350,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 return canEdit [columnIndex];
             }
         });
+        jtbHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbHabitaciones.setGridColor(new java.awt.Color(0, 0, 0));
         jtbHabitaciones.setRowHeight(30);
         jtbHabitaciones.setRowMargin(5);
@@ -377,66 +377,66 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             jtbHabitaciones.getColumnModel().getColumn(5).setPreferredWidth(1);
         }
 
-        lblDisponibles.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblDisponibles.setText("Disponibles:");
+        lblDisponibles.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
 
-        lblOcupadas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblOcupadas.setText("Ocupadas: ");
+        lblOcupadas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
 
-        lblRegistradas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblRegistradas.setText("Registradas:");
+        lblRegistradas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jLabel1.setText("Filtrar por ");
+        jLabel1.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
 
-        jcbFiltroHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jcbFiltroHabitaciones.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Numero", "Tipo", "Estado", "Precio" }));
+        jcbFiltroHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jcbFiltroHabitaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbFiltroHabitacionesActionPerformed(evt);
             }
         });
 
-        jtbnCrearHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnCrearHabitacion.setText("Crear habitación");
+        jtbnCrearHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnCrearHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnCrearHabitacionActionPerformed(evt);
             }
         });
 
-        lblBuscar.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         lblBuscar.setText("Buscar");
+        lblBuscar.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
 
-        jtbnModificarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnModificarHabitacion.setText("Modificar habitación");
+        jtbnModificarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnModificarHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnModificarHabitacionActionPerformed(evt);
             }
         });
 
-        jtbnEliminarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnEliminarHabitacion.setText("Eliminar habitación");
+        jtbnEliminarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnEliminarHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnEliminarHabitacionActionPerformed(evt);
             }
         });
 
-        jbtnActualizarTabla.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnActualizarTabla.setText("Actualizar tabla");
+        jbtnActualizarTabla.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnActualizarTabla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnActualizarTablaActionPerformed(evt);
             }
         });
 
-        lblLimpieza.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblLimpieza.setText("Limpieza:");
+        lblLimpieza.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
 
-        lblReparación.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblReparación.setText("Reparación:");
+        lblReparación.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
 
         jSeparator6.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -551,47 +551,46 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         jpReservas.setBackground(new java.awt.Color(255, 255, 255));
 
+        lblTituloReservas.setText("Reservas");
         lblTituloReservas.setBackground(new java.awt.Color(255, 255, 255));
         lblTituloReservas.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
-        lblTituloReservas.setText("Reservas");
 
         jSeparator5.setForeground(new java.awt.Color(0, 0, 0));
 
+        jcbFiltroReservas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Nombre", "Apellido", "DNI", "Nro. habitación", "Fecha entrada", "Fecha salida", "Hora entrada", "Hora salida", "Estado", "Precio total" }));
         jcbFiltroReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        jcbFiltroReservas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Nombre", "Apellido", "Nro. habitación", "Estado", "Fecha entrada", "Fecha salida", "Precio total" }));
         jcbFiltroReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbFiltroReservasActionPerformed(evt);
             }
         });
 
-        jtbReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "Apellido", "Nro. habitación", "Fecha entrada", "Fecha salida", "Hora entrada", "Hora salida", "Estado", "Precio total"
+                "Id", "Nombre", "Apellido", "DNI", "Nro. habitación", "Fecha entrada", "Fecha salida", "Hora entrada", "Hora salida", "Estado", "Precio total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -602,6 +601,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 return canEdit [columnIndex];
             }
         });
+        jtbReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbReservas.setGridColor(new java.awt.Color(0, 0, 0));
         jtbReservas.setRowHeight(30);
         jtbReservas.setRowMargin(5);
@@ -626,67 +626,68 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             jtbReservas.getColumnModel().getColumn(7).setResizable(false);
             jtbReservas.getColumnModel().getColumn(8).setResizable(false);
             jtbReservas.getColumnModel().getColumn(9).setResizable(false);
+            jtbReservas.getColumnModel().getColumn(10).setResizable(false);
         }
 
-        jtbnCrearReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnCrearReserva.setText("Crear reserva");
+        jtbnCrearReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnCrearReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnCrearReservaActionPerformed(evt);
             }
         });
 
-        jtbnModificarReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnModificarReserva.setText("Modificar reserva");
+        jtbnModificarReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnModificarReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnModificarReservaActionPerformed(evt);
             }
         });
 
-        jbtnActualizarTablaReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnActualizarTablaReservas.setText("Actualizar tabla");
+        jbtnActualizarTablaReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnActualizarTablaReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnActualizarTablaReservasActionPerformed(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jLabel2.setText("Filtrar por ");
+        jLabel2.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
 
-        jtbnVerDetalles.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnVerDetalles.setText("Ver detalles");
+        jtbnVerDetalles.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnVerDetalles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnVerDetallesActionPerformed(evt);
             }
         });
 
-        lblBuscar1.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         lblBuscar1.setText("Buscar");
+        lblBuscar1.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
 
         jSeparator7.setForeground(new java.awt.Color(0, 0, 0));
 
-        jtbnCobrar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         jtbnCobrar.setText("Cobrar");
+        jtbnCobrar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         jtbnCobrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnCobrarActionPerformed(evt);
             }
         });
 
-        lblOcupadasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblOcupadasReserva.setText("Ocupadas: ");
+        lblOcupadasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
 
-        lblCobradasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblCobradasReserva.setText("Cobradas:");
+        lblCobradasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
 
-        lblPendientesReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblPendientesReserva.setText("Pendientes:");
+        lblPendientesReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
 
-        jbtnVenderProducto.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnVenderProducto.setText("Vender producto");
+        jbtnVenderProducto.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnVenderProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnVenderProductoActionPerformed(evt);
@@ -808,15 +809,15 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         jpTitulo.setBackground(new java.awt.Color(0, 0, 0));
 
-        lblTituloPrincipal.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
-        lblTituloPrincipal.setForeground(new java.awt.Color(255, 255, 255));
         lblTituloPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTituloPrincipal.setText("MyHotel");
+        lblTituloPrincipal.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
+        lblTituloPrincipal.setForeground(new java.awt.Color(255, 255, 255));
 
+        lblUsuarioLogueado.setText("Usuario:");
         lblUsuarioLogueado.setBackground(new java.awt.Color(0, 0, 0));
         lblUsuarioLogueado.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblUsuarioLogueado.setForeground(new java.awt.Color(255, 255, 255));
-        lblUsuarioLogueado.setText("Usuario:");
 
         lblFechaHoraTitulo.setBackground(new java.awt.Color(0, 0, 0));
         lblFechaHoraTitulo.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
@@ -855,20 +856,20 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         jSeparator3.setForeground(new java.awt.Color(0, 0, 0));
 
+        lblTituloInicio.setText("Inicio");
         lblTituloInicio.setBackground(new java.awt.Color(255, 255, 255));
         lblTituloInicio.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
-        lblTituloInicio.setText("Inicio");
         lblTituloInicio.setPreferredSize(new java.awt.Dimension(133, 30));
 
+        lblBienvenida.setText("¡Bienvenido usuario!");
         lblBienvenida.setBackground(new java.awt.Color(255, 255, 255));
         lblBienvenida.setFont(new java.awt.Font("Maiandra GD", 3, 24)); // NOI18N
         lblBienvenida.setForeground(new java.awt.Color(255, 153, 153));
-        lblBienvenida.setText("¡Bienvenido usuario!");
         lblBienvenida.setPreferredSize(new java.awt.Dimension(133, 30));
 
+        lblFechaHora.setText("FechaHora");
         lblFechaHora.setBackground(new java.awt.Color(255, 255, 255));
         lblFechaHora.setFont(new java.awt.Font("Maiandra GD", 2, 26)); // NOI18N
-        lblFechaHora.setText("FechaHora");
         lblFechaHora.setPreferredSize(new java.awt.Dimension(133, 30));
 
         jSeparator4.setForeground(new java.awt.Color(0, 0, 0));
@@ -937,73 +938,73 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jbtnClientesActionPerformed
 
     private void jbtnHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHabitacionesActionPerformed
-
+        
         activarPanelHabitaciones();
     }//GEN-LAST:event_jbtnHabitacionesActionPerformed
 
     private void jbtnReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnReservasActionPerformed
-
+        
         activarPanelReservas();
     }//GEN-LAST:event_jbtnReservasActionPerformed
 
     private void jtbnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnProductosActionPerformed
-
+        
         utilidadJframe.activarPanelPrincipal(false, false, false, true, false);
 
     }//GEN-LAST:event_jtbnProductosActionPerformed
 
     private void jtbnCrearHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCrearHabitacionActionPerformed
-
+        
         frmHabitacion jfrHabitacion = new frmHabitacion();
-
+        
         jfrHabitacion.setVisible(true);
 
     }//GEN-LAST:event_jtbnCrearHabitacionActionPerformed
 
     private void jbtnActualizarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaActionPerformed
-
+        
         activarBotonesPanelHabitaciones(false, false);
-        negocioHabitacion.agregarDatosTablaHabitaciones(habitaciones, dtmHabitaciones);
+        negocioHabitacion.actualizarDatosTablaHabitaciones(dtmHabitaciones);
         contabilizarEstadosHabitacion();
 
     }//GEN-LAST:event_jbtnActualizarTablaActionPerformed
 
     private void jtbHabitacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbHabitacionesMouseClicked
-
+        
         activarBotonesPanelHabitaciones(true, true);
     }//GEN-LAST:event_jtbHabitacionesMouseClicked
 
     private void jtbnModificarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnModificarHabitacionActionPerformed
-
+        
         frmHabitacion habitacion = new frmHabitacion();
-
+        
         int filaIndice = jtbHabitaciones.getSelectedRow();
-
+        
         habitaciones = negocioHabitacion.getHabitaciones();
-
+        
         Long habitacionId = Long.parseLong(dtmHabitaciones.getValueAt(filaIndice, 0).toString());
         for (Habitacion habitacione : habitaciones) {
             if (habitacione.getId().equals(habitacionId)) {
                 habitacion.setHabitacion(habitacione);
             }
         }
-
+        
         habitacion.setVisible(true);
     }//GEN-LAST:event_jtbnModificarHabitacionActionPerformed
 
     private void jtbnEliminarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnEliminarHabitacionActionPerformed
-
+        
         int filaIndice = jtbHabitaciones.getSelectedRow();
         Long habitacionId = (Long) dtmHabitaciones.getValueAt(filaIndice, 0);
-
+        
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas eliminar la habitación con id " + habitacionId + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
+        
         if (confirmado == JOptionPane.YES_OPTION) {
             try {
                 negocioHabitacion.eliminarHabitacion(habitacionId);
                 JOptionPane.showConfirmDialog(null, "Habitación eliminada exitosamente.", "Habitacion eliminada", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 agregarDatosTablaHabitaciones();
-
+                
             } catch (NonexistentEntityException ex) {
                 System.out.println("Error, no existe la entidad. " + ex.getMessage());
             }
@@ -1011,48 +1012,90 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnEliminarHabitacionActionPerformed
 
     private void jcbFiltroHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroHabitacionesActionPerformed
-
+        
         String campo = (String) jcbFiltroHabitaciones.getSelectedItem();
-
+        
         if (campo.equals("Precio")) {
             campo = "precioDia";
         }
         habitaciones = negocioHabitacion.ordenarHabitaciones(campo);
+        
         agregarDatosTablaHabitaciones();
     }//GEN-LAST:event_jcbFiltroHabitacionesActionPerformed
 
     private void jbtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnInicioActionPerformed
-
+        
         activarPanelInicio();
     }//GEN-LAST:event_jbtnInicioActionPerformed
 
     private void jcbFiltroReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroReservasActionPerformed
-        // TODO add your handling code here:
+        String campo = (String) jcbFiltroReservas.getSelectedItem();
+        //Si el campo seleccionado corresponde a otra tabla (consulta diferente)
+        boolean otraTabla = false;
+        
+        switch (campo) {
+            case "Precio total":
+                campo = "precioTotal";
+                break;
+            case "Fecha entrada":
+                campo = "fechaEntrada";
+                break;
+            case "Fecha salida":
+                campo = "fechaSalida";
+                break;
+            case "Hora entrada":
+                campo = "horaEntrada";
+                break;
+            case "Hora salida":
+                campo = "horaSalida";
+                break;
+            case "Nombre":
+                campo = "nombres";
+                otraTabla = true;
+                break;
+            case "Apellido":
+                campo = "apellidos";
+                otraTabla = true;
+                break;
+            case "DNI":
+                campo = "dni";
+                otraTabla = true;
+                break;
+            case "Nro. habitación":
+                campo = "numero";
+                otraTabla = true;
+                break;
+            default:
+                break;
+        }
+        
+        reservas = negocioReserva.ordenarReservas(campo, otraTabla);
+        agregarDatosTablaReservas();
     }//GEN-LAST:event_jcbFiltroReservasActionPerformed
 
     private void jtbReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbReservasMouseClicked
-
+        
         activarBotonesPanelReservas(true, true, true, true);
     }//GEN-LAST:event_jtbReservasMouseClicked
 
     private void jtbnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCrearReservaActionPerformed
-
+        
         frmReserva frmCrearReserva = new frmReserva();
-
+        
         frmCrearReserva.setVisible(true);
 
     }//GEN-LAST:event_jtbnCrearReservaActionPerformed
 
     private void jtbnModificarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnModificarReservaActionPerformed
-
+        
         frmReserva reserva = new frmReserva();
-
+        
         int filaIndice = jtbReservas.getSelectedRow();
-
+        
         reservas = negocioReserva.getReservas();
-
+        
         Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
-
+        
         for (Reserva r : reservas) {
             if (r.getId().equals(reservaId)) {
                 try {
@@ -1066,9 +1109,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnModificarReservaActionPerformed
 
     private void jbtnActualizarTablaReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaReservasActionPerformed
-
+        
         activarBotonesPanelReservas(false, false, false, false);
-        negocioReserva.agregarDatosTablaReservas(reservas, dtmReservas);
+        negocioReserva.actualizarDatosTablaReservas(dtmReservas);
         contabilizarEstadosReserva();
     }//GEN-LAST:event_jbtnActualizarTablaReservasActionPerformed
 
@@ -1185,7 +1228,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     @Override
     public void run() {
         Thread ct = Thread.currentThread();
-
+        
         while (ct == hilo) {
             setFechaHoraInicio();
             try {

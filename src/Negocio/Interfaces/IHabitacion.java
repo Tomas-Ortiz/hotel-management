@@ -22,7 +22,7 @@ public interface IHabitacion {
 
     void mostrarHabitaciones(List<Habitacion> habitaciones, DefaultTableModel dtmHabitaciones);
 
-    int getCantHabitacionesEstado(String estado);
+    int getCountHabitacionesByEstado(String estado);
 
     void contabilizarEstadosHabitaciones(JLabel lblRegistradas, JLabel lblDisponibles, JLabel lblOcupadas, JLabel lblLimpieza, JLabel lblReparación);
 

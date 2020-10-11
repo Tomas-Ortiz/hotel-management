@@ -115,6 +115,52 @@ public class ReservaJpaController implements Serializable {
         }
     }
 
+    public List<Reserva> reservasOrderBy(String campo) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM reservas ORDER BY " + campo, Reserva.class);
+
+            return nativeQuery.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Reserva> reservasOrderByInOtherTable(String campo) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT res.id, res.fechaEntrada, res.fechaSalida, res.fk_cliente, res.fk_habitacion, \n"
+                    + "res.horaEntrada, res.horaSalida, res.precioTotal, res.tipoPago, res.estado FROM habitaciones hab, reservas res, clientes cli\n"
+                    + "WHERE res.fk_cliente = cli.id AND res.fk_habitacion = hab.id ORDER BY " + campo, Reserva.class);
+
+            return nativeQuery.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public int getCountReservasByState(String estado) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT COUNT(*) FROM reservas WHERE estado = ?");
+
+            nativeQuery.setParameter(1, estado);
+
+            return ((Number) nativeQuery.getSingleResult()).intValue();
+
+        } finally {
+            em.close();
+        }
+    }
+
     public int getReservaCount() {
         EntityManager em = getEntityManager();
         try {
