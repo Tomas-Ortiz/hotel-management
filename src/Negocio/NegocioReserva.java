@@ -118,4 +118,10 @@ public class NegocioReserva implements IReserva {
         }
         return reservaController.reservasOrderBy(campo);
     }
+
+    @Override
+    public List<Reserva> buscarReserva(String busqueda) {
+        return reservaController.buscarReserva(busqueda);
+    }
+
 }

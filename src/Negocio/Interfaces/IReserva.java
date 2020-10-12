@@ -30,6 +30,8 @@ public interface IReserva {
     void contabilizarEstadosReserva(JLabel lblOcupadas, JLabel cobradas, JLabel pendientes);
 
     List<Reserva> ordenarReservas(String campo, boolean otraTabla);
-    
+
     int getCountReservasByEstado(String estado);
+
+    List<Reserva> buscarReserva(String busqueda);
 }

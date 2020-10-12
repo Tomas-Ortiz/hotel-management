@@ -122,4 +122,9 @@ public class NegocioHabitacion implements IHabitacion {
         }
         return null;
     }
+
+    @Override
+    public List<Habitacion> buscarHabitacion(String busqueda) {
+        return habitacionController.buscarHabitacion(busqueda);
+    }
 }

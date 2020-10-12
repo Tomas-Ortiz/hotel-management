@@ -8,9 +8,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.swing.table.DefaultTableModel;
 
 public class HabitacionJpaController implements Serializable {
 
@@ -166,6 +168,31 @@ public class HabitacionJpaController implements Serializable {
             Query nativeQuery = em.createNativeQuery("SELECT * FROM habitaciones WHERE estado = ?", Habitacion.class);
 
             nativeQuery.setParameter(1, valor);
+
+            return nativeQuery.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Habitacion> buscarHabitacion(String busqueda) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM habitaciones WHERE id LIKE ? OR numero LIKE ? "
+                    + "OR tipo LIKE ? OR estado LIKE ? OR detalles LIKE ? OR precioDia LIKE ?", Habitacion.class);
+
+            try {
+                for (int i = 1; i < 7; i++) {
+                    nativeQuery.setParameter(i, busqueda + "%");
+                }
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
 
             return nativeQuery.getResultList();
 

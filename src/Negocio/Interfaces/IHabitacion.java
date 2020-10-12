@@ -2,7 +2,6 @@ package Negocio.Interfaces;
 
 import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Habitacion;
-import Negocio.NegocioHabitacion;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -35,4 +34,6 @@ public interface IHabitacion {
     void cargarHabitacionesDisponibles(List<Habitacion> habitacionesDisponibles, JComboBox jcbNroHabitacion);
 
     public Habitacion getHabitacionSeleccionada(List<Habitacion> habitacionesDisponibles, int nroHabitacion);
+
+    List<Habitacion> buscarHabitacion(String busqueda);
 }

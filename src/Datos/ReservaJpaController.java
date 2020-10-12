@@ -174,4 +174,34 @@ public class ReservaJpaController implements Serializable {
         }
     }
 
+    public List<Reserva> buscarReserva(String busqueda) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+
+            String consulta = "SELECT DISTINCT res.id, res.fechaEntrada, res.fechaSalida, res.fk_cliente, res.fk_habitacion, \n"
+                    + "res.horaEntrada, res.horaSalida, res.precioTotal, res.tipoPago, res.estado FROM habitaciones hab, reservas res, clientes cli\n"
+                    + "WHERE res.fk_cliente = cli.id AND res.fk_habitacion = hab.id AND (res.id LIKE ? OR cli.nombres LIKE ? OR cli.apellidos LIKE ? "
+                    + "OR cli.dni LIKE ? OR hab.numero LIKE ? OR res.fechaEntrada LIKE ? OR res.fechaSalida LIKE ? OR res.horaEntrada LIKE ? "
+                    + "OR res.horaSalida LIKE ? OR res.estado LIKE ? OR res.precioTotal LIKE ?)";
+
+            Query nativeQuery = em.createNativeQuery(consulta, Reserva.class);
+
+            try {
+                for (int i = 1; i < 12; i++) {
+                    nativeQuery.setParameter(i, busqueda + "%");
+                }
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            return nativeQuery.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
 }
