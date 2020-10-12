@@ -10,7 +10,6 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 public class ReservaJpaController implements Serializable {
 
@@ -86,10 +85,6 @@ public class ReservaJpaController implements Serializable {
         return findReservaEntities(true, -1, -1);
     }
 
-    public List<Reserva> findReservaEntities(int maxResults, int firstResult) {
-        return findReservaEntities(false, maxResults, firstResult);
-    }
-
     private List<Reserva> findReservaEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -161,19 +156,6 @@ public class ReservaJpaController implements Serializable {
         }
     }
 
-    public int getReservaCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Reserva> rt = cq.from(Reserva.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-
     public List<Reserva> buscarReserva(String busqueda) {
 
         EntityManager em = getEntityManager();
@@ -203,5 +185,4 @@ public class ReservaJpaController implements Serializable {
             em.close();
         }
     }
-
 }

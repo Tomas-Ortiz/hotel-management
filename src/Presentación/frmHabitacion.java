@@ -4,6 +4,7 @@ import Negocio.Entidades.Habitacion;
 import Negocio.UtilidadGeneral;
 import Negocio.UtilidadJFrame;
 import Negocio.NegocioHabitacion;
+import Negocio.UtilidadJOptionPane;
 import Negocio.UtilidadJTable;
 import javax.swing.JOptionPane;
 
@@ -18,10 +19,10 @@ public class frmHabitacion extends javax.swing.JFrame {
 
     public frmHabitacion() {
         initComponents();
+        negocioHabitacion = new NegocioHabitacion();
 
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Habitación", this);
-        negocioHabitacion = new NegocioHabitacion();
     }
 
     private void limpiarCamposHabitacion() {
@@ -32,9 +33,10 @@ public class frmHabitacion extends javax.swing.JFrame {
         jtfPrecioHabitacion.setText("");
     }
 
-    public void setHabitacion(Habitacion habitacion) {
+    public void mostrarHabitacion(Habitacion habitacion) {
         modificarHabitacion = true;
         this.habitacionModificada = habitacion;
+
         jcbTipoHabitacion.setSelectedItem(habitacion.getTipo());
         jtfNumeroHabitacion.setText(String.valueOf(habitacion.getNumero()));
         jcbEstadoHabitacion.setSelectedItem(habitacion.getEstado());
@@ -135,12 +137,6 @@ public class frmHabitacion extends javax.swing.JFrame {
         lblPrecio.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblPrecio.setText("Precio / día");
 
-        jtfPrecioHabitacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfPrecioHabitacionActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -210,24 +206,23 @@ public class frmHabitacion extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfNumeroHabitacionActionPerformed
 
     private void jtbnCancelarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCancelarHabitacionActionPerformed
-
         this.dispose();
-
     }//GEN-LAST:event_jtbnCancelarHabitacionActionPerformed
 
     private void jbtnGuardarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarHabitacionActionPerformed
-
-        String tipo = "", estado = "", detalles = "";
+        String tipo = "", estado = "", detalles = "", titulo = "", mensaje = "";
         int numero = -1;
         float precio = -1;
         boolean datosValidos = true;
+        Habitacion habitacionExistente;
 
         try {
-            String mensaje = negocioHabitacion.validarHabitacion(jtfNumeroHabitacion.getText(), jtaDetallesHabitacion.getText(), jtfPrecioHabitacion.getText());
+            mensaje = negocioHabitacion.validarHabitacion(jtfNumeroHabitacion.getText(), jtaDetallesHabitacion.getText(), jtfPrecioHabitacion.getText());
 
             if (!mensaje.equals("ok")) {
                 datosValidos = false;
-                JOptionPane.showConfirmDialog(null, mensaje, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                titulo = "Error";
+                UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
             } else {
                 tipo = (String) jcbTipoHabitacion.getSelectedItem();
                 numero = Integer.parseInt(jtfNumeroHabitacion.getText());
@@ -235,60 +230,80 @@ public class frmHabitacion extends javax.swing.JFrame {
                 detalles = jtaDetallesHabitacion.getText();
                 precio = Float.parseFloat(jtfPrecioHabitacion.getText());
             }
-
         } catch (NumberFormatException nfe) {
             datosValidos = false;
-            JOptionPane.showConfirmDialog(null, "Verifica de haber ingresado el formato correcto.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            mensaje = "Verifica de haber ingresado el formato correcto.";
+            titulo = "Error";
+            UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
         }
 
         if (datosValidos) {
-            String mensaje = "";
-
             if (modificarHabitacion) {
                 try {
+                    habitacionExistente = null;
 
-                    int confirmado = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas modificar la habitación con id " + habitacionModificada.getId() + "?", "Confirmar modificación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-                    if (confirmado == JOptionPane.YES_OPTION) {
-                        this.habitacionModificada.setTipo(tipo);
-                        this.habitacionModificada.setNumero(numero);
-                        this.habitacionModificada.setEstado(estado);
-                        this.habitacionModificada.setDetalles(detalles);
-                        this.habitacionModificada.setPrecioDia(precio);
-
-                        negocioHabitacion.modificarHabitacion(this.habitacionModificada);
-                        mensaje = "¡Habitación modificada exitosamente!";
-                        modificarHabitacion = false;
+                    if (habitacionModificada.getNumero() != numero) {
+                        habitacionExistente = negocioHabitacion.verificarExistenciaHabitacion(numero);
                     }
 
+                    if (habitacionExistente == null) {
+                        mensaje = "¿Estás seguro que deseas modificar la habitación con id " + habitacionModificada.getId() + "?";
+                        titulo = "Confirmar modificación";
+                        int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo(mensaje, titulo);
+
+                        if (confirmado == JOptionPane.YES_OPTION) {
+                            this.habitacionModificada.setTipo(tipo);
+                            this.habitacionModificada.setNumero(numero);
+                            this.habitacionModificada.setEstado(estado);
+                            this.habitacionModificada.setDetalles(detalles);
+                            this.habitacionModificada.setPrecioDia(precio);
+
+                            negocioHabitacion.modificarHabitacion(this.habitacionModificada);
+                            mensaje = "¡Habitación modificada exitosamente!";
+                            modificarHabitacion = false;
+                        } else {
+                            mensaje = "";
+                        }
+                    } else {
+                        mensaje = "El número de habitación ingresado ya existe.";
+                        titulo = "Error";
+                        UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
+                        mensaje = "";
+                    }
                 } catch (Exception e) {
                     mensaje = "Error al modificar la habitación." + e.getMessage();
                 }
-
             } else {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas crear la habitación?", "Confirmar creación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-                if (confirmado == JOptionPane.YES_OPTION) {
-                    Habitacion nuevaHabitacion = new Habitacion(numero, tipo, estado, detalles, precio);
-                    negocioHabitacion.crearHabitacion(nuevaHabitacion);
-                    mensaje = "¡Habitación registrada exitosamente!";
+                habitacionExistente = negocioHabitacion.verificarExistenciaHabitacion(numero);
+
+                if (habitacionExistente == null) {
+                    mensaje = "¿Estás seguro que deseas crear la habitación?";
+                    titulo = "Confirmar creación";
+                    int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo(mensaje, titulo);
+
+                    if (confirmado == JOptionPane.YES_OPTION) {
+                        Habitacion nuevaHabitacion = new Habitacion(numero, tipo, estado, detalles, precio);
+                        negocioHabitacion.crearHabitacion(nuevaHabitacion);
+                        mensaje = "¡Habitación registrada exitosamente!";
+                    } else {
+                        mensaje = "";
+                    }
+                } else {
+                    mensaje = "El número de habitación ingresado ya existe.";
+                    titulo = "Error";
+                    UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
+                    mensaje = "";
                 }
             }
-
             if (!mensaje.equals("")) {
-                JOptionPane.showConfirmDialog(null, mensaje, "Habitacion", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                titulo = "Habitacion";
+                UtilidadJOptionPane.mostrarMensajeInformacion(mensaje, titulo);
+                limpiarCamposHabitacion();
+                this.dispose();
             }
-
-            limpiarCamposHabitacion();
-
-            this.dispose();
         }
-
     }//GEN-LAST:event_jbtnGuardarHabitacionActionPerformed
-
-    private void jtfPrecioHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPrecioHabitacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtfPrecioHabitacionActionPerformed
 
     /**
      * @param args the command line arguments

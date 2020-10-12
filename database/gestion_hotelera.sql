@@ -31,11 +31,11 @@ CREATE TABLE `clientes` (
   `fechaNacimiento` varchar(70) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `dni` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `clientes` */
 
-insert  into `clientes`(`id`,`nombres`,`apellidos`,`dni`,`nacionalidad`,`correo`,`nroTelefono`,`fechaNacimiento`) values (16,'Tomas','Ortiz',41967821,'Arg','tomas@gmail.com',152634215217,'16-10-2020'),(17,'Agustin','Rivas',42693561,'Arg','agustin@gmail.com',152616216713,'16-10-1998'),(18,'Maria','Perez',43691351,'Argentina','maria@gmail.com',2634215235,'12-10-2000');
+insert  into `clientes`(`id`,`nombres`,`apellidos`,`dni`,`nacionalidad`,`correo`,`nroTelefono`,`fechaNacimiento`) values (18,'Renzo','Cenation',41691353,'Perú','renzo@hotmail.com',123,'10-10-2020'),(26,'Agustin','Rivas',43691325,'Argentina','agustinRivas@gmail.com',152616216713,'16-10-1998'),(29,'Enzo','Ferreyra',1234567,'Peru','enzo@hotmail.com',12345678,'17-10-1998'),(30,'hola','asd',123,'asd','asd',123,'09-10-2020');
 
 /*Table structure for table `habitaciones` */
 
@@ -49,11 +49,11 @@ CREATE TABLE `habitaciones` (
   `detalles` varchar(500) DEFAULT NULL,
   `precioDia` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `habitaciones` */
 
-insert  into `habitaciones`(`id`,`numero`,`tipo`,`estado`,`detalles`,`precioDia`) values (1,1,'Individual','Ocupada','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(2,2,'Individual','Disponible','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(3,3,'Individual','Disponible','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(4,4,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(5,5,'Doble','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(6,6,'Doble','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(7,7,'Doble','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2000),(8,8,'Matrimonial','Limpieza','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(9,9,'Matrimonial','Disponible','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(10,10,'Matrimonial','Limpieza','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2500),(11,11,'Doble','Limpieza','2 camas\n1 TV\nSin aire acondicionado\nSin balcón\nTodos los servicios',1300),(12,12,'Matrimonial','Reparación','2 Camas\n1 TV\nAire acondicionado\nSin balcón\nTodos los servicios',2300),(13,13,'Doble','Reparación','2 Camas\n1 TV\nAire acondicionado\nCon balcón\nTodos los servicios\n',1860),(34,14,'Individual','Limpieza','1 cama\n1 aire acondicionado\ntodos los servicios\ncon balcón',2300),(36,15,'Individual','Disponible','1 cama',1300),(37,16,'Individual','Limpieza','ac',2300),(39,18,'Individual','Disponible','abc',155.5);
+insert  into `habitaciones`(`id`,`numero`,`tipo`,`estado`,`detalles`,`precioDia`) values (1,1,'Individual','Ocupada','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(2,2,'Individual','Ocupada','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(3,3,'Individual','Ocupada','1 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(4,4,'Doble','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(5,5,'Doble','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(6,6,'Doble','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',1500),(7,7,'Doble','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2000),(8,8,'Matrimonial','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(9,9,'Matrimonial','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nSin balcón',2300),(10,10,'Matrimonial','Ocupada','2 Cama\n1 TV\nBaño\nAire acondicionado\nTodos los servicios\nCon balcón',2500),(11,11,'Doble','Ocupada','2 camas\n1 TV\nSin aire acondicionado\nSin balcón\nTodos los servicios',1300),(12,12,'Matrimonial','Reparación','2 Camas\n1 TV\nAire acondicionado\nSin balcón\nTodos los servicios',2300),(13,13,'Doble','Reparación','2 Camas\n1 TV\nAire acondicionado\nCon balcón\nTodos los servicios\n',1860),(34,14,'Individual','Ocupada','1 cama\n1 aire acondicionado\ntodos los servicios\ncon balcón',2300),(36,15,'Individual','Ocupada','1 cama',1300),(37,16,'Individual','Limpieza','abc',2300),(42,19,'Matrimonial','Ocupada','2 camas',3500),(44,18,'Individual','Disponible','1 cama',1500),(45,20,'Individual','Limpieza','asd',1500);
 
 /*Table structure for table `reservas` */
 
@@ -71,11 +71,11 @@ CREATE TABLE `reservas` (
   `estado` enum('Cobrado','Pendiente') DEFAULT NULL,
   `precioTotal` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `reservas` */
 
-insert  into `reservas`(`id`,`fechaEntrada`,`fechaSalida`,`horaEntrada`,`horaSalida`,`fk_cliente`,`fk_habitacion`,`tipoPago`,`estado`,`precioTotal`) values (20,'07-10-2020','16-10-2020','01:30:00','03:30:00',16,1,'Efectivo','Pendiente',12000),(21,'23-10-2020','24-11-2020','01:30:00','22:30:00',17,7,'Tarjeta de crédito','Cobrado',64000),(22,'14-10-2020','19-11-2020','01:00:00','14:00:00',18,6,'Efectivo','Pendiente',54000);
+insert  into `reservas`(`id`,`fechaEntrada`,`fechaSalida`,`horaEntrada`,`horaSalida`,`fk_cliente`,`fk_habitacion`,`tipoPago`,`estado`,`precioTotal`) values (22,'14-10-2020','17-11-2020','01:00:00','22:00:00',18,2,'Tarjeta de crédito','Pendiente',51000),(24,'20-10-2020','24-10-2020','01:30:00','09:30:00',18,3,'Efectivo','Pendiente',6000),(27,'08-10-2020','24-10-2020','01:00:00','01:30:00',26,9,'Efectivo','Pendiente',36800),(28,'14-10-2020','24-10-2020','02:00:00','07:30:00',26,36,'Efectivo','Pendiente',13000),(30,'14-10-2020','24-10-2020','01:00:00','01:30:00',26,8,'Efectivo','Pendiente',23000),(31,'07-10-2020','17-10-2020','00:30:00','02:00:00',29,1,'Efectivo','Pendiente',15000),(32,'15-10-2020','25-10-2020','01:00:00','04:00:00',18,5,'Efectivo','Pendiente',15000),(33,'07-10-2020','15-10-2020','01:00:00','10:00:00',29,6,'Efectivo','Pendiente',12000);
 
 /*Table structure for table `usuarios` */
 

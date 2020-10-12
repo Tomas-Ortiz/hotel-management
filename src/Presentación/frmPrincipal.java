@@ -10,12 +10,11 @@ import javax.swing.table.DefaultTableModel;
 import Negocio.NegocioHabitacion;
 import Negocio.NegocioReserva;
 import Negocio.UtilidadGeneral;
+import Negocio.UtilidadJOptionPane;
 import Negocio.UtilidadJTable;
-import java.awt.Event;
+import Negocio.sesionUsuario;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class frmPrincipal extends javax.swing.JFrame implements Runnable {
@@ -37,8 +36,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         initComponents();
 
-        hilo = new Thread(this);
-        hilo.start();
+        iniciarHiloHora();
 
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Gestión hotelera", this);
@@ -47,18 +45,18 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         utilidadJframe.activarPanelPrincipal(true, false, false, false, false);
 
-        setUsuariologueado();
+        mostrarUsuariologueado();
 
         dtmHabitaciones = (DefaultTableModel) jtbHabitaciones.getModel();
         dtmReservas = (DefaultTableModel) jtbReservas.getModel();
 
         habitaciones = new ArrayList<>();
+        reservas = new ArrayList<>();
+
         negocioHabitacion = new NegocioHabitacion();
+        negocioReserva = new NegocioReserva();
 
         utilidadJtable = new UtilidadJTable();
-
-        reservas = new ArrayList<>();
-        negocioReserva = new NegocioReserva();
 
         utilidadJtable.centrarElementosTable(jtbHabitaciones);
         utilidadJtable.centrarElementosTable(jtbReservas);
@@ -66,48 +64,49 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         activarPanelInicio();
     }
 
+    private void iniciarHiloHora() {
+        hilo = new Thread(this);
+        hilo.start();
+    }
+
     private void activarPanelHabitaciones() {
 
         utilidadJframe.activarPanelPrincipal(true, false, false, false, false);
         activarBotonesPanelHabitaciones(false, false);
-        agregarDatosTablaHabitaciones();
-        contabilizarEstadosHabitacion();
+        actualizarTablaHabitaciones();
+        mostrarCantEstadosHabitaciones();
     }
 
     private void activarPanelReservas() {
         utilidadJframe.activarPanelPrincipal(false, false, true, false, false);
         activarBotonesPanelReservas(false, false, false, false);
-        agregarDatosTablaReservas();
-        contabilizarEstadosReserva();
+        actualizarTablaReservas();
+        mostrarCantEstadosReservas();
     }
 
     private void activarPanelInicio() {
         try {
-
             utilidadJframe.activarPanelPrincipal(false, false, false, false, true);
             //String nombreUsuario = sesionUsuario.getSesionUsuario().getUsuario().getUsuario();
             String nombreUsuario = "temporal";
             lblBienvenida.setText("¡Bienvenido usuario " + nombreUsuario + "!");
-            setFechaHoraInicio();
-
+            mostrarFechaHoraInicio();
         } catch (Exception e) {
             System.err.println("Error, el usuario todavía no ha iniciado sesión.");
             System.exit(0);
         }
     }
 
-    private void setFechaHoraInicio() {
+    private void mostrarFechaHoraInicio() {
         lblFechaHora.setText(UtilidadGeneral.getFechaActual() + ", " + UtilidadGeneral.getHoraActual());
         lblFechaHoraTitulo.setText(UtilidadGeneral.getFechaActual() + ", " + UtilidadGeneral.getHoraActual());
     }
 
-    private void setUsuariologueado() {
-
+    private void mostrarUsuariologueado() {
         try {
             //String nombreUsuario = sesionUsuario.getSesionUsuario().getUsuario().getUsuario();
             String nombreUsuario = "temporal";
             lblUsuarioLogueado.setText("Usuario: " + nombreUsuario);
-
         } catch (Exception e) {
             System.err.println("Error, el usuario todavía no ha iniciado sesión.");
             System.exit(0);
@@ -119,20 +118,49 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jtbnEliminarHabitacion.setEnabled(EliminarHabitacion);
     }
 
-    private void agregarDatosTablaHabitaciones() {
-        negocioHabitacion.agregarDatosTablaHabitaciones(habitaciones, dtmHabitaciones);
+    private void mostrarDatosHabitaciones(List<Habitacion> habitaciones) {
+
+        if (habitaciones.isEmpty()) {
+            habitaciones = negocioHabitacion.getHabitaciones();
+        }
+
+        dtmHabitaciones.setRowCount(0);
+
+        for (Habitacion habitacion : habitaciones) {
+            dtmHabitaciones.addRow(new Object[]{habitacion.getId(), habitacion.getNumero(), habitacion.getTipo(), habitacion.getEstado(), habitacion.getDetalles(), habitacion.getPrecioDia()});
+        }
     }
 
-    private void agregarDatosTablaReservas() {
-        negocioReserva.agregarDatosTablaReservas(reservas, dtmReservas);
+    private void mostrarCantEstadosHabitaciones() {
+        lblRegistradas.setText("Registradas (" + negocioHabitacion.getHabitaciones().size() + ")");
+        lblDisponibles.setText("Disponibles (" + negocioHabitacion.getCountHabitacionesByEstado("Disponible") + ")");
+        lblOcupadas.setText("Ocupadas (" + negocioHabitacion.getCountHabitacionesByEstado("Ocupada") + ")");
+        lblLimpieza.setText("Limpieza (" + negocioHabitacion.getCountHabitacionesByEstado("Limpieza") + ")");
+        lblReparación.setText("Reparación (" + negocioHabitacion.getCountHabitacionesByEstado("Reparación") + ")");
     }
 
-    private void contabilizarEstadosHabitacion() {
-        negocioHabitacion.contabilizarEstadosHabitaciones(lblRegistradas, lblDisponibles, lblOcupadas, lblLimpieza, lblReparación);
+    public void actualizarTablaHabitaciones() {
+        mostrarDatosHabitaciones(negocioHabitacion.getHabitaciones());
     }
 
-    private void contabilizarEstadosReserva() {
-        negocioReserva.contabilizarEstadosReserva(lblOcupadasReserva, lblCobradasReserva, lblPendientesReserva);
+    private void mostrarDatosReservas(List<Reserva> reservas) {
+        if (reservas.isEmpty()) {
+            reservas = negocioReserva.getReservas();
+        }
+        dtmReservas.setRowCount(0);
+        for (Reserva reserva : reservas) {
+            dtmReservas.addRow(new Object[]{reserva.getId(), reserva.getCliente().getNombres(), reserva.getCliente().getApellidos(), reserva.getCliente().getDni(), reserva.getHabitacion().getNumero(), reserva.getFechaEntrada(), reserva.getFechaSalida(), reserva.getHoraEntrada(), reserva.getHoraSalida(), reserva.getEstado(), reserva.getPrecioTotal()});
+        }
+    }
+
+    public void actualizarTablaReservas() {
+        mostrarDatosReservas(negocioReserva.getReservas());
+    }
+
+    private void mostrarCantEstadosReservas() {
+        lblOcupadasReserva.setText("Ocupadas (" + negocioReserva.getReservas().size() + ")");
+        lblCobradasReserva.setText("Cobradas (" + negocioReserva.getCountReservasByEstado("Cobrado") + ")");
+        lblPendientesReserva.setText("Pendientes (" + negocioReserva.getCountReservasByEstado("Pendiente") + ")");
     }
 
     private void activarBotonesPanelReservas(boolean modificarReserva, boolean cobrar, boolean verDetalles, boolean venderProducto) {
@@ -142,34 +170,30 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jbtnVenderProducto.setEnabled(venderProducto);
     }
 
-    private void buscarHabitacion(String busqueda, KeyEvent evt) {
+    private void mostrarBusquedaHabitacion(String busqueda, int keyCode) {
         // Por algún motivo se ejecutaba con bloq mayus
-        if (evt.getKeyCode() != KeyEvent.VK_CAPS_LOCK) {
+        if (keyCode != KeyEvent.VK_CAPS_LOCK) {
             if (busqueda.equals("")) {
-                negocioHabitacion.actualizarDatosTablaHabitaciones(dtmHabitaciones);
+                actualizarTablaHabitaciones();
                 jcbFiltroHabitaciones.setSelectedItem("Id");
             } else {
                 habitaciones = negocioHabitacion.buscarHabitacion(busqueda);
-                if (habitaciones.isEmpty()) {
-                    System.out.println("Sin resultados.");
-                } else {
-                    negocioHabitacion.agregarDatosTablaHabitaciones(habitaciones, dtmHabitaciones);
+                if (!habitaciones.isEmpty()) {
+                    mostrarDatosHabitaciones(habitaciones);
                 }
             }
         }
     }
 
-    private void buscarReserva(String busqueda, KeyEvent evt) {
-        if (evt.getKeyCode() != KeyEvent.VK_CAPS_LOCK) {
+    private void mostrarBusquedaReserva(String busqueda, int keyCode) {
+        if (keyCode != KeyEvent.VK_CAPS_LOCK) {
             if (busqueda.equals("")) {
-                negocioReserva.actualizarDatosTablaReservas(dtmReservas);
+                actualizarTablaReservas();
                 jcbFiltroReservas.setSelectedItem("Id");
             } else {
                 reservas = negocioReserva.buscarReserva(busqueda);
-                if (reservas.isEmpty()) {
-                    System.out.println("Sin resultados.");
-                } else {
-                    negocioReserva.agregarDatosTablaReservas(reservas, dtmReservas);
+                if (!reservas.isEmpty()) {
+                    mostrarDatosReservas(reservas);
                 }
             }
         }
@@ -443,9 +467,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblBuscar.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         lblBuscar.setText("Buscar");
 
-        jtfBuscarHabitacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfBuscarHabitacionActionPerformed(evt);
+        jtfBuscarHabitacion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jtfBuscarHabitacionFocusGained(evt);
             }
         });
         jtfBuscarHabitacion.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -547,12 +571,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jcbFiltroHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblBuscar)
-                        .addComponent(jtfBuscarHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jtfBuscarHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jcbFiltroHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(24, 24, 24)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -708,6 +733,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
+        jtfBuscarReserva.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jtfBuscarReservaFocusGained(evt);
+            }
+        });
         jtfBuscarReserva.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jtfBuscarReservaKeyReleased(evt);
@@ -988,73 +1018,62 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jbtnClientesActionPerformed
 
     private void jbtnHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHabitacionesActionPerformed
-
         activarPanelHabitaciones();
     }//GEN-LAST:event_jbtnHabitacionesActionPerformed
 
     private void jbtnReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnReservasActionPerformed
-
         activarPanelReservas();
     }//GEN-LAST:event_jbtnReservasActionPerformed
 
     private void jtbnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnProductosActionPerformed
-
         utilidadJframe.activarPanelPrincipal(false, false, false, true, false);
-
     }//GEN-LAST:event_jtbnProductosActionPerformed
 
     private void jtbnCrearHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCrearHabitacionActionPerformed
-
         frmHabitacion jfrHabitacion = new frmHabitacion();
-
         jfrHabitacion.setVisible(true);
-
     }//GEN-LAST:event_jtbnCrearHabitacionActionPerformed
 
     private void jbtnActualizarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaActionPerformed
-
         activarBotonesPanelHabitaciones(false, false);
-        negocioHabitacion.actualizarDatosTablaHabitaciones(dtmHabitaciones);
-        contabilizarEstadosHabitacion();
-
+        actualizarTablaHabitaciones();
+        mostrarCantEstadosHabitaciones();
     }//GEN-LAST:event_jbtnActualizarTablaActionPerformed
 
     private void jtbHabitacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbHabitacionesMouseClicked
-
         activarBotonesPanelHabitaciones(true, true);
     }//GEN-LAST:event_jtbHabitacionesMouseClicked
 
     private void jtbnModificarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnModificarHabitacionActionPerformed
 
-        frmHabitacion habitacion = new frmHabitacion();
-
+        frmHabitacion frmHabitacion = new frmHabitacion();
         int filaIndice = jtbHabitaciones.getSelectedRow();
-
         habitaciones = negocioHabitacion.getHabitaciones();
 
         Long habitacionId = Long.parseLong(dtmHabitaciones.getValueAt(filaIndice, 0).toString());
-        for (Habitacion habitacione : habitaciones) {
-            if (habitacione.getId().equals(habitacionId)) {
-                habitacion.setHabitacion(habitacione);
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getId().equals(habitacionId)) {
+                frmHabitacion.mostrarHabitacion(habitacion);
             }
         }
-
-        habitacion.setVisible(true);
+        frmHabitacion.setVisible(true);
     }//GEN-LAST:event_jtbnModificarHabitacionActionPerformed
 
     private void jtbnEliminarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnEliminarHabitacionActionPerformed
 
         int filaIndice = jtbHabitaciones.getSelectedRow();
         Long habitacionId = (Long) dtmHabitaciones.getValueAt(filaIndice, 0);
-
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas eliminar la habitación con id " + habitacionId + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        String mensaje = "¿Estás seguro que deseas eliminar la habitación con id " + habitacionId + "?";
+        String titulo = "Confirmar eliminación";
+        int confirmado = UtilidadJOptionPane.mostrarMensajeConfirmacion(mensaje, titulo);
 
         if (confirmado == JOptionPane.YES_OPTION) {
             try {
                 negocioHabitacion.eliminarHabitacion(habitacionId);
-                JOptionPane.showConfirmDialog(null, "Habitación eliminada exitosamente.", "Habitacion eliminada", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-                negocioHabitacion.actualizarDatosTablaHabitaciones(dtmHabitaciones);
-
+                mensaje = "Habitación eliminada exitosamente.";
+                titulo = "Habitacion eliminada";
+                UtilidadJOptionPane.mostrarMensajeInformacion(mensaje, titulo);
+                actualizarTablaHabitaciones();
             } catch (NonexistentEntityException ex) {
                 System.out.println("Error, no existe la entidad. " + ex.getMessage());
             }
@@ -1068,15 +1087,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         if (campo.equals("Precio")) {
             campo = "precioDia";
         }
+
         habitaciones = negocioHabitacion.ordenarHabitaciones(campo);
-
-        agregarDatosTablaHabitaciones();
-
+        mostrarDatosHabitaciones(habitaciones);
         activarBotonesPanelHabitaciones(false, false);
     }//GEN-LAST:event_jcbFiltroHabitacionesActionPerformed
 
     private void jbtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnInicioActionPerformed
-
         activarPanelInicio();
     }//GEN-LAST:event_jbtnInicioActionPerformed
 
@@ -1122,9 +1139,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         }
 
         reservas = negocioReserva.ordenarReservas(campo, otraTabla);
-
-        agregarDatosTablaReservas();
-
+        mostrarDatosReservas(reservas);
         activarBotonesPanelReservas(false, false, false, false);
     }//GEN-LAST:event_jcbFiltroReservasActionPerformed
 
@@ -1134,69 +1149,66 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbReservasMouseClicked
 
     private void jtbnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCrearReservaActionPerformed
-
         frmReserva frmCrearReserva = new frmReserva();
-
         frmCrearReserva.setVisible(true);
-
     }//GEN-LAST:event_jtbnCrearReservaActionPerformed
 
     private void jtbnModificarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnModificarReservaActionPerformed
 
-        frmReserva reserva = new frmReserva();
-
+        frmReserva frmReserva = new frmReserva();
         int filaIndice = jtbReservas.getSelectedRow();
-
         reservas = negocioReserva.getReservas();
-
         Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
 
-        for (Reserva r : reservas) {
-            if (r.getId().equals(reservaId)) {
+        for (Reserva reserva : reservas) {
+            if (reserva.getId().equals(reservaId)) {
                 try {
-                    reserva.setReserva(r);
+                    frmReserva.mostrarReserva(reserva);
                 } catch (ParseException ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("ParseException " + ex.getMessage());
                 }
             }
         }
-        reserva.setVisible(true);
+        frmReserva.setVisible(true);
     }//GEN-LAST:event_jtbnModificarReservaActionPerformed
 
     private void jbtnActualizarTablaReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaReservasActionPerformed
-
         activarBotonesPanelReservas(false, false, false, false);
-        negocioReserva.actualizarDatosTablaReservas(dtmReservas);
-        contabilizarEstadosReserva();
+        actualizarTablaReservas();
+        mostrarCantEstadosReservas();
     }//GEN-LAST:event_jbtnActualizarTablaReservasActionPerformed
 
     private void jtbnVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnVerDetallesActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jtbnVerDetallesActionPerformed
 
     private void jtbnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCobrarActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jtbnCobrarActionPerformed
 
     private void jbtnVenderProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnVenderProductoActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jbtnVenderProductoActionPerformed
 
-    private void jtfBuscarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfBuscarHabitacionActionPerformed
-
-    }//GEN-LAST:event_jtfBuscarHabitacionActionPerformed
-
     private void jtfBuscarHabitacionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarHabitacionKeyReleased
-
-        String busqueda = jtfBuscarHabitacion.getText();
-        buscarHabitacion(busqueda, evt);
+        mostrarBusquedaHabitacion(jtfBuscarHabitacion.getText(), evt.getKeyCode());
     }//GEN-LAST:event_jtfBuscarHabitacionKeyReleased
 
     private void jtfBuscarReservaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarReservaKeyReleased
-
-        String busqueda = jtfBuscarReserva.getText();
-        buscarReserva(busqueda, evt);
+        mostrarBusquedaReserva(jtfBuscarReserva.getText(), evt.getKeyCode());
     }//GEN-LAST:event_jtfBuscarReservaKeyReleased
+
+    private void jtfBuscarHabitacionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfBuscarHabitacionFocusGained
+        if (!jtfBuscarHabitacion.getText().equals("")) {
+            mostrarBusquedaHabitacion(jtfBuscarHabitacion.getText(), -1);
+        }
+    }//GEN-LAST:event_jtfBuscarHabitacionFocusGained
+
+    private void jtfBuscarReservaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfBuscarReservaFocusGained
+        if (!jtfBuscarReserva.getText().equals("")) {
+            mostrarBusquedaReserva(jtfBuscarReserva.getText(), -1);
+        }
+    }//GEN-LAST:event_jtfBuscarReservaFocusGained
 
     /**
      * @param args the command line arguments
@@ -1301,11 +1313,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         Thread ct = Thread.currentThread();
 
         while (ct == hilo) {
-            setFechaHoraInicio();
+            mostrarFechaHoraInicio();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ie) {
-                System.out.println("Hilo interrumpido.");
+                System.out.println("Hilo interrumpido." + ie.getMessage());
             }
         }
     }

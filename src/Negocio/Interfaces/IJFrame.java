@@ -21,4 +21,6 @@ public interface IJFrame extends IJFrameLogin, IJFrameRegistro {
     void guardarPanelesPrincipal(JPanel habitaciones, JPanel clientes, JPanel reservas, JPanel productos, JPanel inicio);
 
     void activarPanelPrincipal(boolean activarHabitacion, boolean activarCliente, boolean activarReservas, boolean activarProductos, boolean activarInicio);
+
+    void centrarHorizontalLabel(JLabel label);
 }

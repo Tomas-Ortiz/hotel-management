@@ -308,9 +308,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfNombre">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtfNombreActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblTipoHabitacion2">
       <Properties>
@@ -329,6 +326,9 @@
           <Font name="Maiandra GD" size="18" style="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jcbNroHabitacionActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblApellido">
       <Properties>
@@ -339,9 +339,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfApellido">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtfApellidoActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblDatosCliente">
       <Properties>
@@ -360,9 +357,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfDni">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtfDniActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblDocumento">
       <Properties>
@@ -389,14 +383,8 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfNacionalidad">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtfNacionalidadActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfCorreo">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtfCorreoActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblCorreo">
       <Properties>
@@ -493,9 +481,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfTelefono">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtfTelefonoActionPerformed"/>
-      </Events>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jdcFechaNacimiento">
       <Properties>

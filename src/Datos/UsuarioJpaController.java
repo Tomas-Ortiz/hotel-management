@@ -86,10 +86,6 @@ public class UsuarioJpaController implements Serializable {
         return findUsuarioEntities(true, -1, -1);
     }
 
-    public List<Usuario> findUsuarioEntities(int maxResults, int firstResult) {
-        return findUsuarioEntities(false, maxResults, firstResult);
-    }
-
     private List<Usuario> findUsuarioEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -147,5 +143,4 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-
 }

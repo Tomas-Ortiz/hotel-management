@@ -5,9 +5,6 @@ import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Habitacion;
 import Negocio.Interfaces.IHabitacion;
 import java.util.List;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.table.DefaultTableModel;
 
 public class NegocioHabitacion implements IHabitacion {
 
@@ -47,7 +44,6 @@ public class NegocioHabitacion implements IHabitacion {
         if (numero.equals("") || detalles.length() == 0 || precio.equals("")) {
             mensaje = "Debes completar todos los campos.";
         }
-
         return mensaje;
     }
 
@@ -57,28 +53,8 @@ public class NegocioHabitacion implements IHabitacion {
     }
 
     @Override
-    public void mostrarHabitaciones(List<Habitacion> habitaciones, DefaultTableModel dtmHabitaciones) {
-
-        dtmHabitaciones.setRowCount(0);
-
-        for (Habitacion habitacion : habitaciones) {
-            dtmHabitaciones.addRow(new Object[]{habitacion.getId(), habitacion.getNumero(), habitacion.getTipo(), habitacion.getEstado(), habitacion.getDetalles(), habitacion.getPrecioDia()});
-        }
-    }
-
-    @Override
     public int getCountHabitacionesByEstado(String estado) {
         return habitacionController.getCountHabitacionesByState(estado);
-    }
-
-    @Override
-    public void contabilizarEstadosHabitaciones(JLabel lblRegistradas, JLabel lblDisponibles, JLabel lblOcupadas, JLabel lblLimpieza, JLabel lblReparación) {
-
-        lblRegistradas.setText("Registradas (" + getHabitaciones().size() + ")");
-        lblDisponibles.setText("Disponibles (" + getCountHabitacionesByEstado("Disponible") + ")");
-        lblOcupadas.setText("Ocupadas (" + getCountHabitacionesByEstado("Ocupada") + ")");
-        lblLimpieza.setText("Limpieza (" + getCountHabitacionesByEstado("Limpieza") + ")");
-        lblReparación.setText("Reparación (" + getCountHabitacionesByEstado("Reparación") + ")");
     }
 
     @Override
@@ -87,29 +63,8 @@ public class NegocioHabitacion implements IHabitacion {
     }
 
     @Override
-    public void agregarDatosTablaHabitaciones(List<Habitacion> habitaciones, DefaultTableModel dtmHabitaciones) {
-
-        if (habitaciones.isEmpty()) {
-            habitaciones = getHabitaciones();
-        }
-        mostrarHabitaciones(habitaciones, dtmHabitaciones);
-    }
-
-    public void actualizarDatosTablaHabitaciones(DefaultTableModel dtmHabitaciones) {
-        mostrarHabitaciones(getHabitaciones(), dtmHabitaciones);
-    }
-
-    @Override
     public List<Habitacion> getHabitacionesPorValorEstado(String valor) {
         return habitacionController.getHabitacionesByValorEstado(valor);
-    }
-
-    @Override
-    public void cargarHabitacionesDisponibles(List<Habitacion> habitacionesDisponibles, JComboBox jcbNroHabitacion) {
-
-        for (Habitacion habitacion : habitacionesDisponibles) {
-            jcbNroHabitacion.addItem(habitacion.getNumero());
-        }
     }
 
     @Override
@@ -121,6 +76,11 @@ public class NegocioHabitacion implements IHabitacion {
             }
         }
         return null;
+    }
+
+    @Override
+    public Habitacion verificarExistenciaHabitacion(int num) {
+        return habitacionController.findHabitacionByNum(num);
     }
 
     @Override

@@ -6,12 +6,8 @@ import Negocio.Entidades.Reserva;
 import Negocio.Interfaces.IReserva;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.toedter.calendar.JDateChooser;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JLabel;
-import javax.swing.table.DefaultTableModel;
 
 public class NegocioReserva implements IReserva {
 
@@ -54,7 +50,6 @@ public class NegocioReserva implements IReserva {
                 mensaje = "Verifica las fechas de alojamiento.";
             }
         }
-
         return mensaje;
     }
 
@@ -71,38 +66,8 @@ public class NegocioReserva implements IReserva {
     }
 
     @Override
-    public void mostrarReservas(List<Reserva> reservas, DefaultTableModel dtmReservas) {
-
-        dtmReservas.setRowCount(0);
-
-        for (Reserva reserva : reservas) {
-            dtmReservas.addRow(new Object[]{reserva.getId(), reserva.getCliente().getNombres(), reserva.getCliente().getApellidos(), reserva.getCliente().getDni(), reserva.getHabitacion().getNumero(), reserva.getFechaEntrada(), reserva.getFechaSalida(), reserva.getHoraEntrada(), reserva.getHoraSalida(), reserva.getEstado(), reserva.getPrecioTotal()});
-        }
-    }
-
-    @Override
-    public void agregarDatosTablaReservas(List<Reserva> reservas, DefaultTableModel dtmReservas) {
-        if (reservas.isEmpty()) {
-            reservas = getReservas();
-        }
-        mostrarReservas(reservas, dtmReservas);
-    }
-
-    @Override
-    public void actualizarDatosTablaReservas(DefaultTableModel dtmReservas) {
-        mostrarReservas(getReservas(), dtmReservas);
-    }
-
-    @Override
     public int getCountReservasByEstado(String estado) {
         return reservaController.getCountReservasByState(estado);
-    }
-
-    @Override
-    public void contabilizarEstadosReserva(JLabel lblOcupadas, JLabel lblCobradas, JLabel lblPendientes) {
-        lblOcupadas.setText("Ocupadas (" + getReservas().size() + ")");
-        lblCobradas.setText("Cobradas (" + getCountReservasByEstado("Cobrado") + ")");
-        lblPendientes.setText("Pendientes (" + getCountReservasByEstado("Pendiente") + ")");
     }
 
     @Override
@@ -112,7 +77,6 @@ public class NegocioReserva implements IReserva {
 
     @Override
     public List<Reserva> ordenarReservas(String campo, boolean otraTabla) {
-
         if (otraTabla) {
             return reservaController.reservasOrderByInOtherTable(campo);
         }
@@ -123,5 +87,4 @@ public class NegocioReserva implements IReserva {
     public List<Reserva> buscarReserva(String busqueda) {
         return reservaController.buscarReserva(busqueda);
     }
-
 }

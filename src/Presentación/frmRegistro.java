@@ -3,6 +3,7 @@ package Presentación;
 import Negocio.Entidades.Usuario;
 import Negocio.NegocioUsuario;
 import Negocio.UtilidadJFrame;
+import Negocio.UtilidadJOptionPane;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.UnsupportedEncodingException;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -25,43 +25,36 @@ public class frmRegistro extends javax.swing.JFrame {
         initComponents();
 
         negocioUsuario = new NegocioUsuario();
-        //Singleton
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Registrarse", this);
+
         iniciarPanelTitulo();
         iniciarPanelRegistro();
     }
 
     private void iniciarPanelTitulo() {
-
         JPanel jpTitulo = new JPanel();
-
         utilidadJframe.setPanelTitulo(jpTitulo, lblTituloHotel, getContentPane());
-
     }
 
     private void iniciarPanelRegistro() {
-
         JPanel jpRegistro = new JPanel(new GridLayout(17, 1, 0, 0));
-
-        List<JComponent> componentesPanel = new ArrayList<JComponent>();
+        List<JComponent> componentesPanel = new ArrayList<>();
 
         utilidadJframe.setTamañoPanelRegistro(jpRegistro);
         utilidadJframe.setConfiguracionPanel(jpRegistro);
-
-        lblRegistro.setHorizontalAlignment(SwingConstants.CENTER);
-        lblO.setHorizontalAlignment(SwingConstants.CENTER);
+        utilidadJframe.centrarHorizontalLabel(lblRegistro);
+        utilidadJframe.centrarHorizontalLabel(lblO);
 
         agregarComponentesArray(componentesPanel);
 
         utilidadJframe.agregarComponentesPanelRegistro(jpRegistro, componentesPanel);
-
         this.getContentPane().add(jpRegistro, BorderLayout.CENTER);
     }
 
     private void agregarComponentesArray(List<JComponent> componentesPanel) {
-
         JSeparator separatorRegistro = new JSeparator(SwingConstants.HORIZONTAL);
+
         componentesPanel.add(lblRegistro);
         componentesPanel.add(separatorRegistro);
         componentesPanel.add(lblNombre);
@@ -305,46 +298,38 @@ public class frmRegistro extends javax.swing.JFrame {
         String rol = "user";
 
         Usuario usuario = new Usuario(nombre, apellido, email, nombreUsuario, contraseña, confirmacionContraseña, rol);
-
         String mensaje = negocioUsuario.validarRegistro(usuario);
         String titulo = "Registro de usuario";
 
         if (mensaje.equals("ok")) {
-
             String contraseñaCifrada = "";
-
             try {
                 contraseñaCifrada = negocioUsuario.encriptarContraseña(usuario.getContraseña());
                 usuario.setContraseña(contraseñaCifrada);
                 usuario.setActivo(1);
             } catch (UnsupportedEncodingException ex) {
-                System.out.println(ex);
+                System.out.println("Error en la encriptación de la contraseña" + ex.getMessage());
             }
-
             try {
-
                 negocioUsuario.crearUsuario(usuario);
-                JOptionPane.showConfirmDialog(null, "Usuario registrado exitosamente.", titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                mensaje = "Usuario registrado exitosamente.";
+                UtilidadJOptionPane.mostrarMensajeInformacion(mensaje, titulo);
                 limpiarCamposForm();
 
             } catch (RollbackException rbe) {
                 mensaje = "El email o usuario ingresado ya está registrado, pruebe con otro.";
-                JOptionPane.showConfirmDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
             }
-
             limpiarContraseñas();
-
         } else {
-            JOptionPane.showConfirmDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
             limpiarContraseñas();
         }
-
     }//GEN-LAST:event_jbtnRegistrarseActionPerformed
 
     private void jbtnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnIniciarSesionActionPerformed
         frmInicioSesion JframeInicioSesion = new frmInicioSesion();
         JframeInicioSesion.setVisible(true);
-        //Este Jframe se destruye y elimina de memoria ram y SO
         this.dispose();
     }//GEN-LAST:event_jbtnIniciarSesionActionPerformed
 

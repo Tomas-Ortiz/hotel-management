@@ -8,11 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.swing.table.DefaultTableModel;
 
 public class HabitacionJpaController implements Serializable {
 
@@ -88,10 +86,6 @@ public class HabitacionJpaController implements Serializable {
         return findHabitacionEntities(true, -1, -1);
     }
 
-    public List<Habitacion> findHabitacionEntities(int maxResults, int firstResult) {
-        return findHabitacionEntities(false, maxResults, firstResult);
-    }
-
     private List<Habitacion> findHabitacionEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -112,19 +106,6 @@ public class HabitacionJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             return em.find(Habitacion.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
-    public int getHabitacionCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Habitacion> rt = cq.from(Habitacion.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();
         }
@@ -201,4 +182,24 @@ public class HabitacionJpaController implements Serializable {
         }
     }
 
+    public Habitacion findHabitacionByNum(int num) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM habitaciones WHERE "
+                    + "numero = ?", Habitacion.class);
+
+            nativeQuery.setParameter(1, num);
+
+            try {
+                return (Habitacion) nativeQuery.getSingleResult();
+
+            } catch (NoResultException nre) {
+                return null;
+            }
+        } finally {
+            em.close();
+        }
+    }
 }

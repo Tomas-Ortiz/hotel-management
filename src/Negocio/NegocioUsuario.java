@@ -9,7 +9,7 @@ import java.util.List;
 
 public class NegocioUsuario implements IUsuario {
 
-    private UsuarioJpaController usuarioController;
+    private final UsuarioJpaController usuarioController;
 
     public NegocioUsuario() {
         usuarioController = new UsuarioJpaController();

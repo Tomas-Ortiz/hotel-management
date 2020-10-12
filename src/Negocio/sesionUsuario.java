@@ -18,10 +18,6 @@ public class sesionUsuario {
         return sesionUsuario;
     }
 
-    public sesionUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public Usuario getUsuario() {
         return usuario;
     }
@@ -34,5 +30,4 @@ public class sesionUsuario {
     public String toString() {
         return "sesionUsuario{" + "usuario=" + usuario + '}';
     }
-
 }

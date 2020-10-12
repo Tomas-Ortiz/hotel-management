@@ -11,7 +11,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 public class ClienteJpaController implements Serializable {
 
@@ -62,6 +61,15 @@ public class ClienteJpaController implements Serializable {
         }
     }
 
+    public Cliente findCliente(Long id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Cliente.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
     public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -87,10 +95,6 @@ public class ClienteJpaController implements Serializable {
         return findClienteEntities(true, -1, -1);
     }
 
-    public List<Cliente> findClienteEntities(int maxResults, int firstResult) {
-        return findClienteEntities(false, maxResults, firstResult);
-    }
-
     private List<Cliente> findClienteEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -102,15 +106,6 @@ public class ClienteJpaController implements Serializable {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    public Cliente findCliente(Long id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Cliente.class, id);
         } finally {
             em.close();
         }
@@ -136,18 +131,4 @@ public class ClienteJpaController implements Serializable {
             em.close();
         }
     }
-
-    public int getClienteCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Cliente> rt = cq.from(Cliente.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-
 }

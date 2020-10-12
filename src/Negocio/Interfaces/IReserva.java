@@ -6,8 +6,6 @@ import com.github.lgooddatepicker.components.TimePicker;
 import com.toedter.calendar.JDateChooser;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JLabel;
-import javax.swing.table.DefaultTableModel;
 
 public interface IReserva {
 
@@ -20,14 +18,6 @@ public interface IReserva {
     float calcularPrecioTotal(Habitacion habitacion, Date fechaEntrada, Date fechaSalida);
 
     void modificarReserva(Reserva reserva) throws Exception;
-
-    void mostrarReservas(List<Reserva> reservas, DefaultTableModel dtmReservas);
-
-    void agregarDatosTablaReservas(List<Reserva> reservas, DefaultTableModel dtmReservas);
-
-    void actualizarDatosTablaReservas(DefaultTableModel dtmReservas);
-
-    void contabilizarEstadosReserva(JLabel lblOcupadas, JLabel cobradas, JLabel pendientes);
 
     List<Reserva> ordenarReservas(String campo, boolean otraTabla);
 
