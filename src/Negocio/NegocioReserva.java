@@ -87,4 +87,9 @@ public class NegocioReserva implements IReserva {
     public List<Reserva> buscarReserva(String busqueda) {
         return reservaController.buscarReserva(busqueda);
     }
+
+    @Override
+    public Reserva encontrarReserva(Long id) {
+        return reservaController.findReserva(id);
+    }
 }

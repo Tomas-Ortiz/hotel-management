@@ -423,16 +423,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         });
         jspHabitaciones.setViewportView(jtbHabitaciones);
         if (jtbHabitaciones.getColumnModel().getColumnCount() > 0) {
-            jtbHabitaciones.getColumnModel().getColumn(0).setResizable(false);
             jtbHabitaciones.getColumnModel().getColumn(0).setPreferredWidth(1);
-            jtbHabitaciones.getColumnModel().getColumn(1).setResizable(false);
             jtbHabitaciones.getColumnModel().getColumn(1).setPreferredWidth(1);
-            jtbHabitaciones.getColumnModel().getColumn(2).setResizable(false);
             jtbHabitaciones.getColumnModel().getColumn(2).setPreferredWidth(10);
-            jtbHabitaciones.getColumnModel().getColumn(3).setResizable(false);
             jtbHabitaciones.getColumnModel().getColumn(3).setPreferredWidth(5);
-            jtbHabitaciones.getColumnModel().getColumn(4).setResizable(false);
-            jtbHabitaciones.getColumnModel().getColumn(5).setResizable(false);
             jtbHabitaciones.getColumnModel().getColumn(5).setPreferredWidth(1);
         }
 
@@ -526,7 +520,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                                 .addGap(18, 18, 18)
                                 .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jtbnCrearHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jtbnModificarHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                                    .addComponent(jtbnModificarHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jtbnEliminarHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jpHabitacionesLayout.createSequentialGroup()
                                 .addGap(5, 5, 5)
@@ -684,18 +678,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         });
         jspReservas.setViewportView(jtbReservas);
         if (jtbReservas.getColumnModel().getColumnCount() > 0) {
-            jtbReservas.getColumnModel().getColumn(0).setResizable(false);
             jtbReservas.getColumnModel().getColumn(0).setPreferredWidth(1);
-            jtbReservas.getColumnModel().getColumn(1).setResizable(false);
-            jtbReservas.getColumnModel().getColumn(2).setResizable(false);
-            jtbReservas.getColumnModel().getColumn(3).setResizable(false);
-            jtbReservas.getColumnModel().getColumn(4).setResizable(false);
-            jtbReservas.getColumnModel().getColumn(5).setResizable(false);
-            jtbReservas.getColumnModel().getColumn(6).setResizable(false);
-            jtbReservas.getColumnModel().getColumn(7).setResizable(false);
-            jtbReservas.getColumnModel().getColumn(8).setResizable(false);
-            jtbReservas.getColumnModel().getColumn(9).setResizable(false);
-            jtbReservas.getColumnModel().getColumn(10).setResizable(false);
         }
 
         jtbnCrearReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
@@ -1051,12 +1034,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         habitaciones = negocioHabitacion.getHabitaciones();
 
         Long habitacionId = Long.parseLong(dtmHabitaciones.getValueAt(filaIndice, 0).toString());
-        for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getId().equals(habitacionId)) {
-                frmHabitacion.mostrarHabitacion(habitacion);
-            }
+
+        Habitacion habitacion = negocioHabitacion.encontrarHabitacion(habitacionId);
+
+        if (habitacion != null) {
+            frmHabitacion.mostrarHabitacion(habitacion);
+            frmHabitacion.setVisible(true);
         }
-        frmHabitacion.setVisible(true);
     }//GEN-LAST:event_jtbnModificarHabitacionActionPerformed
 
     private void jtbnEliminarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnEliminarHabitacionActionPerformed
@@ -1154,22 +1138,20 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnCrearReservaActionPerformed
 
     private void jtbnModificarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnModificarReservaActionPerformed
-
         frmReserva frmReserva = new frmReserva();
         int filaIndice = jtbReservas.getSelectedRow();
-        reservas = negocioReserva.getReservas();
         Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
 
-        for (Reserva reserva : reservas) {
-            if (reserva.getId().equals(reservaId)) {
-                try {
-                    frmReserva.mostrarReserva(reserva);
-                } catch (ParseException ex) {
-                    System.out.println("ParseException " + ex.getMessage());
-                }
+        Reserva reserva = negocioReserva.encontrarReserva(reservaId);
+
+        if (reserva != null) {
+            try {
+                frmReserva.mostrarReserva(reserva);
+            } catch (ParseException ex) {
+                System.out.println("Error " + ex.getMessage());
             }
+            frmReserva.setVisible(true);
         }
-        frmReserva.setVisible(true);
     }//GEN-LAST:event_jtbnModificarReservaActionPerformed
 
     private void jbtnActualizarTablaReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaReservasActionPerformed
@@ -1179,7 +1161,16 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jbtnActualizarTablaReservasActionPerformed
 
     private void jtbnVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnVerDetallesActionPerformed
+        frmDetallesReserva frmDetallesReserva = new frmDetallesReserva();
+        int filaIndice = jtbReservas.getSelectedRow();
+        Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
 
+        Reserva reserva = negocioReserva.encontrarReserva(reservaId);
+
+        if (reserva != null) {
+            frmDetallesReserva.mostrarDetallesReserva(reserva);
+            frmDetallesReserva.setVisible(true);
+        }
     }//GEN-LAST:event_jtbnVerDetallesActionPerformed
 
     private void jtbnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCobrarActionPerformed

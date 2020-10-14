@@ -12,7 +12,7 @@ public interface IHabitacion {
 
     void eliminarHabitacion(Long id) throws NonexistentEntityException;
 
-    String validarHabitacion(String numero, String detalles, String precio);
+    String validarHabitacion(String detalles, String precio);
 
     List<Habitacion> getHabitaciones();
 
@@ -28,4 +28,5 @@ public interface IHabitacion {
 
     Habitacion verificarExistenciaHabitacion(int num);
 
+    Habitacion encontrarHabitacion(Long id);
 }

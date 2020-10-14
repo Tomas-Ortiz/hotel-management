@@ -24,4 +24,6 @@ public interface IReserva {
     int getCountReservasByEstado(String estado);
 
     List<Reserva> buscarReserva(String busqueda);
+
+    Reserva encontrarReserva(Long id);
 }

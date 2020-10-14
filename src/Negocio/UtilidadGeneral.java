@@ -45,5 +45,4 @@ public class UtilidadGeneral {
         long dias = TimeUnit.DAYS.convert(tiempoMilisegundos, TimeUnit.MILLISECONDS);
         return dias;
     }
-
 }

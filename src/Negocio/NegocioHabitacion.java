@@ -37,11 +37,11 @@ public class NegocioHabitacion implements IHabitacion {
     }
 
     @Override
-    public String validarHabitacion(String numero, String detalles, String precio) {
+    public String validarHabitacion(String detalles, String precio) {
 
         String mensaje = "ok";
 
-        if (numero.equals("") || detalles.length() == 0 || precio.equals("")) {
+        if (detalles.length() == 0 || precio.equals("")) {
             mensaje = "Debes completar todos los campos.";
         }
         return mensaje;
@@ -86,5 +86,10 @@ public class NegocioHabitacion implements IHabitacion {
     @Override
     public List<Habitacion> buscarHabitacion(String busqueda) {
         return habitacionController.buscarHabitacion(busqueda);
+    }
+
+    @Override
+    public Habitacion encontrarHabitacion(Long id) {
+        return habitacionController.findHabitacion(id);
     }
 }

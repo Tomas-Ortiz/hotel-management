@@ -9,41 +9,41 @@ import Negocio.UtilidadJTable;
 import javax.swing.JOptionPane;
 
 public class frmHabitacion extends javax.swing.JFrame {
-
+    
     UtilidadJFrame utilidadJframe;
     UtilidadGeneral utilidadGeneral;
     UtilidadJTable utilidadJtable;
     NegocioHabitacion negocioHabitacion;
     Habitacion habitacionModificada;
     boolean modificarHabitacion = false;
-
+    
     public frmHabitacion() {
         initComponents();
         negocioHabitacion = new NegocioHabitacion();
-
+        
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Habitación", this);
     }
-
+    
     private void limpiarCamposHabitacion() {
         jcbTipoHabitacion.setSelectedIndex(0);
         jcbEstadoHabitacion.setSelectedIndex(0);
-        jtfNumeroHabitacion.setText("");
+        jsNroHabitacion.setValue(1);
         jtaDetallesHabitacion.setText("");
         jtfPrecioHabitacion.setText("");
     }
-
+    
     public void mostrarHabitacion(Habitacion habitacion) {
         modificarHabitacion = true;
         this.habitacionModificada = habitacion;
-
+        
         jcbTipoHabitacion.setSelectedItem(habitacion.getTipo());
-        jtfNumeroHabitacion.setText(String.valueOf(habitacion.getNumero()));
+        jsNroHabitacion.setValue(habitacion.getNumero());
         jcbEstadoHabitacion.setSelectedItem(habitacion.getEstado());
         jtaDetallesHabitacion.setText(habitacion.getDetalles());
         jtfPrecioHabitacion.setText(String.valueOf(habitacion.getPrecioDia()));
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -53,7 +53,6 @@ public class frmHabitacion extends javax.swing.JFrame {
         lblTipoHabitacion = new javax.swing.JLabel();
         jcbTipoHabitacion = new javax.swing.JComboBox();
         lblNumeroHabitacion = new javax.swing.JLabel();
-        jtfNumeroHabitacion = new javax.swing.JTextField();
         lblTipoHabitacion2 = new javax.swing.JLabel();
         jcbEstadoHabitacion = new javax.swing.JComboBox();
         lblDetalles = new javax.swing.JLabel();
@@ -63,15 +62,16 @@ public class frmHabitacion extends javax.swing.JFrame {
         jbtnGuardarHabitacion = new javax.swing.JButton();
         lblPrecio = new javax.swing.JLabel();
         jtfPrecioHabitacion = new javax.swing.JTextField();
+        jsNroHabitacion = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jpTitulo.setBackground(new java.awt.Color(0, 0, 0));
 
-        lblTituloPrincipal.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
-        lblTituloPrincipal.setForeground(new java.awt.Color(255, 255, 255));
         lblTituloPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTituloPrincipal.setText("Datos de habitación");
+        lblTituloPrincipal.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
+        lblTituloPrincipal.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jpTituloLayout = new javax.swing.GroupLayout(jpTitulo);
         jpTitulo.setLayout(jpTituloLayout);
@@ -90,52 +90,49 @@ public class frmHabitacion extends javax.swing.JFrame {
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
-        lblTipoHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblTipoHabitacion.setText("Tipo de habitación");
+        lblTipoHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        jcbTipoHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         jcbTipoHabitacion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Individual", "Doble", "Matrimonial" }));
+        jcbTipoHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        lblNumeroHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblNumeroHabitacion.setText("Número");
+        lblNumeroHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        jtfNumeroHabitacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfNumeroHabitacionActionPerformed(evt);
-            }
-        });
-
-        lblTipoHabitacion2.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblTipoHabitacion2.setText("Estado");
+        lblTipoHabitacion2.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        jcbEstadoHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         jcbEstadoHabitacion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "Ocupada", "Reparación", "Limpieza" }));
+        jcbEstadoHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
-        lblDetalles.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblDetalles.setText("Detalles");
+        lblDetalles.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
 
         jtaDetallesHabitacion.setColumns(20);
         jtaDetallesHabitacion.setRows(5);
         jScrollPane1.setViewportView(jtaDetallesHabitacion);
 
-        jtbnCancelarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnCancelarHabitacion.setText("Salir");
+        jtbnCancelarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnCancelarHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnCancelarHabitacionActionPerformed(evt);
             }
         });
 
-        jbtnGuardarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnGuardarHabitacion.setText("Guardar");
+        jbtnGuardarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnGuardarHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnGuardarHabitacionActionPerformed(evt);
             }
         });
 
-        lblPrecio.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblPrecio.setText("Precio / día");
+        lblPrecio.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+
+        jsNroHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        jsNroHabitacion.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -160,11 +157,11 @@ public class frmHabitacion extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jcbEstadoHabitacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jcbTipoHabitacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jtfNumeroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jbtnGuardarHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jtbnCancelarHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jtbnCancelarHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jsNroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(480, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -175,15 +172,15 @@ public class frmHabitacion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTipoHabitacion)
                     .addComponent(jcbTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNumeroHabitacion)
-                    .addComponent(jtfNumeroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                    .addComponent(jsNroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTipoHabitacion2)
                     .addComponent(jcbEstadoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDetalles)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -201,10 +198,6 @@ public class frmHabitacion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtfNumeroHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNumeroHabitacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtfNumeroHabitacionActionPerformed
-
     private void jtbnCancelarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCancelarHabitacionActionPerformed
         this.dispose();
     }//GEN-LAST:event_jtbnCancelarHabitacionActionPerformed
@@ -215,17 +208,17 @@ public class frmHabitacion extends javax.swing.JFrame {
         float precio = -1;
         boolean datosValidos = true;
         Habitacion habitacionExistente;
-
+        
         try {
-            mensaje = negocioHabitacion.validarHabitacion(jtfNumeroHabitacion.getText(), jtaDetallesHabitacion.getText(), jtfPrecioHabitacion.getText());
-
+            mensaje = negocioHabitacion.validarHabitacion(jtaDetallesHabitacion.getText(), jtfPrecioHabitacion.getText());
+            
             if (!mensaje.equals("ok")) {
                 datosValidos = false;
                 titulo = "Error";
                 UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
             } else {
                 tipo = (String) jcbTipoHabitacion.getSelectedItem();
-                numero = Integer.parseInt(jtfNumeroHabitacion.getText());
+                numero = Integer.parseInt(jsNroHabitacion.getValue().toString());
                 estado = (String) jcbEstadoHabitacion.getSelectedItem();
                 detalles = jtaDetallesHabitacion.getText();
                 precio = Float.parseFloat(jtfPrecioHabitacion.getText());
@@ -236,28 +229,28 @@ public class frmHabitacion extends javax.swing.JFrame {
             titulo = "Error";
             UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
         }
-
+        
         if (datosValidos) {
             if (modificarHabitacion) {
                 try {
                     habitacionExistente = null;
-
+                    
                     if (habitacionModificada.getNumero() != numero) {
                         habitacionExistente = negocioHabitacion.verificarExistenciaHabitacion(numero);
                     }
-
+                    
                     if (habitacionExistente == null) {
                         mensaje = "¿Estás seguro que deseas modificar la habitación con id " + habitacionModificada.getId() + "?";
                         titulo = "Confirmar modificación";
                         int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo(mensaje, titulo);
-
+                        
                         if (confirmado == JOptionPane.YES_OPTION) {
                             this.habitacionModificada.setTipo(tipo);
                             this.habitacionModificada.setNumero(numero);
                             this.habitacionModificada.setEstado(estado);
                             this.habitacionModificada.setDetalles(detalles);
                             this.habitacionModificada.setPrecioDia(precio);
-
+                            
                             negocioHabitacion.modificarHabitacion(this.habitacionModificada);
                             mensaje = "¡Habitación modificada exitosamente!";
                             modificarHabitacion = false;
@@ -274,14 +267,14 @@ public class frmHabitacion extends javax.swing.JFrame {
                     mensaje = "Error al modificar la habitación." + e.getMessage();
                 }
             } else {
-
+                
                 habitacionExistente = negocioHabitacion.verificarExistenciaHabitacion(numero);
-
+                
                 if (habitacionExistente == null) {
                     mensaje = "¿Estás seguro que deseas crear la habitación?";
                     titulo = "Confirmar creación";
                     int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo(mensaje, titulo);
-
+                    
                     if (confirmado == JOptionPane.YES_OPTION) {
                         Habitacion nuevaHabitacion = new Habitacion(numero, tipo, estado, detalles, precio);
                         negocioHabitacion.crearHabitacion(nuevaHabitacion);
@@ -349,9 +342,9 @@ public class frmHabitacion extends javax.swing.JFrame {
     private javax.swing.JComboBox jcbEstadoHabitacion;
     private javax.swing.JComboBox jcbTipoHabitacion;
     private javax.swing.JPanel jpTitulo;
+    private javax.swing.JSpinner jsNroHabitacion;
     private javax.swing.JTextArea jtaDetallesHabitacion;
     private javax.swing.JButton jtbnCancelarHabitacion;
-    private javax.swing.JTextField jtfNumeroHabitacion;
     private javax.swing.JTextField jtfPrecioHabitacion;
     private javax.swing.JLabel lblDetalles;
     private javax.swing.JLabel lblNumeroHabitacion;
