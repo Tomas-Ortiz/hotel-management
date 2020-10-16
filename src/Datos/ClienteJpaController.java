@@ -131,4 +131,45 @@ public class ClienteJpaController implements Serializable {
             em.close();
         }
     }
+
+    public List<Cliente> clientesOrderBy(String campo) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM clientes ORDER BY " + campo, Cliente.class);
+
+            return nativeQuery.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Cliente> buscarClientes(String busqueda) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+
+            String consulta = "SELECT * FROM clientes WHERE id LIKE ? OR nombres LIKE ? OR apellidos LIKE ? OR "
+                    + "dni LIKE ? OR nacionalidad LIKE ? OR correo LIKE ? OR nroTelefono LIKE ? OR fechaNacimiento LIKE ?";
+
+            Query nativeQuery = em.createNativeQuery(consulta, Cliente.class);
+
+            try {
+                for (int i = 1; i < 9; i++) {
+                    nativeQuery.setParameter(i, busqueda + "%");
+                }
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            return nativeQuery.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
 }

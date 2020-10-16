@@ -13,7 +13,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import javax.swing.JOptionPane;
 
 public class frmReserva extends javax.swing.JFrame {
@@ -22,6 +21,7 @@ public class frmReserva extends javax.swing.JFrame {
     NegocioReserva negocioReserva;
     NegocioCliente negocioCliente;
     NegocioHabitacion negocioHabitacion;
+    SimpleDateFormat sdf;
     List<Habitacion> habitacionesDisponibles;
     boolean modificarReserva = false;
     Reserva reservaModificada;
@@ -35,13 +35,12 @@ public class frmReserva extends javax.swing.JFrame {
         negocioCliente = new NegocioCliente();
         negocioHabitacion = new NegocioHabitacion();
         reservaModificada = new Reserva();
-
+        sdf = new SimpleDateFormat("dd-MM-yyyy");
         mostrarHabitacionesDisponibles();
         mostrarListaPaises();
     }
 
     public void mostrarReserva(Reserva reserva) throws ParseException {
-
         jbtnGuardarReserva.setText("Modificar");
         modificarReserva = true;
         reservaModificada = reserva;
@@ -52,8 +51,6 @@ public class frmReserva extends javax.swing.JFrame {
         jtfCorreo.setText(reserva.getCliente().getCorreo());
         jtfTelefono.setText(String.valueOf(reserva.getCliente().getNroTelefono()));
         jcbPaises.setSelectedItem(reserva.getCliente().getNacionalidad());
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
         Date fechaNacimiento = sdf.parse(reserva.getCliente().getFechaNacimiento());
         jdcFechaNacimiento.setDate(fechaNacimiento);
@@ -75,11 +72,7 @@ public class frmReserva extends javax.swing.JFrame {
     }
 
     private void mostrarListaPaises() {
-        String[] countryCodes = java.util.Locale.getISOCountries();
-
-        for (String countryCode : countryCodes) {
-            Locale locale = new Locale("", countryCode);
-            String pais = locale.getDisplayCountry();
+        for (String pais : UtilidadGeneral.getPaises()) {
             jcbPaises.addItem(pais);
         }
     }

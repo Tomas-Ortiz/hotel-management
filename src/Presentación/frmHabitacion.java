@@ -68,68 +68,68 @@ public class frmHabitacion extends javax.swing.JFrame {
 
         jpTitulo.setBackground(new java.awt.Color(0, 0, 0));
 
-        lblTituloPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTituloPrincipal.setText("Datos de habitación");
         lblTituloPrincipal.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
         lblTituloPrincipal.setForeground(new java.awt.Color(255, 255, 255));
+        lblTituloPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTituloPrincipal.setText("Habitación");
 
         javax.swing.GroupLayout jpTituloLayout = new javax.swing.GroupLayout(jpTitulo);
         jpTitulo.setLayout(jpTituloLayout);
         jpTituloLayout.setHorizontalGroup(
             jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTituloLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jpTituloLayout.createSequentialGroup()
+                .addGap(591, 591, 591)
                 .addComponent(lblTituloPrincipal)
-                .addGap(485, 485, 485))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpTituloLayout.setVerticalGroup(
             jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpTituloLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(21, 21, 21)
                 .addComponent(lblTituloPrincipal)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
-        lblTipoHabitacion.setText("Tipo de habitación");
         lblTipoHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblTipoHabitacion.setText("Tipo de habitación");
 
-        jcbTipoHabitacion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Individual", "Doble", "Matrimonial" }));
         jcbTipoHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        jcbTipoHabitacion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Individual", "Doble", "Matrimonial" }));
 
-        lblNumeroHabitacion.setText("Número");
         lblNumeroHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblNumeroHabitacion.setText("Número");
 
-        lblTipoHabitacion2.setText("Estado");
         lblTipoHabitacion2.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblTipoHabitacion2.setText("Estado");
 
-        jcbEstadoHabitacion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "Ocupada", "Reparación", "Limpieza" }));
         jcbEstadoHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        jcbEstadoHabitacion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "Ocupada", "Reparación", "Limpieza" }));
 
-        lblDetalles.setText("Detalles");
         lblDetalles.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblDetalles.setText("Detalles");
 
         jtaDetallesHabitacion.setColumns(20);
         jtaDetallesHabitacion.setRows(5);
         jScrollPane1.setViewportView(jtaDetallesHabitacion);
 
-        jtbnCancelarHabitacion.setText("Salir");
         jtbnCancelarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbnCancelarHabitacion.setText("Salir");
         jtbnCancelarHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnCancelarHabitacionActionPerformed(evt);
             }
         });
 
-        jbtnGuardarHabitacion.setText("Guardar");
         jbtnGuardarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnGuardarHabitacion.setText("Guardar");
         jbtnGuardarHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnGuardarHabitacionActionPerformed(evt);
             }
         });
 
-        lblPrecio.setText("Precio / día");
         lblPrecio.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblPrecio.setText("Precio / día");
 
         jsNroHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         jsNroHabitacion.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
@@ -168,7 +168,7 @@ public class frmHabitacion extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jpTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTipoHabitacion)
                     .addComponent(jcbTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -188,7 +188,7 @@ public class frmHabitacion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfPrecioHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrecio))
-                .addGap(18, 18, 18)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtbnCancelarHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnGuardarHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))

@@ -5,6 +5,7 @@ import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Cliente;
 import Negocio.Interfaces.ICliente;
 import com.toedter.calendar.JDateChooser;
+import java.util.List;
 
 public class NegocioCliente implements ICliente {
 
@@ -23,14 +24,12 @@ public class NegocioCliente implements ICliente {
 
     @Override
     public String validarCliente(String nombre, String apellido, String correo, String nroTelefono, String dni, JDateChooser fechaNacimiento) {
-
         String mensaje = "ok";
 
         if (nombre.equals("") || apellido.equals("") || correo.equals("") || nroTelefono.equals("")
                 || dni.equals("") || fechaNacimiento.getDate() == null) {
             mensaje = "Debes completar todos los campos.";
         }
-
         return mensaje;
     }
 
@@ -47,5 +46,25 @@ public class NegocioCliente implements ICliente {
     @Override
     public void eliminarCliente(Long id) throws NonexistentEntityException {
         clienteController.destroy(id);
+    }
+
+    @Override
+    public List<Cliente> getClientes() {
+        return clienteController.findClienteEntities();
+    }
+
+    @Override
+    public List<Cliente> ordenarClientes(String campo) {
+        return clienteController.clientesOrderBy(campo);
+    }
+
+    @Override
+    public List<Cliente> buscarClientes(String busqueda) {
+        return clienteController.buscarClientes(busqueda);
+    }
+
+    @Override
+    public Cliente encontrarCliente(Long id) {
+        return clienteController.findCliente(id);
     }
 }

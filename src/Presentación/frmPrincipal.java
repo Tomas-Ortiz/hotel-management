@@ -1,8 +1,10 @@
 package Presentación;
 
 import Datos.exceptions.NonexistentEntityException;
+import Negocio.Entidades.Cliente;
 import Negocio.Entidades.Habitacion;
 import Negocio.Entidades.Reserva;
+import Negocio.NegocioCliente;
 import Negocio.UtilidadJFrame;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     List<Reserva> reservas;
     NegocioReserva negocioReserva;
 
+    DefaultTableModel dtmClientes;
+    List<Cliente> clientes;
+    NegocioCliente negocioCliente;
+
     Thread hilo;
 
     public frmPrincipal() {
@@ -49,17 +55,21 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         dtmHabitaciones = (DefaultTableModel) jtbHabitaciones.getModel();
         dtmReservas = (DefaultTableModel) jtbReservas.getModel();
+        dtmClientes = (DefaultTableModel) jtbClientes.getModel();
 
         habitaciones = new ArrayList<>();
         reservas = new ArrayList<>();
+        clientes = new ArrayList<>();
 
         negocioHabitacion = new NegocioHabitacion();
         negocioReserva = new NegocioReserva();
+        negocioCliente = new NegocioCliente();
 
         utilidadJtable = new UtilidadJTable();
 
         utilidadJtable.centrarElementosTable(jtbHabitaciones);
         utilidadJtable.centrarElementosTable(jtbReservas);
+        utilidadJtable.centrarElementosTable(jtbClientes);
 
         activarPanelInicio();
     }
@@ -95,6 +105,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             System.err.println("Error, el usuario todavía no ha iniciado sesión.");
             System.exit(0);
         }
+    }
+
+    private void activarPanelClientes() {
+        utilidadJframe.activarPanelPrincipal(false, true, false, false, false);
+        activarBotonesPanelCliente(false);
+        actualizarTablaClientes();
+        mostrarCantClientes();
     }
 
     private void mostrarFechaHoraInicio() {
@@ -139,6 +156,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblReparación.setText("Reparación (" + negocioHabitacion.getCountHabitacionesByEstado("Reparación") + ")");
     }
 
+    private void mostrarCantClientes() {
+        lblClientes.setText("Clientes (" + negocioCliente.getClientes().size() + ")");
+    }
+
     public void actualizarTablaHabitaciones() {
         mostrarDatosHabitaciones(negocioHabitacion.getHabitaciones());
     }
@@ -153,7 +174,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         }
     }
 
-    public void actualizarTablaReservas() {
+    private void actualizarTablaReservas() {
         mostrarDatosReservas(negocioReserva.getReservas());
     }
 
@@ -170,6 +191,34 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jbtnVenderProducto.setEnabled(venderProducto);
     }
 
+    private void mostrarDatosClientes(List<Cliente> clientes) {
+        if (clientes.isEmpty()) {
+            clientes = negocioCliente.getClientes();
+        }
+        dtmClientes.setRowCount(0);
+        for (Cliente cliente : clientes) {
+            dtmClientes.addRow(new Object[]{cliente.getId(), cliente.getNombres(), cliente.getApellidos(), cliente.getDni(), cliente.getFechaNacimiento(), cliente.getNacionalidad(), cliente.getCorreo(), cliente.getNroTelefono()});
+        }
+    }
+
+    private void actualizarTablaClientes() {
+        mostrarDatosClientes(negocioCliente.getClientes());
+    }
+
+    private void mostrarBusquedaClientes(String busqueda, int keyCode) {
+        if (keyCode != KeyEvent.VK_CAPS_LOCK) {
+            if (busqueda.equals("")) {
+                actualizarTablaClientes();
+                jcbFiltroClientes.setSelectedItem("Id");
+            } else {
+                clientes = negocioCliente.buscarClientes(busqueda);
+                if (!clientes.isEmpty()) {
+                    mostrarDatosClientes(clientes);
+                }
+            }
+        }
+    }
+
     private void mostrarBusquedaHabitacion(String busqueda, int keyCode) {
         // Por algún motivo se ejecutaba con bloq mayus
         if (keyCode != KeyEvent.VK_CAPS_LOCK) {
@@ -183,6 +232,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 }
             }
         }
+    }
+
+    private void activarBotonesPanelCliente(boolean modificarCliente) {
+        jbtnModificarCliente.setEnabled(modificarCliente);
     }
 
     private void mostrarBusquedaReserva(String busqueda, int keyCode) {
@@ -226,11 +279,24 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jtfBuscarHabitacion = new javax.swing.JTextField();
         jtbnModificarHabitacion = new javax.swing.JButton();
         jtbnEliminarHabitacion = new javax.swing.JButton();
-        jbtnActualizarTabla = new javax.swing.JButton();
+        jbtnActualizarTablaHabitaciones = new javax.swing.JButton();
         lblLimpieza = new javax.swing.JLabel();
         lblReparación = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
         jpClientes = new javax.swing.JPanel();
+        lblClientes = new javax.swing.JLabel();
+        jSeparator8 = new javax.swing.JSeparator();
+        jLabel3 = new javax.swing.JLabel();
+        jcbFiltroClientes = new javax.swing.JComboBox();
+        jbtnModificarCliente = new javax.swing.JButton();
+        lblBuscarCliente = new javax.swing.JLabel();
+        lblTituloClientes = new javax.swing.JLabel();
+        jtfBuscarCliente = new javax.swing.JTextField();
+        jSeparator9 = new javax.swing.JSeparator();
+        jbtnImprimirListaCliente = new javax.swing.JButton();
+        jspClientes = new javax.swing.JScrollPane();
+        jtbClientes = new javax.swing.JTable();
+        jbtnActualizarTablaCliente = new javax.swing.JButton();
         jpReservas = new javax.swing.JPanel();
         lblTituloReservas = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
@@ -424,10 +490,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jspHabitaciones.setViewportView(jtbHabitaciones);
         if (jtbHabitaciones.getColumnModel().getColumnCount() > 0) {
             jtbHabitaciones.getColumnModel().getColumn(0).setPreferredWidth(1);
-            jtbHabitaciones.getColumnModel().getColumn(1).setPreferredWidth(1);
-            jtbHabitaciones.getColumnModel().getColumn(2).setPreferredWidth(10);
-            jtbHabitaciones.getColumnModel().getColumn(3).setPreferredWidth(5);
-            jtbHabitaciones.getColumnModel().getColumn(5).setPreferredWidth(1);
         }
 
         lblDisponibles.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
@@ -488,11 +550,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jbtnActualizarTabla.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        jbtnActualizarTabla.setText("Actualizar tabla");
-        jbtnActualizarTabla.addActionListener(new java.awt.event.ActionListener() {
+        jbtnActualizarTablaHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnActualizarTablaHabitaciones.setText("Actualizar tabla");
+        jbtnActualizarTablaHabitaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnActualizarTablaActionPerformed(evt);
+                jbtnActualizarTablaHabitacionesActionPerformed(evt);
             }
         });
 
@@ -516,7 +578,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                             .addGroup(jpHabitacionesLayout.createSequentialGroup()
                                 .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jspHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jbtnActualizarTabla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jbtnActualizarTablaHabitaciones, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jtbnCrearHabitacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -591,26 +653,138 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                         .addGap(18, 18, 18)
                         .addComponent(jtbnEliminarHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jbtnActualizarTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbtnActualizarTablaHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
 
         getContentPane().add(jpHabitaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 123, 1185, 510));
 
+        jpClientes.setBackground(new java.awt.Color(255, 255, 255));
         jpClientes.setPreferredSize(new java.awt.Dimension(200, 200));
+        jpClientes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jpClientesLayout = new javax.swing.GroupLayout(jpClientes);
-        jpClientes.setLayout(jpClientesLayout);
-        jpClientesLayout.setHorizontalGroup(
-            jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-        );
-        jpClientesLayout.setVerticalGroup(
-            jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-        );
+        lblClientes.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblClientes.setText("Clientes:");
+        jpClientes.add(lblClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, -1, -1));
 
-        getContentPane().add(jpClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(383, 123, -1, -1));
+        jSeparator8.setForeground(new java.awt.Color(0, 0, 0));
+        jpClientes.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 1020, 10));
+
+        jLabel3.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jLabel3.setText("Filtrar por ");
+        jpClientes.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 75, -1, -1));
+
+        jcbFiltroClientes.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jcbFiltroClientes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Nombre", "Apellido", "DNI", "Fecha nacimiento", "País", "Correo", "Teléfono" }));
+        jcbFiltroClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbFiltroClientesActionPerformed(evt);
+            }
+        });
+        jpClientes.add(jcbFiltroClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 148, -1));
+        jcbFiltroClientes.getAccessibleContext().setAccessibleDescription("");
+
+        jbtnModificarCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnModificarCliente.setText("Modificar cliente");
+        jbtnModificarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnModificarClienteActionPerformed(evt);
+            }
+        });
+        jpClientes.add(jbtnModificarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 160, 160, 53));
+
+        lblBuscarCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblBuscarCliente.setText("Buscar");
+        jpClientes.add(lblBuscarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(708, 78, -1, -1));
+
+        lblTituloClientes.setBackground(new java.awt.Color(255, 255, 255));
+        lblTituloClientes.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
+        lblTituloClientes.setText("Clientes");
+        jpClientes.add(lblTituloClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 5, -1, -1));
+
+        jtfBuscarCliente.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jtfBuscarClienteFocusGained(evt);
+            }
+        });
+        jtfBuscarCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfBuscarClienteKeyReleased(evt);
+            }
+        });
+        jpClientes.add(jtfBuscarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 75, 227, -1));
+
+        jSeparator9.setForeground(new java.awt.Color(0, 0, 0));
+        jpClientes.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 1020, 10));
+
+        jbtnImprimirListaCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnImprimirListaCliente.setText("Imprimir lista");
+        jbtnImprimirListaCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnImprimirListaClienteActionPerformed(evt);
+            }
+        });
+        jpClientes.add(jbtnImprimirListaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 450, 160, 53));
+
+        jtbClientes.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbClientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Nombre", "Apellido", "DNI", "Fecha nacimiento", "País", "Correo", "Nro. teléfono"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Long.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jtbClientes.setGridColor(new java.awt.Color(0, 0, 0));
+        jtbClientes.setRowHeight(30);
+        jtbClientes.setRowMargin(5);
+        jtbClientes.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        jtbClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jtbClientes.getTableHeader().setReorderingAllowed(false);
+        jtbClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtbClientesMouseClicked(evt);
+            }
+        });
+        jspClientes.setViewportView(jtbClientes);
+        if (jtbClientes.getColumnModel().getColumnCount() > 0) {
+            jtbClientes.getColumnModel().getColumn(0).setPreferredWidth(1);
+        }
+
+        jpClientes.add(jspClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 810, 280));
+
+        jbtnActualizarTablaCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnActualizarTablaCliente.setText("Actualizar tabla");
+        jbtnActualizarTablaCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnActualizarTablaClienteActionPerformed(evt);
+            }
+        });
+        jpClientes.add(jbtnActualizarTablaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 450, 160, 53));
+
+        getContentPane().add(jpClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 123, 1185, 510));
 
         jpReservas.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -997,7 +1171,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jbtnSalirActionPerformed
 
     private void jbtnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnClientesActionPerformed
-        utilidadJframe.activarPanelPrincipal(false, true, false, false, false);
+        activarPanelClientes();
     }//GEN-LAST:event_jbtnClientesActionPerformed
 
     private void jbtnHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHabitacionesActionPerformed
@@ -1017,11 +1191,12 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jfrHabitacion.setVisible(true);
     }//GEN-LAST:event_jtbnCrearHabitacionActionPerformed
 
-    private void jbtnActualizarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaActionPerformed
+    private void jbtnActualizarTablaHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaHabitacionesActionPerformed
         activarBotonesPanelHabitaciones(false, false);
         actualizarTablaHabitaciones();
         mostrarCantEstadosHabitaciones();
-    }//GEN-LAST:event_jbtnActualizarTablaActionPerformed
+        jcbFiltroHabitaciones.setSelectedItem("Id");
+    }//GEN-LAST:event_jbtnActualizarTablaHabitacionesActionPerformed
 
     private void jtbHabitacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbHabitacionesMouseClicked
         activarBotonesPanelHabitaciones(true, true);
@@ -1128,7 +1303,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jcbFiltroReservasActionPerformed
 
     private void jtbReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbReservasMouseClicked
-
         activarBotonesPanelReservas(true, true, true, true);
     }//GEN-LAST:event_jtbReservasMouseClicked
 
@@ -1158,6 +1332,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         activarBotonesPanelReservas(false, false, false, false);
         actualizarTablaReservas();
         mostrarCantEstadosReservas();
+        jcbFiltroReservas.setSelectedItem("Id");
     }//GEN-LAST:event_jbtnActualizarTablaReservasActionPerformed
 
     private void jtbnVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnVerDetallesActionPerformed
@@ -1201,6 +1376,77 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         }
     }//GEN-LAST:event_jtfBuscarReservaFocusGained
 
+    private void jcbFiltroClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroClientesActionPerformed
+
+        String campo = (String) jcbFiltroClientes.getSelectedItem();
+
+        switch (campo) {
+            case "Nombre":
+                campo = "nombres";
+                break;
+            case "Apellido":
+                campo = "apellidos";
+                break;
+            case "Fecha nacimiento":
+                campo = "fechaNacimiento";
+                break;
+            case "País":
+                campo = "nacionalidad";
+                break;
+            case "Teléfono":
+                campo = "nroTelefono";
+                break;
+        }
+        clientes = negocioCliente.ordenarClientes(campo);
+        mostrarDatosClientes(clientes);
+        activarBotonesPanelCliente(false);
+    }//GEN-LAST:event_jcbFiltroClientesActionPerformed
+
+    private void jbtnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnModificarClienteActionPerformed
+
+        frmCliente frmCliente = new frmCliente();
+
+        int filaIndice = jtbClientes.getSelectedRow();
+        Long clienteId = Long.parseLong(dtmClientes.getValueAt(filaIndice, 0).toString());
+
+        Cliente cliente = negocioCliente.encontrarCliente(clienteId);
+
+        if (cliente != null) {
+            try {
+                frmCliente.mostrarCliente(cliente);
+            } catch (ParseException ex) {
+                System.out.println("Error " + ex.getMessage());
+            }
+            frmCliente.setVisible(true);
+        }
+    }//GEN-LAST:event_jbtnModificarClienteActionPerformed
+
+    private void jtfBuscarClienteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfBuscarClienteFocusGained
+        if (!jtfBuscarCliente.getText().equals("")) {
+            mostrarBusquedaClientes(jtfBuscarCliente.getText(), -1);
+        }
+    }//GEN-LAST:event_jtfBuscarClienteFocusGained
+
+    private void jtfBuscarClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarClienteKeyReleased
+        mostrarBusquedaClientes(jtfBuscarCliente.getText(), evt.getKeyCode());
+    }//GEN-LAST:event_jtfBuscarClienteKeyReleased
+
+    private void jbtnImprimirListaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnImprimirListaClienteActionPerformed
+
+
+    }//GEN-LAST:event_jbtnImprimirListaClienteActionPerformed
+
+    private void jtbClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbClientesMouseClicked
+        activarBotonesPanelCliente(true);
+    }//GEN-LAST:event_jtbClientesMouseClicked
+
+    private void jbtnActualizarTablaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaClienteActionPerformed
+        activarBotonesPanelCliente(false);
+        actualizarTablaClientes();
+        mostrarCantClientes();
+        jcbFiltroClientes.setSelectedItem("Id");
+    }//GEN-LAST:event_jbtnActualizarTablaClienteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1240,6 +1486,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -1247,15 +1494,21 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
-    private javax.swing.JButton jbtnActualizarTabla;
+    private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JSeparator jSeparator9;
+    private javax.swing.JButton jbtnActualizarTablaCliente;
+    private javax.swing.JButton jbtnActualizarTablaHabitaciones;
     private javax.swing.JButton jbtnActualizarTablaReservas;
     private javax.swing.JButton jbtnClientes;
     private javax.swing.JButton jbtnHabitaciones;
+    private javax.swing.JButton jbtnImprimirListaCliente;
     private javax.swing.JButton jbtnInicio;
+    private javax.swing.JButton jbtnModificarCliente;
     private javax.swing.JButton jbtnReservas;
     private javax.swing.JButton jbtnSalir;
     private javax.swing.JButton jbtnVenderProducto;
     private com.toedter.calendar.JCalendar jcCalendarioInicio;
+    private javax.swing.JComboBox jcbFiltroClientes;
     private javax.swing.JComboBox jcbFiltroHabitaciones;
     private javax.swing.JComboBox jcbFiltroReservas;
     private javax.swing.JPanel jpBotoneraNavegacion;
@@ -1265,9 +1518,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JPanel jpProductos;
     private javax.swing.JPanel jpReservas;
     private javax.swing.JPanel jpTitulo;
+    private javax.swing.JScrollPane jspClientes;
     private javax.swing.JScrollPane jspHabitaciones;
+    private javax.swing.JScrollPane jspHabitaciones1;
     private javax.swing.JScrollPane jspReservas;
+    private javax.swing.JTable jtbClientes;
     private javax.swing.JTable jtbHabitaciones;
+    private javax.swing.JTable jtbHabitaciones1;
     private javax.swing.JTable jtbReservas;
     private javax.swing.JButton jtbnCobrar;
     private javax.swing.JButton jtbnCrearHabitacion;
@@ -1277,11 +1534,14 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton jtbnModificarReserva;
     private javax.swing.JButton jtbnProductos;
     private javax.swing.JButton jtbnVerDetalles;
+    private javax.swing.JTextField jtfBuscarCliente;
     private javax.swing.JTextField jtfBuscarHabitacion;
     private javax.swing.JTextField jtfBuscarReserva;
     private javax.swing.JLabel lblBienvenida;
     private javax.swing.JLabel lblBuscar;
     private javax.swing.JLabel lblBuscar1;
+    private javax.swing.JLabel lblBuscarCliente;
+    private javax.swing.JLabel lblClientes;
     private javax.swing.JLabel lblCobradasReserva;
     private javax.swing.JLabel lblDisponibles;
     private javax.swing.JLabel lblFechaHora;
@@ -1292,6 +1552,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel lblPendientesReserva;
     private javax.swing.JLabel lblRegistradas;
     private javax.swing.JLabel lblReparación;
+    private javax.swing.JLabel lblTituloClientes;
     private javax.swing.JLabel lblTituloHabitaciones;
     private javax.swing.JLabel lblTituloInicio;
     private javax.swing.JLabel lblTituloPrincipal;

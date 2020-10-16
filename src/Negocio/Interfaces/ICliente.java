@@ -3,6 +3,7 @@ package Negocio.Interfaces;
 import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Cliente;
 import com.toedter.calendar.JDateChooser;
+import java.util.List;
 
 public interface ICliente {
 
@@ -15,4 +16,12 @@ public interface ICliente {
     void modificarCliente(Cliente cliente) throws Exception;
 
     void eliminarCliente(Long id) throws NonexistentEntityException;
+
+    List<Cliente> getClientes();
+
+    List<Cliente> ordenarClientes(String campo);
+
+    List<Cliente> buscarClientes(String busqueda);
+
+    Cliente encontrarCliente(Long id);
 }
