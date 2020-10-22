@@ -5,6 +5,7 @@ import Negocio.Entidades.Habitacion;
 import Negocio.Entidades.Reserva;
 import Negocio.Interfaces.IReserva;
 import com.github.lgooddatepicker.components.TimePicker;
+import com.mysql.jdbc.StringUtils;
 import com.toedter.calendar.JDateChooser;
 import java.util.Date;
 import java.util.List;
@@ -34,10 +35,10 @@ public class NegocioReserva implements IReserva {
 
         String mensaje = "ok";
 
-        if (jdcFechaEntrada.getDate() == null || jdcFechaSalida.getDate() == null || tpHoraEntrada.getText().equals("") || tpHoraSalida.getText().equals("")) {
+        if (jdcFechaEntrada.getDate() == null || jdcFechaSalida.getDate() == null || StringUtils.isEmptyOrWhitespaceOnly(tpHoraEntrada.getText())
+                || StringUtils.isEmptyOrWhitespaceOnly(tpHoraSalida.getText())) {
             mensaje = "Debes completar todos los campos.";
         }
-
         if (mensaje.equals("ok")) {
 
             long dias = UtilidadGeneral.calcularDiasEntreFechas(jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
@@ -61,7 +62,6 @@ public class NegocioReserva implements IReserva {
         if (dias == 0) {
             dias = 1;
         }
-
         return dias * habitacion.getPrecioDia();
     }
 

@@ -11,10 +11,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class frmDetallesReserva extends javax.swing.JFrame {
 
-    UtilidadJFrame utilidadJframe;
-    UtilidadJTable utilidadJtable;
-    DefaultTableModel dtmProductos;
-    SimpleDateFormat sdf;
+    private UtilidadJFrame utilidadJframe;
+    private UtilidadJTable utilidadJtable;
+    private DefaultTableModel dtmProductos;
+    private SimpleDateFormat sdf;
 
     public frmDetallesReserva() {
         initComponents();

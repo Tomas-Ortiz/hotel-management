@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Mega%20Tecnologia/Desktop/Universidad/3ER%20AÑO/Segundo%20semestre/Práctica%20integradora/Gestión%20del%20proyecto/GestiónHotelera/src/Negocio/NegocioCliente.java</file>
-            <file>file:/C:/Users/Mega%20Tecnologia/Desktop/Universidad/3ER%20AÑO/Segundo%20semestre/Práctica%20integradora/Gestión%20del%20proyecto/GestiónHotelera/src/Negocio/NegocioReserva.java</file>
-            <file>file:/C:/Users/Mega%20Tecnologia/Desktop/Universidad/3ER%20AÑO/Segundo%20semestre/Práctica%20integradora/Gestión%20del%20proyecto/GestiónHotelera/src/Negocio/Interfaces/ICliente.java</file>
+            <file>file:/C:/Users/Mega%20Tecnologia/Desktop/Universidad/3ER%20AÑO/Segundo%20semestre/Práctica%20integradora/Gestión%20del%20proyecto/GestiónHotelera/src/Presentación/frmHabitacion.java</file>
+            <file>file:/C:/Users/Mega%20Tecnologia/Desktop/Universidad/3ER%20AÑO/Segundo%20semestre/Práctica%20integradora/Gestión%20del%20proyecto/GestiónHotelera/src/Presentación/frmProducto.java</file>
             <file>file:/C:/Users/Mega%20Tecnologia/Desktop/Universidad/3ER%20AÑO/Segundo%20semestre/Práctica%20integradora/Gestión%20del%20proyecto/GestiónHotelera/src/Presentación/frmPrincipal.java</file>
-            <file>file:/C:/Users/Mega%20Tecnologia/Desktop/Universidad/3ER%20AÑO/Segundo%20semestre/Práctica%20integradora/Gestión%20del%20proyecto/GestiónHotelera/src/Datos/ClienteJpaController.java</file>
+            <file>file:/C:/Users/Mega%20Tecnologia/Desktop/Universidad/3ER%20AÑO/Segundo%20semestre/Práctica%20integradora/Gestión%20del%20proyecto/GestiónHotelera/src/Negocio/NegocioProducto.java</file>
         </group>
     </open-files>
 </project-private>

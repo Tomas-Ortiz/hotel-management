@@ -20,14 +20,12 @@ public class Habitacion implements Serializable {
     private String detalles;
 
     enum enumTipo {
-
         Individual,
         Doble,
         Matrimonial
     }
 
     enum enumEstado {
-
         Disponible,
         Ocupada,
         Limpieza,

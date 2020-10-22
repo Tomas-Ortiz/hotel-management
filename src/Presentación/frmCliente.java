@@ -8,16 +8,14 @@ import Negocio.UtilidadJOptionPane;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class frmCliente extends javax.swing.JFrame {
 
-    UtilidadJFrame utilidadJframe;
-    NegocioCliente negocioCliente;
-    Cliente cliente;
-    SimpleDateFormat sdf;
+    private UtilidadJFrame utilidadJframe;
+    private NegocioCliente negocioCliente;
+    private Cliente cliente;
+    private SimpleDateFormat sdf;
 
     public frmCliente() {
         initComponents();
@@ -124,16 +122,16 @@ public class frmCliente extends javax.swing.JFrame {
         jpTituloLayout.setHorizontalGroup(
             jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTituloLayout.createSequentialGroup()
-                .addContainerGap(641, Short.MAX_VALUE)
+                .addContainerGap(615, Short.MAX_VALUE)
                 .addComponent(lblTituloPrincipal)
-                .addGap(595, 595, 595))
+                .addGap(621, 621, 621))
         );
         jpTituloLayout.setVerticalGroup(
             jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTituloLayout.createSequentialGroup()
                 .addContainerGap(35, Short.MAX_VALUE)
                 .addComponent(lblTituloPrincipal)
-                .addGap(31, 31, 31))
+                .addGap(35, 35, 35))
         );
 
         getContentPane().add(jpTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1360, -1));

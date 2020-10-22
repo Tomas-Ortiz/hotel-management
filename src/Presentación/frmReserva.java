@@ -17,14 +17,14 @@ import javax.swing.JOptionPane;
 
 public class frmReserva extends javax.swing.JFrame {
 
-    UtilidadJFrame utilidadJframe;
-    NegocioReserva negocioReserva;
-    NegocioCliente negocioCliente;
-    NegocioHabitacion negocioHabitacion;
-    SimpleDateFormat sdf;
-    List<Habitacion> habitacionesDisponibles;
-    boolean modificarReserva = false;
-    Reserva reservaModificada;
+    private UtilidadJFrame utilidadJframe;
+    private NegocioReserva negocioReserva;
+    private NegocioCliente negocioCliente;
+    private NegocioHabitacion negocioHabitacion;
+    private SimpleDateFormat sdf;
+    private List<Habitacion> habitacionesDisponibles;
+    private boolean modificarReserva = false;
+    private Reserva reservaModificada;
 
     public frmReserva() {
         initComponents();

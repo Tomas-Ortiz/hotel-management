@@ -4,6 +4,7 @@ import Datos.ClienteJpaController;
 import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Cliente;
 import Negocio.Interfaces.ICliente;
+import com.mysql.jdbc.StringUtils;
 import com.toedter.calendar.JDateChooser;
 import java.util.List;
 
@@ -26,8 +27,9 @@ public class NegocioCliente implements ICliente {
     public String validarCliente(String nombre, String apellido, String correo, String nroTelefono, String dni, JDateChooser fechaNacimiento) {
         String mensaje = "ok";
 
-        if (nombre.equals("") || apellido.equals("") || correo.equals("") || nroTelefono.equals("")
-                || dni.equals("") || fechaNacimiento.getDate() == null) {
+        if (StringUtils.isEmptyOrWhitespaceOnly(nombre) || StringUtils.isEmptyOrWhitespaceOnly(apellido)
+                || StringUtils.isEmptyOrWhitespaceOnly(correo) || StringUtils.isEmptyOrWhitespaceOnly(nroTelefono)
+                || StringUtils.isEmptyOrWhitespaceOnly(dni) || fechaNacimiento.getDate() == null) {
             mensaje = "Debes completar todos los campos.";
         }
         return mensaje;

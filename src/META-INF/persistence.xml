@@ -6,6 +6,7 @@
     <class>Negocio.Entidades.Habitacion</class>
     <class>Negocio.Entidades.Cliente</class>
     <class>Negocio.Entidades.Reserva</class>
+    <class>Negocio.Entidades.Producto</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gestion_hotelera?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

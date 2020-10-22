@@ -3,6 +3,7 @@ package Presentación;
 import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Cliente;
 import Negocio.Entidades.Habitacion;
+import Negocio.Entidades.Producto;
 import Negocio.Entidades.Reserva;
 import Negocio.NegocioCliente;
 import Negocio.UtilidadJFrame;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Negocio.NegocioHabitacion;
+import Negocio.NegocioProducto;
 import Negocio.NegocioReserva;
 import Negocio.UtilidadGeneral;
 import Negocio.UtilidadJOptionPane;
@@ -21,20 +23,24 @@ import javax.swing.JOptionPane;
 
 public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
-    UtilidadJFrame utilidadJframe;
-    UtilidadJTable utilidadJtable;
+    private UtilidadJFrame utilidadJframe;
+    private UtilidadJTable utilidadJtable;
 
-    DefaultTableModel dtmHabitaciones;
-    List<Habitacion> habitaciones;
-    NegocioHabitacion negocioHabitacion;
+    private DefaultTableModel dtmHabitaciones;
+    private List<Habitacion> habitaciones;
+    private NegocioHabitacion negocioHabitacion;
 
-    DefaultTableModel dtmReservas;
-    List<Reserva> reservas;
-    NegocioReserva negocioReserva;
+    private DefaultTableModel dtmReservas;
+    private List<Reserva> reservas;
+    private NegocioReserva negocioReserva;
 
-    DefaultTableModel dtmClientes;
-    List<Cliente> clientes;
-    NegocioCliente negocioCliente;
+    private DefaultTableModel dtmClientes;
+    private List<Cliente> clientes;
+    private NegocioCliente negocioCliente;
+
+    private DefaultTableModel dtmProd;
+    private List<Producto> productos;
+    private NegocioProducto negocioProducto;
 
     Thread hilo;
 
@@ -56,20 +62,24 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         dtmHabitaciones = (DefaultTableModel) jtbHabitaciones.getModel();
         dtmReservas = (DefaultTableModel) jtbReservas.getModel();
         dtmClientes = (DefaultTableModel) jtbClientes.getModel();
+        dtmProd = (DefaultTableModel) jtbProductos.getModel();
 
         habitaciones = new ArrayList<>();
         reservas = new ArrayList<>();
         clientes = new ArrayList<>();
+        productos = new ArrayList<>();
 
         negocioHabitacion = new NegocioHabitacion();
         negocioReserva = new NegocioReserva();
         negocioCliente = new NegocioCliente();
+        negocioProducto = new NegocioProducto();
 
         utilidadJtable = new UtilidadJTable();
 
         utilidadJtable.centrarElementosTable(jtbHabitaciones);
         utilidadJtable.centrarElementosTable(jtbReservas);
         utilidadJtable.centrarElementosTable(jtbClientes);
+        utilidadJtable.centrarElementosTable(jtbProductos);
 
         activarPanelInicio();
     }
@@ -112,6 +122,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         activarBotonesPanelCliente(false);
         actualizarTablaClientes();
         mostrarCantClientes();
+    }
+
+    private void activarPanelProd() {
+        utilidadJframe.activarPanelPrincipal(false, false, false, true, false);
+        activarBotonesPanelProd(false);
+        actualizarTablaProd();
+        mostrarCantProd();
     }
 
     private void mostrarFechaHoraInicio() {
@@ -197,12 +214,33 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         }
         dtmClientes.setRowCount(0);
         for (Cliente cliente : clientes) {
-            dtmClientes.addRow(new Object[]{cliente.getId(), cliente.getNombres(), cliente.getApellidos(), cliente.getDni(), cliente.getFechaNacimiento(), cliente.getNacionalidad(), cliente.getCorreo(), cliente.getNroTelefono()});
+            dtmClientes.addRow(new Object[]{cliente.getId(), cliente.getNombres(), cliente.getApellidos(),
+                cliente.getDni(), cliente.getFechaNacimiento(), cliente.getNacionalidad(),
+                cliente.getCorreo(), cliente.getNroTelefono()});
         }
     }
 
     private void actualizarTablaClientes() {
         mostrarDatosClientes(negocioCliente.getClientes());
+    }
+
+    private void mostrarDatosProd(List<Producto> productos) {
+        if (productos.isEmpty()) {
+            productos = negocioProducto.getProductos();
+        }
+        dtmProd.setRowCount(0);
+        for (Producto prod : productos) {
+            dtmProd.addRow(new Object[]{prod.getId(), prod.getNombre(), prod.getMarca(), prod.getCategoria(),
+                prod.getStock(), prod.getProveedor(), prod.getPrecioCompra(), prod.getPrecioVenta()});
+        }
+    }
+
+    private void actualizarTablaProd() {
+        mostrarDatosProd(negocioProducto.getProductos());
+    }
+
+    private void mostrarCantProd() {
+        lblCantProd.setText("Productos (" + negocioProducto.getProductos().size() + ")");
     }
 
     private void mostrarBusquedaClientes(String busqueda, int keyCode) {
@@ -236,6 +274,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private void activarBotonesPanelCliente(boolean modificarCliente) {
         jbtnModificarCliente.setEnabled(modificarCliente);
+    }
+
+    private void activarBotonesPanelProd(boolean modificarProd) {
+        jbtnModificarProducto.setEnabled(modificarProd);
     }
 
     private void mostrarBusquedaReserva(String busqueda, int keyCode) {
@@ -317,6 +359,19 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblPendientesReserva = new javax.swing.JLabel();
         jbtnVenderProducto = new javax.swing.JButton();
         jpProductos = new javax.swing.JPanel();
+        lblCantProd = new javax.swing.JLabel();
+        jSeparator10 = new javax.swing.JSeparator();
+        lblFiltrarPor = new javax.swing.JLabel();
+        jcbFiltroProductos = new javax.swing.JComboBox();
+        jbtnAgregarProd = new javax.swing.JButton();
+        lblBuscarProd = new javax.swing.JLabel();
+        lblProductos = new javax.swing.JLabel();
+        jtfBuscarProd = new javax.swing.JTextField();
+        jSeparator11 = new javax.swing.JSeparator();
+        jspProductos = new javax.swing.JScrollPane();
+        jtbProductos = new javax.swing.JTable();
+        jbtnActualizarTablaProductos = new javax.swing.JButton();
+        jbtnModificarProducto = new javax.swing.JButton();
         jpTitulo = new javax.swing.JPanel();
         lblTituloPrincipal = new javax.swing.JLabel();
         lblUsuarioLogueado = new javax.swing.JLabel();
@@ -408,8 +463,8 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                     .addComponent(jbtnHabitaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jbtnReservas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jbtnClientes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jtbnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnInicio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jbtnInicio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jtbnProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         jpBotoneraNavegacionLayout.setVerticalGroup(
@@ -691,7 +746,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jbtnModificarClienteActionPerformed(evt);
             }
         });
-        jpClientes.add(jbtnModificarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 160, 160, 53));
+        jpClientes.add(jbtnModificarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(1005, 160, 160, 53));
 
         lblBuscarCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         lblBuscarCliente.setText("Buscar");
@@ -1031,18 +1086,130 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         getContentPane().add(jpReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 123, 1185, 510));
 
-        javax.swing.GroupLayout jpProductosLayout = new javax.swing.GroupLayout(jpProductos);
-        jpProductos.setLayout(jpProductosLayout);
-        jpProductosLayout.setHorizontalGroup(
-            jpProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jpProductosLayout.setVerticalGroup(
-            jpProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        jpProductos.setBackground(new java.awt.Color(255, 255, 255));
+        jpProductos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        getContentPane().add(jpProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(424, 892, -1, -1));
+        lblCantProd.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblCantProd.setText("Productos:");
+        jpProductos.add(lblCantProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, -1, -1));
+
+        jSeparator10.setForeground(new java.awt.Color(0, 0, 0));
+        jpProductos.add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 1020, 10));
+
+        lblFiltrarPor.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblFiltrarPor.setText("Filtrar por ");
+        jpProductos.add(lblFiltrarPor, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 75, -1, -1));
+
+        jcbFiltroProductos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jcbFiltroProductos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Nombre", "Marca", "Categoria", "Stock", "Proveedor", "Precio de compra", "Precio de venta" }));
+        jcbFiltroProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbFiltroProductosActionPerformed(evt);
+            }
+        });
+        jpProductos.add(jcbFiltroProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 148, -1));
+
+        jbtnAgregarProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnAgregarProd.setText("Agregar producto");
+        jbtnAgregarProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAgregarProdActionPerformed(evt);
+            }
+        });
+        jpProductos.add(jbtnAgregarProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(1005, 160, 160, 53));
+
+        lblBuscarProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblBuscarProd.setText("Buscar");
+        jpProductos.add(lblBuscarProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(708, 78, -1, -1));
+
+        lblProductos.setBackground(new java.awt.Color(255, 255, 255));
+        lblProductos.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
+        lblProductos.setText("Productos");
+        jpProductos.add(lblProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 5, -1, -1));
+
+        jtfBuscarProd.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jtfBuscarProdFocusGained(evt);
+            }
+        });
+        jtfBuscarProd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfBuscarProdKeyReleased(evt);
+            }
+        });
+        jpProductos.add(jtfBuscarProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 75, 227, -1));
+
+        jSeparator11.setForeground(new java.awt.Color(0, 0, 0));
+        jpProductos.add(jSeparator11, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 1020, 10));
+
+        jtbProductos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Nombre", "Marca", "Categoria", "Stock", "Proveedor", "Precio compra", "Precio venta"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jtbProductos.setGridColor(new java.awt.Color(0, 0, 0));
+        jtbProductos.setRowHeight(30);
+        jtbProductos.setRowMargin(5);
+        jtbProductos.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        jtbProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jtbProductos.getTableHeader().setReorderingAllowed(false);
+        jtbProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtbProductosMouseClicked(evt);
+            }
+        });
+        jspProductos.setViewportView(jtbProductos);
+        if (jtbProductos.getColumnModel().getColumnCount() > 0) {
+            jtbProductos.getColumnModel().getColumn(0).setPreferredWidth(1);
+        }
+
+        jpProductos.add(jspProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 810, 280));
+
+        jbtnActualizarTablaProductos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnActualizarTablaProductos.setText("Actualizar tabla");
+        jbtnActualizarTablaProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnActualizarTablaProductosActionPerformed(evt);
+            }
+        });
+        jpProductos.add(jbtnActualizarTablaProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 450, 160, 53));
+
+        jbtnModificarProducto.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnModificarProducto.setText("Modificar producto");
+        jbtnModificarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnModificarProductoActionPerformed(evt);
+            }
+        });
+        jpProductos.add(jbtnModificarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(1005, 230, 160, 53));
+
+        getContentPane().add(jpProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 123, 1185, 510));
 
         jpTitulo.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -1183,7 +1350,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jbtnReservasActionPerformed
 
     private void jtbnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnProductosActionPerformed
-        utilidadJframe.activarPanelPrincipal(false, false, false, true, false);
+        activarPanelProd();
     }//GEN-LAST:event_jtbnProductosActionPerformed
 
     private void jtbnCrearHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCrearHabitacionActionPerformed
@@ -1403,9 +1570,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jcbFiltroClientesActionPerformed
 
     private void jbtnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnModificarClienteActionPerformed
-
         frmCliente frmCliente = new frmCliente();
-
         int filaIndice = jtbClientes.getSelectedRow();
         Long clienteId = Long.parseLong(dtmClientes.getValueAt(filaIndice, 0).toString());
 
@@ -1446,6 +1611,47 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         mostrarCantClientes();
         jcbFiltroClientes.setSelectedItem("Id");
     }//GEN-LAST:event_jbtnActualizarTablaClienteActionPerformed
+
+    private void jcbFiltroProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroProductosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbFiltroProductosActionPerformed
+
+    private void jbtnAgregarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarProdActionPerformed
+        frmProducto frmProducto = new frmProducto();
+        frmProducto.setVisible(true);
+    }//GEN-LAST:event_jbtnAgregarProdActionPerformed
+
+    private void jtfBuscarProdFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfBuscarProdFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfBuscarProdFocusGained
+
+    private void jtfBuscarProdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarProdKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfBuscarProdKeyReleased
+
+    private void jtbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbProductosMouseClicked
+        activarBotonesPanelProd(true);
+    }//GEN-LAST:event_jtbProductosMouseClicked
+
+    private void jbtnActualizarTablaProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaProductosActionPerformed
+        actualizarTablaProd();
+        mostrarCantProd();
+        activarBotonesPanelProd(false);
+        jcbFiltroProductos.setSelectedItem("Id");
+    }//GEN-LAST:event_jbtnActualizarTablaProductosActionPerformed
+
+    private void jbtnModificarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnModificarProductoActionPerformed
+        frmProducto frmProducto = new frmProducto();
+        int filaIndice = jtbProductos.getSelectedRow();
+        Long productoId = Long.parseLong(dtmProd.getValueAt(filaIndice, 0).toString());
+
+        Producto producto = negocioProducto.encontrarProd(productoId);
+
+        if (producto != null) {
+            frmProducto.mostrarProd(producto);
+            frmProducto.setVisible(true);
+        }
+    }//GEN-LAST:event_jbtnModificarProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1488,6 +1694,8 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator10;
+    private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
@@ -1498,18 +1706,22 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JButton jbtnActualizarTablaCliente;
     private javax.swing.JButton jbtnActualizarTablaHabitaciones;
+    private javax.swing.JButton jbtnActualizarTablaProductos;
     private javax.swing.JButton jbtnActualizarTablaReservas;
+    private javax.swing.JButton jbtnAgregarProd;
     private javax.swing.JButton jbtnClientes;
     private javax.swing.JButton jbtnHabitaciones;
     private javax.swing.JButton jbtnImprimirListaCliente;
     private javax.swing.JButton jbtnInicio;
     private javax.swing.JButton jbtnModificarCliente;
+    private javax.swing.JButton jbtnModificarProducto;
     private javax.swing.JButton jbtnReservas;
     private javax.swing.JButton jbtnSalir;
     private javax.swing.JButton jbtnVenderProducto;
     private com.toedter.calendar.JCalendar jcCalendarioInicio;
     private javax.swing.JComboBox jcbFiltroClientes;
     private javax.swing.JComboBox jcbFiltroHabitaciones;
+    private javax.swing.JComboBox jcbFiltroProductos;
     private javax.swing.JComboBox jcbFiltroReservas;
     private javax.swing.JPanel jpBotoneraNavegacion;
     private javax.swing.JPanel jpClientes;
@@ -1520,11 +1732,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JPanel jpTitulo;
     private javax.swing.JScrollPane jspClientes;
     private javax.swing.JScrollPane jspHabitaciones;
-    private javax.swing.JScrollPane jspHabitaciones1;
+    private javax.swing.JScrollPane jspProductos;
     private javax.swing.JScrollPane jspReservas;
     private javax.swing.JTable jtbClientes;
     private javax.swing.JTable jtbHabitaciones;
-    private javax.swing.JTable jtbHabitaciones1;
+    private javax.swing.JTable jtbProductos;
     private javax.swing.JTable jtbReservas;
     private javax.swing.JButton jtbnCobrar;
     private javax.swing.JButton jtbnCrearHabitacion;
@@ -1536,20 +1748,25 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton jtbnVerDetalles;
     private javax.swing.JTextField jtfBuscarCliente;
     private javax.swing.JTextField jtfBuscarHabitacion;
+    private javax.swing.JTextField jtfBuscarProd;
     private javax.swing.JTextField jtfBuscarReserva;
     private javax.swing.JLabel lblBienvenida;
     private javax.swing.JLabel lblBuscar;
     private javax.swing.JLabel lblBuscar1;
     private javax.swing.JLabel lblBuscarCliente;
+    private javax.swing.JLabel lblBuscarProd;
+    private javax.swing.JLabel lblCantProd;
     private javax.swing.JLabel lblClientes;
     private javax.swing.JLabel lblCobradasReserva;
     private javax.swing.JLabel lblDisponibles;
     private javax.swing.JLabel lblFechaHora;
     private javax.swing.JLabel lblFechaHoraTitulo;
+    private javax.swing.JLabel lblFiltrarPor;
     private javax.swing.JLabel lblLimpieza;
     private javax.swing.JLabel lblOcupadas;
     private javax.swing.JLabel lblOcupadasReserva;
     private javax.swing.JLabel lblPendientesReserva;
+    private javax.swing.JLabel lblProductos;
     private javax.swing.JLabel lblRegistradas;
     private javax.swing.JLabel lblReparación;
     private javax.swing.JLabel lblTituloClientes;

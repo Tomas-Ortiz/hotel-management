@@ -17,10 +17,10 @@ import javax.swing.SwingConstants;
 
 public class frmInicioSesion extends javax.swing.JFrame {
 
-    UtilidadJFrame utilidadJframe;
-    NegocioUsuario negocioUsuario;
-    frmPrincipal frmPrincipal;
-    sesionUsuario sesionUsuario;
+    private UtilidadJFrame utilidadJframe;
+    private NegocioUsuario negocioUsuario;
+    private frmPrincipal frmPrincipal;
+    private sesionUsuario sesionUsuario;
 
     public frmInicioSesion() {
 

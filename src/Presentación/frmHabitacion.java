@@ -9,22 +9,22 @@ import Negocio.UtilidadJTable;
 import javax.swing.JOptionPane;
 
 public class frmHabitacion extends javax.swing.JFrame {
-    
-    UtilidadJFrame utilidadJframe;
-    UtilidadGeneral utilidadGeneral;
-    UtilidadJTable utilidadJtable;
-    NegocioHabitacion negocioHabitacion;
-    Habitacion habitacionModificada;
+
+    private UtilidadJFrame utilidadJframe;
+    private UtilidadGeneral utilidadGeneral;
+    private UtilidadJTable utilidadJtable;
+    private NegocioHabitacion negocioHabitacion;
+    private Habitacion habitacionModificada;
     boolean modificarHabitacion = false;
-    
+
     public frmHabitacion() {
         initComponents();
         negocioHabitacion = new NegocioHabitacion();
-        
+
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Habitación", this);
     }
-    
+
     private void limpiarCamposHabitacion() {
         jcbTipoHabitacion.setSelectedIndex(0);
         jcbEstadoHabitacion.setSelectedIndex(0);
@@ -32,18 +32,18 @@ public class frmHabitacion extends javax.swing.JFrame {
         jtaDetallesHabitacion.setText("");
         jtfPrecioHabitacion.setText("");
     }
-    
+
     public void mostrarHabitacion(Habitacion habitacion) {
         modificarHabitacion = true;
-        this.habitacionModificada = habitacion;
-        
+        habitacionModificada = habitacion;
+
         jcbTipoHabitacion.setSelectedItem(habitacion.getTipo());
         jsNroHabitacion.setValue(habitacion.getNumero());
         jcbEstadoHabitacion.setSelectedItem(habitacion.getEstado());
         jtaDetallesHabitacion.setText(habitacion.getDetalles());
         jtfPrecioHabitacion.setText(String.valueOf(habitacion.getPrecioDia()));
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -208,10 +208,10 @@ public class frmHabitacion extends javax.swing.JFrame {
         float precio = -1;
         boolean datosValidos = true;
         Habitacion habitacionExistente;
-        
+
         try {
             mensaje = negocioHabitacion.validarHabitacion(jtaDetallesHabitacion.getText(), jtfPrecioHabitacion.getText());
-            
+
             if (!mensaje.equals("ok")) {
                 datosValidos = false;
                 titulo = "Error";
@@ -229,28 +229,27 @@ public class frmHabitacion extends javax.swing.JFrame {
             titulo = "Error";
             UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
         }
-        
+
         if (datosValidos) {
             if (modificarHabitacion) {
                 try {
                     habitacionExistente = null;
-                    
+
                     if (habitacionModificada.getNumero() != numero) {
                         habitacionExistente = negocioHabitacion.verificarExistenciaHabitacion(numero);
                     }
-                    
                     if (habitacionExistente == null) {
                         mensaje = "¿Estás seguro que deseas modificar la habitación con id " + habitacionModificada.getId() + "?";
                         titulo = "Confirmar modificación";
                         int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo(mensaje, titulo);
-                        
+
                         if (confirmado == JOptionPane.YES_OPTION) {
                             this.habitacionModificada.setTipo(tipo);
                             this.habitacionModificada.setNumero(numero);
                             this.habitacionModificada.setEstado(estado);
                             this.habitacionModificada.setDetalles(detalles);
                             this.habitacionModificada.setPrecioDia(precio);
-                            
+
                             negocioHabitacion.modificarHabitacion(this.habitacionModificada);
                             mensaje = "¡Habitación modificada exitosamente!";
                             modificarHabitacion = false;
@@ -267,14 +266,13 @@ public class frmHabitacion extends javax.swing.JFrame {
                     mensaje = "Error al modificar la habitación." + e.getMessage();
                 }
             } else {
-                
                 habitacionExistente = negocioHabitacion.verificarExistenciaHabitacion(numero);
-                
+
                 if (habitacionExistente == null) {
                     mensaje = "¿Estás seguro que deseas crear la habitación?";
                     titulo = "Confirmar creación";
                     int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo(mensaje, titulo);
-                    
+
                     if (confirmado == JOptionPane.YES_OPTION) {
                         Habitacion nuevaHabitacion = new Habitacion(numero, tipo, estado, detalles, precio);
                         negocioHabitacion.crearHabitacion(nuevaHabitacion);

@@ -4,6 +4,7 @@ import Datos.HabitacionJpaController;
 import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Habitacion;
 import Negocio.Interfaces.IHabitacion;
+import com.mysql.jdbc.StringUtils;
 import java.util.List;
 
 public class NegocioHabitacion implements IHabitacion {
@@ -41,7 +42,7 @@ public class NegocioHabitacion implements IHabitacion {
 
         String mensaje = "ok";
 
-        if (detalles.length() == 0 || precio.equals("")) {
+        if (detalles.length() == 0 || StringUtils.isEmptyOrWhitespaceOnly(precio)) {
             mensaje = "Debes completar todos los campos.";
         }
         return mensaje;

@@ -17,8 +17,8 @@ import javax.swing.SwingConstants;
 
 public class frmRegistro extends javax.swing.JFrame {
 
-    UtilidadJFrame utilidadJframe;
-    NegocioUsuario negocioUsuario;
+    private UtilidadJFrame utilidadJframe;
+    private NegocioUsuario negocioUsuario;
 
     public frmRegistro() {
 
