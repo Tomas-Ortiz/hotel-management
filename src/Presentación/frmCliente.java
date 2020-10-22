@@ -12,17 +12,17 @@ import javax.swing.JOptionPane;
 
 public class frmCliente extends javax.swing.JFrame {
 
-    private UtilidadJFrame utilidadJframe;
-    private NegocioCliente negocioCliente;
+    private final UtilidadJFrame utilidadJframe;
+    private final NegocioCliente negocioCliente;
     private Cliente cliente;
-    private SimpleDateFormat sdf;
+    private final SimpleDateFormat sdf;
 
     public frmCliente() {
         initComponents();
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Cliente", this);
         sdf = new SimpleDateFormat("dd-MM-yyyy");
-        negocioCliente = new NegocioCliente();
+        negocioCliente = NegocioCliente.getNegocioCliente();
         mostrarListaPaises();
     }
 

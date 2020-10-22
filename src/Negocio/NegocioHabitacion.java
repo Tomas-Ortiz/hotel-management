@@ -9,10 +9,14 @@ import java.util.List;
 
 public class NegocioHabitacion implements IHabitacion {
 
-    private final HabitacionJpaController habitacionController;
+    private final HabitacionJpaController habitacionController = new HabitacionJpaController();
+    private static NegocioHabitacion negocioHabitacion;
 
-    public NegocioHabitacion() {
-        habitacionController = new HabitacionJpaController();
+    public static NegocioHabitacion getNegocioHabitacion() {
+        if (negocioHabitacion == null) {
+            return negocioHabitacion = new NegocioHabitacion();
+        }
+        return negocioHabitacion;
     }
 
     @Override

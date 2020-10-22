@@ -1,28 +1,23 @@
 package Presentación;
 
 import Negocio.Entidades.Habitacion;
-import Negocio.UtilidadGeneral;
 import Negocio.UtilidadJFrame;
 import Negocio.NegocioHabitacion;
 import Negocio.UtilidadJOptionPane;
-import Negocio.UtilidadJTable;
 import javax.swing.JOptionPane;
 
 public class frmHabitacion extends javax.swing.JFrame {
 
-    private UtilidadJFrame utilidadJframe;
-    private UtilidadGeneral utilidadGeneral;
-    private UtilidadJTable utilidadJtable;
-    private NegocioHabitacion negocioHabitacion;
+    private final UtilidadJFrame utilidadJframe;
+    private final NegocioHabitacion negocioHabitacion;
     private Habitacion habitacionModificada;
     boolean modificarHabitacion = false;
 
     public frmHabitacion() {
         initComponents();
-        negocioHabitacion = new NegocioHabitacion();
-
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Habitación", this);
+        negocioHabitacion = NegocioHabitacion.getNegocioHabitacion();
     }
 
     private void limpiarCamposHabitacion() {

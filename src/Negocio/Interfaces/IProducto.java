@@ -17,4 +17,8 @@ public interface IProducto {
     boolean verificarExistenciaProd(String nombre, String marca);
 
     String validarProducto(String nombre, String marca, String proveedor, String precioCompra, String precioVenta);
+
+    List<Producto> ordenarProductos(String campo);
+
+    List<Producto> buscarProducto(String busqueda);
 }

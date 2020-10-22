@@ -10,10 +10,14 @@ import java.util.List;
 
 public class NegocioCliente implements ICliente {
 
-    private final ClienteJpaController clienteController;
+    private final ClienteJpaController clienteController = new ClienteJpaController();
+    private static NegocioCliente negocioCliente;
 
-    public NegocioCliente() {
-        clienteController = new ClienteJpaController();
+    public static NegocioCliente getNegocioCliente() {
+        if (negocioCliente == null) {
+            return negocioCliente = new NegocioCliente();
+        }
+        return negocioCliente;
     }
 
     @Override
@@ -69,4 +73,5 @@ public class NegocioCliente implements ICliente {
     public Cliente encontrarCliente(Long id) {
         return clienteController.findCliente(id);
     }
+
 }

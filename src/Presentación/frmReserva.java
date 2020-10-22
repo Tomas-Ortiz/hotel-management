@@ -17,23 +17,22 @@ import javax.swing.JOptionPane;
 
 public class frmReserva extends javax.swing.JFrame {
 
-    private UtilidadJFrame utilidadJframe;
-    private NegocioReserva negocioReserva;
-    private NegocioCliente negocioCliente;
-    private NegocioHabitacion negocioHabitacion;
-    private SimpleDateFormat sdf;
+    private final UtilidadJFrame utilidadJframe;
+    private final NegocioReserva negocioReserva;
+    private final NegocioCliente negocioCliente;
+    private final NegocioHabitacion negocioHabitacion;
+    private final SimpleDateFormat sdf;
     private List<Habitacion> habitacionesDisponibles;
     private boolean modificarReserva = false;
     private Reserva reservaModificada;
 
     public frmReserva() {
         initComponents();
-
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Reserva", this);
-        negocioReserva = new NegocioReserva();
-        negocioCliente = new NegocioCliente();
-        negocioHabitacion = new NegocioHabitacion();
+        negocioReserva = NegocioReserva.getNegocioReserva();
+        negocioCliente = NegocioCliente.getNegocioCliente();
+        negocioHabitacion = NegocioHabitacion.getNegocioHabitacion();
         reservaModificada = new Reserva();
         sdf = new SimpleDateFormat("dd-MM-yyyy");
         mostrarHabitacionesDisponibles();

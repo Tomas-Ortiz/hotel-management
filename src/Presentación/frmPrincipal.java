@@ -23,24 +23,24 @@ import javax.swing.JOptionPane;
 
 public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
-    private UtilidadJFrame utilidadJframe;
-    private UtilidadJTable utilidadJtable;
+    private final UtilidadJFrame utilidadJframe;
+    private final UtilidadJTable utilidadJtable;
 
-    private DefaultTableModel dtmHabitaciones;
+    private final DefaultTableModel dtmHabitaciones;
     private List<Habitacion> habitaciones;
-    private NegocioHabitacion negocioHabitacion;
+    private final  NegocioHabitacion negocioHabitacion;
 
-    private DefaultTableModel dtmReservas;
+    private final DefaultTableModel dtmReservas;
     private List<Reserva> reservas;
-    private NegocioReserva negocioReserva;
+    private final NegocioReserva negocioReserva;
 
-    private DefaultTableModel dtmClientes;
+    private final DefaultTableModel dtmClientes;
     private List<Cliente> clientes;
-    private NegocioCliente negocioCliente;
+    private final NegocioCliente negocioCliente;
 
-    private DefaultTableModel dtmProd;
+    private final DefaultTableModel dtmProd;
     private List<Producto> productos;
-    private NegocioProducto negocioProducto;
+    private final NegocioProducto negocioProducto;
 
     Thread hilo;
 
@@ -69,12 +69,12 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         clientes = new ArrayList<>();
         productos = new ArrayList<>();
 
-        negocioHabitacion = new NegocioHabitacion();
-        negocioReserva = new NegocioReserva();
-        negocioCliente = new NegocioCliente();
-        negocioProducto = new NegocioProducto();
+        negocioHabitacion = NegocioHabitacion.getNegocioHabitacion();
+        negocioReserva = NegocioReserva.getNegocioReserva();
+        negocioCliente = NegocioCliente.getNegocioCliente();
+        negocioProducto = NegocioProducto.getNegocioProducto();
 
-        utilidadJtable = new UtilidadJTable();
+        utilidadJtable = UtilidadJTable.getUtilidadJTable();
 
         utilidadJtable.centrarElementosTable(jtbHabitaciones);
         utilidadJtable.centrarElementosTable(jtbReservas);
@@ -267,6 +267,20 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 habitaciones = negocioHabitacion.buscarHabitacion(busqueda);
                 if (!habitaciones.isEmpty()) {
                     mostrarDatosHabitaciones(habitaciones);
+                }
+            }
+        }
+    }
+
+    private void mostrarBusquedaProd(String busqueda, int keyCode) {
+        if (keyCode != KeyEvent.VK_CAPS_LOCK) {
+            if (busqueda.equals("")) {
+                actualizarTablaProd();
+                jcbFiltroProductos.setSelectedItem("Id");
+            } else {
+                productos = negocioProducto.buscarProducto(busqueda);
+                if (!productos.isEmpty()) {
+                    mostrarDatosProd(productos);
                 }
             }
         }
@@ -590,7 +604,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         });
 
         jtbnModificarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        jtbnModificarHabitacion.setText("Modificar habitación");
+        jtbnModificarHabitacion.setText("Actualizar habitación");
         jtbnModificarHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnModificarHabitacionActionPerformed(evt);
@@ -740,7 +754,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jcbFiltroClientes.getAccessibleContext().setAccessibleDescription("");
 
         jbtnModificarCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        jbtnModificarCliente.setText("Modificar cliente");
+        jbtnModificarCliente.setText("Actualizar cliente");
         jbtnModificarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnModificarClienteActionPerformed(evt);
@@ -919,7 +933,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         });
 
         jtbnModificarReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        jtbnModificarReserva.setText("Modificar reserva");
+        jtbnModificarReserva.setText("Actualizar reserva");
         jtbnModificarReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnModificarReservaActionPerformed(evt);
@@ -1201,7 +1215,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jpProductos.add(jbtnActualizarTablaProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 450, 160, 53));
 
         jbtnModificarProducto.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        jbtnModificarProducto.setText("Modificar producto");
+        jbtnModificarProducto.setText("Actualizar producto");
         jbtnModificarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnModificarProductoActionPerformed(evt);
@@ -1613,7 +1627,20 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jbtnActualizarTablaClienteActionPerformed
 
     private void jcbFiltroProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroProductosActionPerformed
-        // TODO add your handling code here:
+
+        String campo = (String) jcbFiltroProductos.getSelectedItem();
+
+        switch (campo) {
+            case "Precio de compra":
+                campo = "precioCompra";
+                break;
+            case "Precio de venta":
+                campo = "precioVenta";
+                break;
+        }
+        productos = negocioProducto.ordenarProductos(campo);
+        mostrarDatosProd(productos);
+        activarBotonesPanelProd(false);
     }//GEN-LAST:event_jcbFiltroProductosActionPerformed
 
     private void jbtnAgregarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarProdActionPerformed
@@ -1622,11 +1649,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jbtnAgregarProdActionPerformed
 
     private void jtfBuscarProdFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfBuscarProdFocusGained
-        // TODO add your handling code here:
+        if (!jtfBuscarProd.getText().equals("")) {
+            mostrarBusquedaProd(jtfBuscarProd.getText(), -1);
+        }
     }//GEN-LAST:event_jtfBuscarProdFocusGained
 
     private void jtfBuscarProdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarProdKeyReleased
-        // TODO add your handling code here:
+        mostrarBusquedaProd(jtfBuscarProd.getText(), evt.getKeyCode());
     }//GEN-LAST:event_jtfBuscarProdKeyReleased
 
     private void jtbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbProductosMouseClicked

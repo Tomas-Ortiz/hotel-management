@@ -17,14 +17,12 @@ import javax.swing.SwingConstants;
 
 public class frmRegistro extends javax.swing.JFrame {
 
-    private UtilidadJFrame utilidadJframe;
-    private NegocioUsuario negocioUsuario;
+    private final UtilidadJFrame utilidadJframe;
+    private final NegocioUsuario negocioUsuario;
 
     public frmRegistro() {
-
         initComponents();
-
-        negocioUsuario = new NegocioUsuario();
+        negocioUsuario = NegocioUsuario.getNegocioUsuario();
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Registrarse", this);
 

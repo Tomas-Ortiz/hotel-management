@@ -12,10 +12,14 @@ import java.util.List;
 
 public class NegocioReserva implements IReserva {
 
-    private final ReservaJpaController reservaController;
+    private final ReservaJpaController reservaController = new ReservaJpaController();
+    private static NegocioReserva negocioReserva;
 
-    public NegocioReserva() {
-        reservaController = new ReservaJpaController();
+    public static NegocioReserva getNegocioReserva() {
+        if (negocioReserva == null) {
+            return negocioReserva = new NegocioReserva();
+        }
+        return negocioReserva;
     }
 
     @Override

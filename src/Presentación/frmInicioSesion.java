@@ -17,16 +17,15 @@ import javax.swing.SwingConstants;
 
 public class frmInicioSesion extends javax.swing.JFrame {
 
-    private UtilidadJFrame utilidadJframe;
-    private NegocioUsuario negocioUsuario;
+    private final UtilidadJFrame utilidadJframe;
+    private final NegocioUsuario negocioUsuario;
     private frmPrincipal frmPrincipal;
     private sesionUsuario sesionUsuario;
 
     public frmInicioSesion() {
-
         initComponents();
 
-        negocioUsuario = new NegocioUsuario();
+        negocioUsuario = NegocioUsuario.getNegocioUsuario();
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Iniciar sesión", this);
         sesionUsuario = sesionUsuario.getSesionUsuario();

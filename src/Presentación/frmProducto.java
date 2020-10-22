@@ -4,14 +4,12 @@ import Negocio.Entidades.Producto;
 import Negocio.NegocioProducto;
 import Negocio.UtilidadJFrame;
 import Negocio.UtilidadJOptionPane;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class frmProducto extends javax.swing.JFrame {
 
-    private UtilidadJFrame utilidadJframe;
-    private NegocioProducto negocioProd;
+    private final UtilidadJFrame utilidadJframe;
+    private final NegocioProducto negocioProd;
     private Producto productoModificado;
     private boolean modificarProducto = false;
 
@@ -19,7 +17,7 @@ public class frmProducto extends javax.swing.JFrame {
         initComponents();
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Producto", this);
-        negocioProd = new NegocioProducto();
+        negocioProd = NegocioProducto.getNegocioProducto();
     }
 
     public void mostrarProd(Producto prod) {

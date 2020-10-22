@@ -132,4 +132,43 @@ public class ProductoJpaController implements Serializable {
             em.close();
         }
     }
+
+    public List<Producto> productosOrderBy(String campo) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM productos ORDER BY " + campo, Producto.class);
+
+            return nativeQuery.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Producto> buscarProducto(String busqueda) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM productos WHERE id LIKE ? OR nombre LIKE ? "
+                    + "OR marca LIKE ? OR categoria LIKE ? OR stock LIKE ? OR proveedor LIKE ? OR precioCompra LIKE ? "
+                    + "OR precioVenta LIKE ?", Producto.class);
+
+            try {
+                for (int i = 1; i < 9; i++) {
+                    nativeQuery.setParameter(i, busqueda + "%");
+                }
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            return nativeQuery.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
 }

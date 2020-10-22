@@ -6,11 +6,16 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 public class UtilidadJTable {
 
-    public UtilidadJTable() {
+    private static UtilidadJTable utilidadJTable;
+
+    public static UtilidadJTable getUtilidadJTable() {
+        if (utilidadJTable == null) {
+            return utilidadJTable = new UtilidadJTable();
+        }
+        return utilidadJTable;
     }
 
     public void centrarElementosTable(JTable table) {
-
         DefaultTableCellRenderer dtc = new DefaultTableCellRenderer();
         dtc.setHorizontalAlignment(SwingConstants.CENTER);
 

@@ -10,10 +10,14 @@ import java.util.List;
 
 public class NegocioUsuario implements IUsuario {
 
-    private final UsuarioJpaController usuarioController;
+    private final UsuarioJpaController usuarioController = new UsuarioJpaController();
+    private static NegocioUsuario negocioUsuario;
 
-    public NegocioUsuario() {
-        usuarioController = new UsuarioJpaController();
+    public static NegocioUsuario getNegocioUsuario() {
+        if (negocioUsuario == null) {
+            return negocioUsuario = new NegocioUsuario();
+        }
+        return negocioUsuario;
     }
 
     @Override

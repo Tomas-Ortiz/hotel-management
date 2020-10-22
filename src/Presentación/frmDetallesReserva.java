@@ -11,17 +11,17 @@ import javax.swing.table.DefaultTableModel;
 
 public class frmDetallesReserva extends javax.swing.JFrame {
 
-    private UtilidadJFrame utilidadJframe;
-    private UtilidadJTable utilidadJtable;
-    private DefaultTableModel dtmProductos;
-    private SimpleDateFormat sdf;
+    private final UtilidadJFrame utilidadJframe;
+    private final UtilidadJTable utilidadJtable;
+    private final DefaultTableModel dtmProductos;
+    private final SimpleDateFormat sdf;
 
     public frmDetallesReserva() {
         initComponents();
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Detalles de reserva", this);
 
-        utilidadJtable = new UtilidadJTable();
+        utilidadJtable = UtilidadJTable.getUtilidadJTable();
         sdf = new SimpleDateFormat("dd-MM-yyyy");
         dtmProductos = (DefaultTableModel) jtbProdutos.getModel();
         utilidadJtable.centrarElementosTable(jtbProdutos);
