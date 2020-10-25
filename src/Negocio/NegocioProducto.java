@@ -40,6 +40,11 @@ public class NegocioProducto implements IProducto {
         return prodController.findProductoEntities();
     }
 
+    @Override
+    public List<Producto> getProductosDisponibles() {
+        return prodController.getProductosDisponiles();
+    }
+
     public Producto encontrarProd(Long id) {
         return prodController.findProducto(id);
     }

@@ -1,12 +1,17 @@
 package Negocio.Entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,11 +30,16 @@ public class Producto implements Serializable {
     private float precioVenta;
 
     enum enumCategoria {
+
         Alimento,
         Bebida
     }
     @Enumerated(EnumType.STRING)
     private enumCategoria categoria;
+
+    // Si se elimina un producto, se eliminarán en cascada todos las reservas asociadas al mismo
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReservaProducto> reservas = new ArrayList<>();
 
     public Producto() {
     }
@@ -108,9 +118,16 @@ public class Producto implements Serializable {
         this.precioVenta = precioVenta;
     }
 
-    @Override
-    public String toString() {
-        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", marca=" + marca + ", proveedor=" + proveedor + ", stock=" + stock + ", precioCompra=" + precioCompra + ", precioVenta=" + precioVenta + ", categoria=" + categoria + '}';
+    public List<ReservaProducto> getReservas() {
+        return reservas;
     }
 
+    public void setReservas(List<ReservaProducto> reservas) {
+        this.reservas = reservas;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", marca=" + marca + ", proveedor=" + proveedor + ", stock=" + stock + ", precioCompra=" + precioCompra + ", precioVenta=" + precioVenta + ", categoria=" + categoria + ", reservas=" + reservas + '}';
+    }
 }

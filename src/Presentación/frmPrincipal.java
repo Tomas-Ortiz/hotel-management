@@ -14,6 +14,7 @@ import Negocio.NegocioHabitacion;
 import Negocio.NegocioProducto;
 import Negocio.NegocioReserva;
 import Negocio.UtilidadGeneral;
+import Negocio.UtilidadJDialog;
 import Negocio.UtilidadJOptionPane;
 import Negocio.UtilidadJTable;
 import Negocio.sesionUsuario;
@@ -28,7 +29,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private final DefaultTableModel dtmHabitaciones;
     private List<Habitacion> habitaciones;
-    private final  NegocioHabitacion negocioHabitacion;
+    private final NegocioHabitacion negocioHabitacion;
 
     private final DefaultTableModel dtmReservas;
     private List<Reserva> reservas;
@@ -40,6 +41,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private final DefaultTableModel dtmProd;
     private List<Producto> productos;
+    private List<Producto> productosDisp;
     private final NegocioProducto negocioProducto;
 
     Thread hilo;
@@ -100,6 +102,8 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private void activarPanelReservas() {
         utilidadJframe.activarPanelPrincipal(false, false, true, false, false);
         activarBotonesPanelReservas(false, false, false, false);
+        UtilidadJDialog.configurarJDialog(jdMostrarProductos);
+        mostrarProdJDialog();
         actualizarTablaReservas();
         mostrarCantEstadosReservas();
     }
@@ -308,10 +312,42 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         }
     }
 
+    private void mostrarProdJDialog() {
+        productosDisp = negocioProducto.getProductosDisponibles();
+        jcbProductos.removeAllItems();
+        for (Producto prod : productosDisp) {
+            jcbProductos.addItem(prod.getNombre());
+        }
+    }
+
+    private void mostrarMarca(String nombreProd) {
+        for (Producto prod : productosDisp) {
+            if (nombreProd.equals(prod.getNombre())) {
+                lblMarca.setText(prod.getMarca());
+            }
+        }
+    }
+
+    private void reiniciarJDialogProd() {
+        jcbProductos.setSelectedIndex(0);
+        String nombreProd = (String) jcbProductos.getSelectedItem();
+        mostrarMarca(nombreProd);
+        jspCantProd.setValue(1);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jdMostrarProductos = new javax.swing.JDialog();
+        jcbProductos = new javax.swing.JComboBox();
+        jspCantProd = new javax.swing.JSpinner();
+        jbtnAgregarProdReserva = new javax.swing.JButton();
+        jbtnCancelarProdReserva = new javax.swing.JButton();
+        seleccionarProd = new javax.swing.JLabel();
+        lblSeleccionarCant = new javax.swing.JLabel();
+        lblMarcaProd = new javax.swing.JLabel();
+        lblMarca = new javax.swing.JLabel();
         jbtnSalir = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jpBotoneraNavegacion = new javax.swing.JPanel();
@@ -397,6 +433,92 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblFechaHora = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         jcCalendarioInicio = new com.toedter.calendar.JCalendar();
+
+        jdMostrarProductos.setBackground(new java.awt.Color(255, 255, 255));
+
+        jcbProductos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jcbProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbProductosActionPerformed(evt);
+            }
+        });
+
+        jspCantProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jspCantProd.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+
+        jbtnAgregarProdReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnAgregarProdReserva.setText("Agregar");
+        jbtnAgregarProdReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAgregarProdReservaActionPerformed(evt);
+            }
+        });
+
+        jbtnCancelarProdReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnCancelarProdReserva.setText("cancelar");
+        jbtnCancelarProdReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnCancelarProdReservaActionPerformed(evt);
+            }
+        });
+
+        seleccionarProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        seleccionarProd.setText("Seleccionar producto");
+
+        lblSeleccionarCant.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblSeleccionarCant.setText("Seleccionar cantidad");
+
+        lblMarcaProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblMarcaProd.setText("Marca");
+
+        lblMarca.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+
+        javax.swing.GroupLayout jdMostrarProductosLayout = new javax.swing.GroupLayout(jdMostrarProductos.getContentPane());
+        jdMostrarProductos.getContentPane().setLayout(jdMostrarProductosLayout);
+        jdMostrarProductosLayout.setHorizontalGroup(
+            jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jdMostrarProductosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jdMostrarProductosLayout.createSequentialGroup()
+                        .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(seleccionarProd)
+                            .addComponent(lblSeleccionarCant))
+                        .addGap(18, 18, 18)
+                        .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jdMostrarProductosLayout.createSequentialGroup()
+                                .addComponent(jbtnAgregarProdReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(jbtnCancelarProdReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jspCantProd, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbProductos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jdMostrarProductosLayout.createSequentialGroup()
+                        .addComponent(lblMarcaProd)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jdMostrarProductosLayout.setVerticalGroup(
+            jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jdMostrarProductosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(seleccionarProd)
+                    .addComponent(jcbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblMarcaProd))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblSeleccionarCant)
+                    .addComponent(jspCantProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtnAgregarProdReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnCancelarProdReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -856,12 +978,15 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         getContentPane().add(jpClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 123, 1185, 510));
 
         jpReservas.setBackground(new java.awt.Color(255, 255, 255));
+        jpReservas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTituloReservas.setBackground(new java.awt.Color(255, 255, 255));
         lblTituloReservas.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
         lblTituloReservas.setText("Reservas");
+        jpReservas.add(lblTituloReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(484, 11, -1, -1));
 
         jSeparator5.setForeground(new java.awt.Color(0, 0, 0));
+        jpReservas.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 59, 1067, -1));
 
         jcbFiltroReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jcbFiltroReservas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Nombre", "Apellido", "DNI", "Nro. habitación", "Fecha entrada", "Fecha salida", "Hora entrada", "Hora salida", "Estado", "Precio total" }));
@@ -870,6 +995,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jcbFiltroReservasActionPerformed(evt);
             }
         });
+        jpReservas.add(jcbFiltroReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 89, 148, -1));
 
         jtbReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbReservas.setModel(new javax.swing.table.DefaultTableModel(
@@ -924,6 +1050,8 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             jtbReservas.getColumnModel().getColumn(0).setPreferredWidth(1);
         }
 
+        jpReservas.add(jspReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 195, 946, 254));
+
         jtbnCrearReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnCrearReserva.setText("Crear reserva");
         jtbnCrearReserva.addActionListener(new java.awt.event.ActionListener() {
@@ -931,6 +1059,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jtbnCrearReservaActionPerformed(evt);
             }
         });
+        jpReservas.add(jtbnCrearReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(1014, 197, 158, 53));
 
         jtbnModificarReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnModificarReserva.setText("Actualizar reserva");
@@ -939,6 +1068,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jtbnModificarReservaActionPerformed(evt);
             }
         });
+        jpReservas.add(jtbnModificarReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(1014, 268, 158, 53));
 
         jbtnActualizarTablaReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnActualizarTablaReservas.setText("Actualizar tabla");
@@ -947,9 +1077,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jbtnActualizarTablaReservasActionPerformed(evt);
             }
         });
+        jpReservas.add(jbtnActualizarTablaReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 455, 158, 53));
 
         jLabel2.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jLabel2.setText("Filtrar por ");
+        jpReservas.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 87, -1, 28));
 
         jtbnVerDetalles.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnVerDetalles.setText("Ver detalles");
@@ -958,6 +1090,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jtbnVerDetallesActionPerformed(evt);
             }
         });
+        jpReservas.add(jtbnVerDetalles, new org.netbeans.lib.awtextra.AbsoluteConstraints(837, 455, 158, 53));
 
         jtfBuscarReserva.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -969,11 +1102,14 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jtfBuscarReservaKeyReleased(evt);
             }
         });
+        jpReservas.add(jtfBuscarReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(768, 92, 227, -1));
 
         lblBuscar1.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         lblBuscar1.setText("Buscar");
+        jpReservas.add(lblBuscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(725, 92, -1, -1));
 
         jSeparator7.setForeground(new java.awt.Color(0, 0, 0));
+        jpReservas.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 139, 1067, -1));
 
         jtbnCobrar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         jtbnCobrar.setText("Cobrar");
@@ -982,15 +1118,19 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jtbnCobrarActionPerformed(evt);
             }
         });
+        jpReservas.add(jtbnCobrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(443, 455, 158, 53));
 
         lblOcupadasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblOcupadasReserva.setText("Ocupadas: ");
+        jpReservas.add(lblOcupadasReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 159, -1, -1));
 
         lblCobradasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblCobradasReserva.setText("Cobradas:");
+        jpReservas.add(lblCobradasReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(184, 159, -1, -1));
 
         lblPendientesReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblPendientesReserva.setText("Pendientes:");
+        jpReservas.add(lblPendientesReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 159, -1, -1));
 
         jbtnVenderProducto.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jbtnVenderProducto.setText("Vender producto");
@@ -999,104 +1139,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jbtnVenderProductoActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jpReservasLayout = new javax.swing.GroupLayout(jpReservas);
-        jpReservas.setLayout(jpReservasLayout);
-        jpReservasLayout.setHorizontalGroup(
-            jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpReservasLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpReservasLayout.createSequentialGroup()
-                        .addComponent(lblOcupadasReserva)
-                        .addGap(56, 56, 56)
-                        .addComponent(lblCobradasReserva)
-                        .addGap(56, 56, 56)
-                        .addComponent(lblPendientesReserva)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jpReservasLayout.createSequentialGroup()
-                        .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator5)
-                            .addComponent(jSeparator7))
-                        .addGap(78, 78, 78))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpReservasLayout.createSequentialGroup()
-                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpReservasLayout.createSequentialGroup()
-                        .addGap(484, 484, 484)
-                        .addComponent(lblTituloReservas))
-                    .addGroup(jpReservasLayout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpReservasLayout.createSequentialGroup()
-                                .addComponent(jbtnActualizarTablaReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(236, 236, 236)
-                                .addComponent(jtbnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(236, 236, 236)
-                                .addComponent(jtbnVerDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jpReservasLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jcbFiltroReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblBuscar1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfBuscarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jspReservas, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpReservasLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtbnModificarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtbnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jpReservasLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jbtnVenderProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 22, 22))
-        );
-        jpReservasLayout.setVerticalGroup(
-            jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpReservasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTituloReservas)
-                .addGap(18, 18, 18)
-                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jpReservasLayout.createSequentialGroup()
-                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpReservasLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jcbFiltroReservas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblBuscar1)
-                                    .addComponent(jtfBuscarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(24, 24, 24)
-                                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblOcupadasReserva))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpReservasLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblPendientesReserva))))
-                    .addComponent(lblCobradasReserva))
-                .addGap(18, 18, 18)
-                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpReservasLayout.createSequentialGroup()
-                        .addComponent(jtbnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtbnModificarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jbtnVenderProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(63, 63, 63))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpReservasLayout.createSequentialGroup()
-                        .addComponent(jspReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtnActualizarTablaReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtbnVerDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtbnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
-        );
+        jpReservas.add(jbtnVenderProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(1013, 339, 158, 53));
 
         getContentPane().add(jpReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 123, 1185, 510));
 
@@ -1421,7 +1464,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnEliminarHabitacionActionPerformed
 
     private void jcbFiltroHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroHabitacionesActionPerformed
-
         String campo = (String) jcbFiltroHabitaciones.getSelectedItem();
 
         if (campo.equals("Precio")) {
@@ -1534,7 +1576,8 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnCobrarActionPerformed
 
     private void jbtnVenderProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnVenderProductoActionPerformed
-
+        reiniciarJDialogProd();
+        jdMostrarProductos.setVisible(true);
     }//GEN-LAST:event_jbtnVenderProductoActionPerformed
 
     private void jtfBuscarHabitacionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarHabitacionKeyReleased
@@ -1558,7 +1601,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtfBuscarReservaFocusGained
 
     private void jcbFiltroClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroClientesActionPerformed
-
         String campo = (String) jcbFiltroClientes.getSelectedItem();
 
         switch (campo) {
@@ -1627,7 +1669,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jbtnActualizarTablaClienteActionPerformed
 
     private void jcbFiltroProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroProductosActionPerformed
-
         String campo = (String) jcbFiltroProductos.getSelectedItem();
 
         switch (campo) {
@@ -1681,6 +1722,56 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             frmProducto.setVisible(true);
         }
     }//GEN-LAST:event_jbtnModificarProductoActionPerformed
+
+    private void jbtnCancelarProdReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarProdReservaActionPerformed
+        jdMostrarProductos.dispose();
+    }//GEN-LAST:event_jbtnCancelarProdReservaActionPerformed
+
+    private void jbtnAgregarProdReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarProdReservaActionPerformed
+        boolean superaStock = false;
+        Producto productoSeleccionado = null;
+        Reserva reservaSeleccionada = null;
+
+        String producto = (String) jcbProductos.getSelectedItem();
+        int cantProd = (int) jspCantProd.getValue();
+
+        int filaIndice = jtbReservas.getSelectedRow();
+        Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
+
+        int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo("¿Estás seguro que deseas agregar este producto a la reserva " + reservaId + "?", "Confirmar producto");
+
+        if (confirmado == JOptionPane.YES_OPTION) {
+            for (Producto prod : productosDisp) {
+                if (producto.equals(prod.getNombre())) {
+                    if (cantProd > prod.getStock()) {
+                        superaStock = true;
+                        UtilidadJOptionPane.mostrarMensajeError("La cantidad ingresada supera al stock del producto seleccionado (" + prod.getStock() + ").", "Error");
+                    } else {
+                        productoSeleccionado = prod;
+                        reservaSeleccionada = negocioReserva.encontrarReserva(reservaId);
+                    }
+                }
+            }
+            if (!superaStock && productoSeleccionado != null && reservaSeleccionada != null) {
+                float precioTotal = negocioReserva.calcularPrecioTotalXProducto(cantProd, productoSeleccionado.getPrecioVenta());
+                reservaSeleccionada.addProducto(productoSeleccionado, cantProd, precioTotal);
+                try {
+                    negocioReserva.modificarReserva(reservaSeleccionada);
+                    UtilidadJOptionPane.mostrarMensajeInformacion("El producto ha sido agregado a la reserva. Para visualizarlo ir a los detalles de la misma.", "Producto agregado");
+                    jdMostrarProductos.dispose();
+                } catch (Exception ex) {
+                    System.out.println("Error al agregar el producto. " + ex.getMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_jbtnAgregarProdReservaActionPerformed
+
+    private void jcbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbProductosActionPerformed
+        String producto = (String) jcbProductos.getSelectedItem();
+        if (producto != null) {
+            mostrarMarca(producto);
+        }
+    }//GEN-LAST:event_jcbProductosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1738,6 +1829,8 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton jbtnActualizarTablaProductos;
     private javax.swing.JButton jbtnActualizarTablaReservas;
     private javax.swing.JButton jbtnAgregarProd;
+    private javax.swing.JButton jbtnAgregarProdReserva;
+    private javax.swing.JButton jbtnCancelarProdReserva;
     private javax.swing.JButton jbtnClientes;
     private javax.swing.JButton jbtnHabitaciones;
     private javax.swing.JButton jbtnImprimirListaCliente;
@@ -1752,6 +1845,8 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JComboBox jcbFiltroHabitaciones;
     private javax.swing.JComboBox jcbFiltroProductos;
     private javax.swing.JComboBox jcbFiltroReservas;
+    private javax.swing.JComboBox jcbProductos;
+    private javax.swing.JDialog jdMostrarProductos;
     private javax.swing.JPanel jpBotoneraNavegacion;
     private javax.swing.JPanel jpClientes;
     private javax.swing.JPanel jpHabitaciones;
@@ -1759,6 +1854,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JPanel jpProductos;
     private javax.swing.JPanel jpReservas;
     private javax.swing.JPanel jpTitulo;
+    private javax.swing.JSpinner jspCantProd;
     private javax.swing.JScrollPane jspClientes;
     private javax.swing.JScrollPane jspHabitaciones;
     private javax.swing.JScrollPane jspProductos;
@@ -1792,18 +1888,22 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel lblFechaHoraTitulo;
     private javax.swing.JLabel lblFiltrarPor;
     private javax.swing.JLabel lblLimpieza;
+    private javax.swing.JLabel lblMarca;
+    private javax.swing.JLabel lblMarcaProd;
     private javax.swing.JLabel lblOcupadas;
     private javax.swing.JLabel lblOcupadasReserva;
     private javax.swing.JLabel lblPendientesReserva;
     private javax.swing.JLabel lblProductos;
     private javax.swing.JLabel lblRegistradas;
     private javax.swing.JLabel lblReparación;
+    private javax.swing.JLabel lblSeleccionarCant;
     private javax.swing.JLabel lblTituloClientes;
     private javax.swing.JLabel lblTituloHabitaciones;
     private javax.swing.JLabel lblTituloInicio;
     private javax.swing.JLabel lblTituloPrincipal;
     private javax.swing.JLabel lblTituloReservas;
     private javax.swing.JLabel lblUsuarioLogueado;
+    private javax.swing.JLabel seleccionarProd;
     // End of variables declaration//GEN-END:variables
 
     @Override

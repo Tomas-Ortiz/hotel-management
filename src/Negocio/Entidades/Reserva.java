@@ -1,6 +1,10 @@
 package Negocio.Entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -45,6 +50,10 @@ public class Reserva implements Serializable {
     @JoinColumn(name = "fk_habitacion", nullable = false)
     @OneToOne
     private Habitacion habitacion;
+
+    // Si se elimina una reserva, se eliminarán en cascada todos los productos asociados a la misma
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReservaProducto> productos = new ArrayList<>();
 
     public Reserva() {
     }
@@ -141,8 +150,36 @@ public class Reserva implements Serializable {
         this.horaSalida = horaSalida;
     }
 
+    public List<ReservaProducto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<ReservaProducto> productos) {
+        this.productos = productos;
+    }
+
+    public void addProducto(Producto producto, int cantProd, float precioTotal) {
+        ReservaProducto reservaProducto = new ReservaProducto(this, producto, cantProd, precioTotal);
+        // Asociacion bidireccional
+        productos.add(reservaProducto);
+        producto.getReservas().add(reservaProducto);
+    }
+
+    public void removeProducto(Producto producto) {
+        for (Iterator<ReservaProducto> iterator = productos.iterator();
+                iterator.hasNext();) {
+            ReservaProducto reservaProducto = iterator.next();
+            if (reservaProducto.getReserva().equals(this) && reservaProducto.getProducto().equals(producto)) {
+                iterator.remove();
+                reservaProducto.getProducto().getReservas().remove(reservaProducto);
+                reservaProducto.setReserva(null);
+                reservaProducto.setProducto(null);
+            }
+        }
+    }
+
     @Override
     public String toString() {
-        return "Reserva{" + "id=" + id + ", fechaEntrada=" + fechaEntrada + ", fechaSalida=" + fechaSalida + ", tipoPago=" + tipoPago + ", horaEntrada=" + horaEntrada + ", horaSalida=" + horaSalida + ", precioTotal=" + precioTotal + ", estado=" + estado + ", cliente=" + cliente + ", habitacion=" + habitacion + '}';
+        return "Reserva{" + "id=" + id + ", fechaEntrada=" + fechaEntrada + ", fechaSalida=" + fechaSalida + ", tipoPago=" + tipoPago + ", horaEntrada=" + horaEntrada + ", horaSalida=" + horaSalida + ", precioTotal=" + precioTotal + ", estado=" + estado + ", cliente=" + cliente + ", habitacion=" + habitacion + ", productos=" + productos + '}';
     }
 }

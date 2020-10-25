@@ -26,4 +26,6 @@ public interface IReserva {
     List<Reserva> buscarReserva(String busqueda);
 
     Reserva encontrarReserva(Long id);
+
+    float calcularPrecioTotalXProducto(int cantProd, float precioProd);
 }

@@ -96,4 +96,9 @@ public class NegocioReserva implements IReserva {
     public Reserva encontrarReserva(Long id) {
         return reservaController.findReserva(id);
     }
+
+    @Override
+    public float calcularPrecioTotalXProducto(int cantProd, float precioProd) {
+        return cantProd * precioProd;
+    }
 }

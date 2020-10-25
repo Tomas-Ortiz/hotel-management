@@ -171,4 +171,19 @@ public class ProductoJpaController implements Serializable {
             em.close();
         }
     }
+
+    public List<Producto> getProductosDisponiles() {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM productos WHERE stock > 0", Producto.class);
+            return nativeQuery.getResultList();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            em.close();
+        }
+        return null;
+    }
 }

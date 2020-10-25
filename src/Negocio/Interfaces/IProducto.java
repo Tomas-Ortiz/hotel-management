@@ -21,4 +21,6 @@ public interface IProducto {
     List<Producto> ordenarProductos(String campo);
 
     List<Producto> buscarProducto(String busqueda);
+
+    List<Producto> getProductosDisponibles();
 }

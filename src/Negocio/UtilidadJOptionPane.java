@@ -28,5 +28,4 @@ public class UtilidadJOptionPane {
         return JOptionPane.showOptionDialog(null, mensaje, titulo, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botones, botones[0]);
 
     }
-
 }
