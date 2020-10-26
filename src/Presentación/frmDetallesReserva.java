@@ -68,7 +68,7 @@ public class frmDetallesReserva extends javax.swing.JFrame {
         lblEstadoPago.setText("Estado: " + reserva.getEstado());
 
         float precioTotalProductos = negocioReserva.calcularPrecioTotalProductos(reserva.getProductos());
-        float precioTotalAlojamiento = negocioReserva.calcularPrecioTotal(reserva.getHabitacion(), fechaEntrada, fechaSalida);
+        float precioTotalAlojamiento = negocioReserva.calcularPrecioTotalAlojamiento(reserva.getHabitacion(), fechaEntrada, fechaSalida);
         float precioTotalReserva = precioTotalProductos + precioTotalAlojamiento;
 
         lblTotalProductos.setText("Total productos: $" + precioTotalProductos);

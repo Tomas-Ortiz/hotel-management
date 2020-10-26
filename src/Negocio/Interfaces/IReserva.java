@@ -16,7 +16,7 @@ public interface IReserva {
 
     List<Reserva> getReservas();
 
-    float calcularPrecioTotal(Habitacion habitacion, Date fechaEntrada, Date fechaSalida);
+    float calcularPrecioTotalAlojamiento(Habitacion habitacion, Date fechaEntrada, Date fechaSalida);
 
     void modificarReserva(Reserva reserva) throws Exception;
 
@@ -31,4 +31,8 @@ public interface IReserva {
     float calcularPrecioTotalXProducto(int cantProd, float precioProd);
 
     float calcularPrecioTotalProductos(List<ReservaProducto> reservaProductos);
+
+    ReservaProducto verificarExistenciaProdReserva(List<ReservaProducto> reservaProd, Long idProdSeleccionado);
+    
+    void cobrarReserva(Reserva reserva) throws Exception;
 }

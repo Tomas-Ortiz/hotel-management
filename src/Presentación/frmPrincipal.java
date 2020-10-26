@@ -21,6 +21,8 @@ import Negocio.UtilidadJTable;
 import Negocio.sesionUsuario;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class frmPrincipal extends javax.swing.JFrame implements Runnable {
@@ -184,6 +186,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     public void actualizarTablaHabitaciones() {
         mostrarDatosHabitaciones(negocioHabitacion.getHabitaciones());
+        activarBotonesPanelHabitaciones(false, false);
     }
 
     private void mostrarDatosReservas(List<Reserva> reservas) {
@@ -198,10 +201,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private void actualizarTablaReservas() {
         mostrarDatosReservas(negocioReserva.getReservas());
+        activarBotonesPanelReservas(false, false, false, false);
     }
 
     private void mostrarCantEstadosReservas() {
-        lblOcupadasReserva.setText("Ocupadas (" + negocioReserva.getReservas().size() + ")");
+        lblCantReservas.setText("Reservas (" + negocioReserva.getReservas().size() + ")");
         lblCobradasReserva.setText("Cobradas (" + negocioReserva.getCountReservasByEstado("Cobrado") + ")");
         lblPendientesReserva.setText("Pendientes (" + negocioReserva.getCountReservasByEstado("Pendiente") + ")");
     }
@@ -227,6 +231,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private void actualizarTablaClientes() {
         mostrarDatosClientes(negocioCliente.getClientes());
+        activarBotonesPanelCliente(false);
     }
 
     private void mostrarDatosProd(List<Producto> productos) {
@@ -242,6 +247,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private void actualizarTablaProd() {
         mostrarDatosProd(negocioProducto.getProductos());
+        activarBotonesPanelProd(false);
     }
 
     private void mostrarCantProd() {
@@ -405,7 +411,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblBuscar1 = new javax.swing.JLabel();
         jSeparator7 = new javax.swing.JSeparator();
         jtbnCobrar = new javax.swing.JButton();
-        lblOcupadasReserva = new javax.swing.JLabel();
+        lblCantReservas = new javax.swing.JLabel();
         lblCobradasReserva = new javax.swing.JLabel();
         lblPendientesReserva = new javax.swing.JLabel();
         jbtnVenderProducto = new javax.swing.JButton();
@@ -1121,9 +1127,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         });
         jpReservas.add(jtbnCobrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(443, 455, 158, 53));
 
-        lblOcupadasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
-        lblOcupadasReserva.setText("Ocupadas: ");
-        jpReservas.add(lblOcupadasReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 159, -1, -1));
+        lblCantReservas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblCantReservas.setText("Reservas:");
+        jpReservas.add(lblCantReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 159, -1, -1));
 
         lblCobradasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblCobradasReserva.setText("Cobradas:");
@@ -1417,7 +1423,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnCrearHabitacionActionPerformed
 
     private void jbtnActualizarTablaHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaHabitacionesActionPerformed
-        activarBotonesPanelHabitaciones(false, false);
         actualizarTablaHabitaciones();
         mostrarCantEstadosHabitaciones();
         jcbFiltroHabitaciones.setSelectedItem("Id");
@@ -1428,7 +1433,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbHabitacionesMouseClicked
 
     private void jtbnModificarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnModificarHabitacionActionPerformed
-
         frmHabitacion frmHabitacion = new frmHabitacion();
         int filaIndice = jtbHabitaciones.getSelectedRow();
         habitaciones = negocioHabitacion.getHabitaciones();
@@ -1527,7 +1531,14 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jcbFiltroReservasActionPerformed
 
     private void jtbReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbReservasMouseClicked
-        activarBotonesPanelReservas(true, true, true, true);
+        int filaIndice = jtbReservas.getSelectedRow();
+        String estado = dtmReservas.getValueAt(filaIndice, 9).toString();
+
+        if (estado.equals("Cobrado")) {
+            activarBotonesPanelReservas(false, false, true, false);
+        } else {
+            activarBotonesPanelReservas(true, true, true, true);
+        }
     }//GEN-LAST:event_jtbReservasMouseClicked
 
     private void jtbnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCrearReservaActionPerformed
@@ -1553,7 +1564,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnModificarReservaActionPerformed
 
     private void jbtnActualizarTablaReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaReservasActionPerformed
-        activarBotonesPanelReservas(false, false, false, false);
         actualizarTablaReservas();
         mostrarCantEstadosReservas();
         jcbFiltroReservas.setSelectedItem("Id");
@@ -1573,7 +1583,22 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnVerDetallesActionPerformed
 
     private void jtbnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnCobrarActionPerformed
+        int filaIndice = jtbReservas.getSelectedRow();
+        Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
+        Reserva reserva = negocioReserva.encontrarReserva(reservaId);
 
+        try {
+            int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo("¿Estás seguro que deseas cobrar la reserva con id " + reserva.getId() + "?", "Confirmar cobro");
+            if (confirmado == JOptionPane.YES_OPTION) {
+                negocioReserva.cobrarReserva(reserva);
+                UtilidadJOptionPane.mostrarMensajeInformacion("¡Reserva cobrada exitosamente!", "Reserva cobrada");
+                actualizarTablaReservas();
+                mostrarCantEstadosReservas();
+                jcbFiltroReservas.setSelectedItem("Id");
+            }
+        } catch (Exception ex) {
+            System.out.println("Error al cobrar la reserva " + ex.getMessage());
+        }
     }//GEN-LAST:event_jtbnCobrarActionPerformed
 
     private void jbtnVenderProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnVenderProductoActionPerformed
@@ -1655,7 +1680,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private void jbtnImprimirListaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnImprimirListaClienteActionPerformed
 
-
     }//GEN-LAST:event_jbtnImprimirListaClienteActionPerformed
 
     private void jtbClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbClientesMouseClicked
@@ -1663,7 +1687,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbClientesMouseClicked
 
     private void jbtnActualizarTablaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaClienteActionPerformed
-        activarBotonesPanelCliente(false);
         actualizarTablaClientes();
         mostrarCantClientes();
         jcbFiltroClientes.setSelectedItem("Id");
@@ -1707,7 +1730,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private void jbtnActualizarTablaProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnActualizarTablaProductosActionPerformed
         actualizarTablaProd();
         mostrarCantProd();
-        activarBotonesPanelProd(false);
         jcbFiltroProductos.setSelectedItem("Id");
     }//GEN-LAST:event_jbtnActualizarTablaProductosActionPerformed
 
@@ -1779,6 +1801,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                     negocioProducto.actualizarStock(productoSeleccionado);
                     negocioReserva.modificarReserva(reservaSeleccionada);
                     UtilidadJOptionPane.mostrarMensajeInformacion("El producto ha sido agregado a la reserva. Para visualizarlo ir a los detalles de la misma.", "Producto agregado");
+                    actualizarTablaReservas();
                     jdMostrarProductos.dispose();
                 } catch (Exception ex) {
                     System.out.println("Error al agregar el producto. " + ex.getMessage());
@@ -1902,6 +1925,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel lblBuscarCliente;
     private javax.swing.JLabel lblBuscarProd;
     private javax.swing.JLabel lblCantProd;
+    private javax.swing.JLabel lblCantReservas;
     private javax.swing.JLabel lblClientes;
     private javax.swing.JLabel lblCobradasReserva;
     private javax.swing.JLabel lblDisponibles;
@@ -1912,7 +1936,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel lblMarca;
     private javax.swing.JLabel lblMarcaProd;
     private javax.swing.JLabel lblOcupadas;
-    private javax.swing.JLabel lblOcupadasReserva;
     private javax.swing.JLabel lblPendientesReserva;
     private javax.swing.JLabel lblProductos;
     private javax.swing.JLabel lblRegistradas;

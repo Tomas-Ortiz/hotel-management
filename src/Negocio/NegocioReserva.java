@@ -9,15 +9,16 @@ import Negocio.Interfaces.IReserva;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.mysql.jdbc.StringUtils;
 import com.toedter.calendar.JDateChooser;
-import java.util.ConcurrentModificationException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class NegocioReserva implements IReserva {
 
     private final ReservaJpaController reservaController = new ReservaJpaController();
     private static NegocioReserva negocioReserva;
+    private final NegocioHabitacion negocioHabitacion = NegocioHabitacion.getNegocioHabitacion();
+    private SimpleDateFormat sdf;
 
     public static NegocioReserva getNegocioReserva() {
         if (negocioReserva == null) {
@@ -63,7 +64,7 @@ public class NegocioReserva implements IReserva {
     }
 
     @Override
-    public float calcularPrecioTotal(Habitacion habitacion, Date fechaEntrada, Date fechaSalida) {
+    public float calcularPrecioTotalAlojamiento(Habitacion habitacion, Date fechaEntrada, Date fechaSalida) {
 
         long dias = UtilidadGeneral.calcularDiasEntreFechas(fechaEntrada, fechaSalida);
 
@@ -112,11 +113,19 @@ public class NegocioReserva implements IReserva {
     // Finalmente, se modifica cada reserva
     public void actualizarPrecioTotalProdReserva(Producto productoModificado) throws Exception {
         int indiceProd;
+        float precioProductos, precioAlojamiento;
+        sdf = new SimpleDateFormat("dd-MM-yyyy");
         for (ReservaProducto reservaProd : productoModificado.getReservas()) {
             float precioTotal = calcularPrecioTotalXProducto(reservaProd.getCantProducto(), productoModificado.getPrecioVenta());
             try {
                 indiceProd = reservaProd.getReserva().getProductos().indexOf(reservaProd);
                 reservaProd.getReserva().getProductos().get(indiceProd).setPrecioTotal(precioTotal);
+
+                Date fechaEntrada = sdf.parse(reservaProd.getReserva().getFechaEntrada());
+                Date fechaSalida = sdf.parse(reservaProd.getReserva().getFechaSalida());
+                precioProductos = negocioReserva.calcularPrecioTotalProductos(reservaProd.getReserva().getProductos());
+                precioAlojamiento = negocioReserva.calcularPrecioTotalAlojamiento(reservaProd.getReserva().getHabitacion(), fechaEntrada, fechaSalida);
+                reservaProd.getReserva().setPrecioTotal(precioAlojamiento + precioProductos);
                 reservaController.edit(reservaProd.getReserva());
             } catch (Exception ex) {
                 System.out.println("Error al actualizar el precio total del prod. de la reserva. " + ex);
@@ -135,6 +144,7 @@ public class NegocioReserva implements IReserva {
         return precioTotal;
     }
 
+    @Override
     public ReservaProducto verificarExistenciaProdReserva(List<ReservaProducto> reservaProd, Long idProdSeleccionado) {
 
         for (ReservaProducto resProd : reservaProd) {
@@ -144,4 +154,24 @@ public class NegocioReserva implements IReserva {
         }
         return null;
     }
+
+    @Override
+    public void cobrarReserva(Reserva reserva) throws Exception {
+        if (reserva != null) {
+            reserva.setEstado("Cobrado");
+            reserva.getHabitacion().setEstado("Disponible");
+            negocioHabitacion.modificarHabitacion(reserva.getHabitacion());
+            negocioReserva.modificarReserva(reserva);
+        }
+    }
+
+    public Reserva encontrarReservaHabitacion(Habitacion hab) {
+        for (Reserva reserva : getReservas()) {
+            if (reserva.getHabitacion().getId().equals(hab.getId())) {
+                return reserva;
+            }
+        }
+        return null;
+    }
+
 }

@@ -408,7 +408,7 @@ public class frmReserva extends javax.swing.JFrame {
                             negocioHabitacion.modificarHabitacion(habitacionSeleccionada);
                             reservaModificada.setHabitacion(habitacionSeleccionada);
                         }
-                        precioTotal = negocioReserva.calcularPrecioTotal(reservaModificada.getHabitacion(), jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
+                        precioTotal = negocioReserva.calcularPrecioTotalAlojamiento(reservaModificada.getHabitacion(), jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
                         float precioTotalProductos = negocioReserva.calcularPrecioTotalProductos(reservaModificada.getProductos());
                         reservaModificada.setPrecioTotal(precioTotal + precioTotalProductos);
 
@@ -430,7 +430,7 @@ public class frmReserva extends javax.swing.JFrame {
                     habitacionSeleccionada = negocioHabitacion.getHabitacionSeleccionada(habitacionesDisponibles, nroHabitacion);
                     habitacionSeleccionada.setEstado("Ocupada");
 
-                    precioTotal = negocioReserva.calcularPrecioTotal(habitacionSeleccionada, jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
+                    precioTotal = negocioReserva.calcularPrecioTotalAlojamiento(habitacionSeleccionada, jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
 
                     Cliente clienteNuevo = new Cliente(nombre, apellido, nacionalidad, correo, fechaNacimiento, nroTelefono, dni);
 
