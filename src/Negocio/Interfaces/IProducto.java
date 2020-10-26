@@ -23,4 +23,6 @@ public interface IProducto {
     List<Producto> buscarProducto(String busqueda);
 
     List<Producto> getProductosDisponibles();
+
+    void actualizarStock(Producto prod) throws Exception;
 }

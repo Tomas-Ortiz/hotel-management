@@ -409,7 +409,8 @@ public class frmReserva extends javax.swing.JFrame {
                             reservaModificada.setHabitacion(habitacionSeleccionada);
                         }
                         precioTotal = negocioReserva.calcularPrecioTotal(reservaModificada.getHabitacion(), jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
-                        reservaModificada.setPrecioTotal(precioTotal);
+                        float precioTotalProductos = negocioReserva.calcularPrecioTotalProductos(reservaModificada.getProductos());
+                        reservaModificada.setPrecioTotal(precioTotal + precioTotalProductos);
 
                         negocioReserva.modificarReserva(reservaModificada);
                         mensaje = "¡Reserva modificada exitosamente!";

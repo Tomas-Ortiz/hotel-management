@@ -1,30 +1,37 @@
 package Presentación;
 
 import Negocio.Entidades.Reserva;
+import Negocio.Entidades.ReservaProducto;
+import Negocio.NegocioReserva;
 import Negocio.UtilidadGeneral;
 import Negocio.UtilidadJFrame;
 import Negocio.UtilidadJTable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class frmDetallesReserva extends javax.swing.JFrame {
 
     private final UtilidadJFrame utilidadJframe;
     private final UtilidadJTable utilidadJtable;
+
     private final DefaultTableModel dtmProductos;
+
+    private NegocioReserva negocioReserva;
+
     private final SimpleDateFormat sdf;
 
     public frmDetallesReserva() {
         initComponents();
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Detalles de reserva", this);
-
         utilidadJtable = UtilidadJTable.getUtilidadJTable();
+        negocioReserva = NegocioReserva.getNegocioReserva();
         sdf = new SimpleDateFormat("dd-MM-yyyy");
-        dtmProductos = (DefaultTableModel) jtbProdutos.getModel();
-        utilidadJtable.centrarElementosTable(jtbProdutos);
+        dtmProductos = (DefaultTableModel) jtbProdutosReserva.getModel();
+        utilidadJtable.centrarElementosTable(jtbProdutosReserva);
     }
 
     public void mostrarDetallesReserva(Reserva reserva) {
@@ -60,9 +67,29 @@ public class frmDetallesReserva extends javax.swing.JFrame {
         lblTipoPago.setText("Tipo de pago: " + reserva.getTipoPago());
         lblEstadoPago.setText("Estado: " + reserva.getEstado());
 
-        lblTotalProductos.setText("Total productos: $" + 0);
-        lblTotalAlojamiento.setText("Total alojamiento: $" + reserva.getPrecioTotal());
-        lblTotalReserva.setText("Total reserva: $" + reserva.getPrecioTotal());
+        float precioTotalProductos = negocioReserva.calcularPrecioTotalProductos(reserva.getProductos());
+        float precioTotalAlojamiento = negocioReserva.calcularPrecioTotal(reserva.getHabitacion(), fechaEntrada, fechaSalida);
+        float precioTotalReserva = precioTotalProductos + precioTotalAlojamiento;
+
+        lblTotalProductos.setText("Total productos: $" + precioTotalProductos);
+        lblTotalAlojamiento.setText("Total alojamiento: $" + precioTotalAlojamiento);
+        lblTotalReserva.setText("Total reserva: $" + precioTotalReserva);
+
+        mostrarProductosReserva(reserva.getProductos());
+    }
+
+    private void mostrarProductosReserva(List<ReservaProducto> productosReserva) {
+        dtmProductos.setRowCount(0);
+        if (productosReserva.size() > 0) {
+            for (ReservaProducto prod : productosReserva) {
+                dtmProductos.addRow(new Object[]{prod.getId().getProductoId(), prod.getProducto().getNombre(),
+                    prod.getProducto().getMarca(), prod.getCantProducto(), prod.getProducto().getPrecioVenta(),
+                    prod.getPrecioTotal()});
+            }
+        } else {
+            dtmProductos.addRow(new Object[]{"Esta", "reserva", "no", "tiene", "productos", "consumidos."});
+        }
+        lblCantProductos.setText("Productos (" + productosReserva.size() + ")");
     }
 
     @SuppressWarnings("unchecked")
@@ -107,8 +134,8 @@ public class frmDetallesReserva extends javax.swing.JFrame {
         lblProductosConsumidos = new javax.swing.JLabel();
         jSeparator12 = new javax.swing.JSeparator();
         jSeparator13 = new javax.swing.JSeparator();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jtbProdutos = new javax.swing.JTable();
+        jspProductosReserva = new javax.swing.JScrollPane();
+        jtbProdutosReserva = new javax.swing.JTable();
         lblHoraEntrada = new javax.swing.JLabel();
         lblCantProductos = new javax.swing.JLabel();
         lblTotalReserva = new javax.swing.JLabel();
@@ -265,28 +292,26 @@ public class frmDetallesReserva extends javax.swing.JFrame {
         getContentPane().add(jSeparator12, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 180, 410, 10));
         getContentPane().add(jSeparator13, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 150, 410, 10));
 
-        jtbProdutos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        jtbProdutos.setModel(new javax.swing.table.DefaultTableModel(
+        jtbProdutosReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbProdutosReserva.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Producto", "Cantidad", "Precio unitario", "Precio total"
+                "Id", "Producto", "Marca", "Cantidad", "Precio unitario", "Precio total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -297,18 +322,14 @@ public class frmDetallesReserva extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jtbProdutos.setRowHeight(18);
-        jtbProdutos.setRowMargin(5);
-        jtbProdutos.setSelectionBackground(new java.awt.Color(153, 204, 255));
-        jtbProdutos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jtbProdutos.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jtbProdutos);
-        if (jtbProdutos.getColumnModel().getColumnCount() > 0) {
-            jtbProdutos.getColumnModel().getColumn(1).setResizable(false);
-            jtbProdutos.getColumnModel().getColumn(4).setResizable(false);
-        }
+        jtbProdutosReserva.setRowHeight(21);
+        jtbProdutosReserva.setRowMargin(5);
+        jtbProdutosReserva.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        jtbProdutosReserva.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jtbProdutosReserva.getTableHeader().setReorderingAllowed(false);
+        jspProductosReserva.setViewportView(jtbProdutosReserva);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 220, 410, 210));
+        getContentPane().add(jspProductosReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 220, 410, 210));
 
         lblHoraEntrada.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblHoraEntrada.setText("Hora de entrada:");
@@ -378,7 +399,6 @@ public class frmDetallesReserva extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
@@ -396,7 +416,8 @@ public class frmDetallesReserva extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JPanel jpTitulo;
-    private javax.swing.JTable jtbProdutos;
+    private javax.swing.JScrollPane jspProductosReserva;
+    private javax.swing.JTable jtbProdutosReserva;
     private javax.swing.JButton jtbnSalir;
     private javax.swing.JLabel lblAlojamiento;
     private javax.swing.JLabel lblApellido;

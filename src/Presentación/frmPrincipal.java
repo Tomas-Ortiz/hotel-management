@@ -5,6 +5,7 @@ import Negocio.Entidades.Cliente;
 import Negocio.Entidades.Habitacion;
 import Negocio.Entidades.Producto;
 import Negocio.Entidades.Reserva;
+import Negocio.Entidades.ReservaProducto;
 import Negocio.NegocioCliente;
 import Negocio.UtilidadJFrame;
 import java.util.ArrayList;
@@ -1753,9 +1754,29 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 }
             }
             if (!superaStock && productoSeleccionado != null && reservaSeleccionada != null) {
-                float precioTotal = negocioReserva.calcularPrecioTotalXProducto(cantProd, productoSeleccionado.getPrecioVenta());
-                reservaSeleccionada.addProducto(productoSeleccionado, cantProd, precioTotal);
+                int indiceProd, cantProdExistente;
+                float precioTotalProd, nuevoPrecioTotalProd;
+
+                // Se verifica si ya existe el producto seleccionado para la reserva
+                // Si existe, no se duplica sino que se suma la cantidad al producto existente
+                // Se calcula el nuevo precio total del producto
+                ReservaProducto reservaProd = negocioReserva.verificarExistenciaProdReserva(reservaSeleccionada.getProductos(), productoSeleccionado.getId());
+                precioTotalProd = negocioReserva.calcularPrecioTotalXProducto(cantProd, productoSeleccionado.getPrecioVenta());
+
+                if (reservaProd != null) {
+                    indiceProd = reservaSeleccionada.getProductos().indexOf(reservaProd);
+                    cantProdExistente = reservaSeleccionada.getProductos().get(indiceProd).getCantProducto();
+                    reservaSeleccionada.getProductos().get(indiceProd).setCantProducto(cantProdExistente + cantProd);
+                    nuevoPrecioTotalProd = negocioReserva.calcularPrecioTotalXProducto((cantProdExistente + cantProd), productoSeleccionado.getPrecioVenta());
+                    reservaSeleccionada.getProductos().get(indiceProd).setPrecioTotal(nuevoPrecioTotalProd);
+                    reservaSeleccionada.setPrecioTotal(reservaSeleccionada.getPrecioTotal() + precioTotalProd);
+                } else {
+                    reservaSeleccionada.addProducto(productoSeleccionado, cantProd, precioTotalProd);
+                    reservaSeleccionada.setPrecioTotal(reservaSeleccionada.getPrecioTotal() + precioTotalProd);
+                }
                 try {
+                    productoSeleccionado.setStock(productoSeleccionado.getStock() - cantProd);
+                    negocioProducto.actualizarStock(productoSeleccionado);
                     negocioReserva.modificarReserva(reservaSeleccionada);
                     UtilidadJOptionPane.mostrarMensajeInformacion("El producto ha sido agregado a la reserva. Para visualizarlo ir a los detalles de la misma.", "Producto agregado");
                     jdMostrarProductos.dispose();

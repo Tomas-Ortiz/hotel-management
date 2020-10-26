@@ -2,6 +2,7 @@ package Negocio.Interfaces;
 
 import Negocio.Entidades.Habitacion;
 import Negocio.Entidades.Reserva;
+import Negocio.Entidades.ReservaProducto;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.toedter.calendar.JDateChooser;
 import java.util.Date;
@@ -28,4 +29,6 @@ public interface IReserva {
     Reserva encontrarReserva(Long id);
 
     float calcularPrecioTotalXProducto(int cantProd, float precioProd);
+
+    float calcularPrecioTotalProductos(List<ReservaProducto> reservaProductos);
 }

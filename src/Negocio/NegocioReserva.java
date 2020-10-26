@@ -2,13 +2,17 @@ package Negocio;
 
 import Datos.ReservaJpaController;
 import Negocio.Entidades.Habitacion;
+import Negocio.Entidades.Producto;
 import Negocio.Entidades.Reserva;
+import Negocio.Entidades.ReservaProducto;
 import Negocio.Interfaces.IReserva;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.mysql.jdbc.StringUtils;
 import com.toedter.calendar.JDateChooser;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class NegocioReserva implements IReserva {
 
@@ -100,5 +104,44 @@ public class NegocioReserva implements IReserva {
     @Override
     public float calcularPrecioTotalXProducto(int cantProd, float precioProd) {
         return cantProd * precioProd;
+    }
+
+    // Si se modifica el precio de venta de un producto
+    // Se recorren todas las reservas que contiene el producto
+    // Y se actualiza el precio total de cada producto de cada reserva
+    // Finalmente, se modifica cada reserva
+    public void actualizarPrecioTotalProdReserva(Producto productoModificado) throws Exception {
+        int indiceProd;
+        for (ReservaProducto reservaProd : productoModificado.getReservas()) {
+            float precioTotal = calcularPrecioTotalXProducto(reservaProd.getCantProducto(), productoModificado.getPrecioVenta());
+            try {
+                indiceProd = reservaProd.getReserva().getProductos().indexOf(reservaProd);
+                reservaProd.getReserva().getProductos().get(indiceProd).setPrecioTotal(precioTotal);
+                reservaController.edit(reservaProd.getReserva());
+            } catch (Exception ex) {
+                System.out.println("Error al actualizar el precio total del prod. de la reserva. " + ex);
+            }
+        }
+    }
+
+    @Override
+    public float calcularPrecioTotalProductos(List<ReservaProducto> reservaProductos) {
+        float precioTotal = 0;
+        if (reservaProductos.size() > 0) {
+            for (ReservaProducto reservaProd : reservaProductos) {
+                precioTotal += reservaProd.getPrecioTotal();
+            }
+        }
+        return precioTotal;
+    }
+
+    public ReservaProducto verificarExistenciaProdReserva(List<ReservaProducto> reservaProd, Long idProdSeleccionado) {
+
+        for (ReservaProducto resProd : reservaProd) {
+            if (resProd.getId().getProductoId().equals(idProdSeleccionado)) {
+                return resProd;
+            }
+        }
+        return null;
     }
 }

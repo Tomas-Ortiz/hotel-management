@@ -2,6 +2,7 @@ package Presentación;
 
 import Negocio.Entidades.Producto;
 import Negocio.NegocioProducto;
+import Negocio.NegocioReserva;
 import Negocio.UtilidadJFrame;
 import Negocio.UtilidadJOptionPane;
 import javax.swing.JOptionPane;
@@ -10,6 +11,8 @@ public class frmProducto extends javax.swing.JFrame {
 
     private final UtilidadJFrame utilidadJframe;
     private final NegocioProducto negocioProd;
+    private final NegocioReserva negocioReserva;
+
     private Producto productoModificado;
     private boolean modificarProducto = false;
 
@@ -18,6 +21,7 @@ public class frmProducto extends javax.swing.JFrame {
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Producto", this);
         negocioProd = NegocioProducto.getNegocioProducto();
+        negocioReserva = NegocioReserva.getNegocioReserva();
     }
 
     public void mostrarProd(Producto prod) {
@@ -227,7 +231,7 @@ public class frmProducto extends javax.swing.JFrame {
 
         String nombre = "", marca = "", categoria = "", proveedor = "", mensaje = "", titulo = "";
         int stock = -1;
-        float precioCompra = -1, precioVenta = -1;
+        float precioCompra = -1, precioVenta = -1, precioVentaOriginal = -1;
         boolean datosValidos = true, prodExiste = false;
 
         try {
@@ -272,9 +276,14 @@ public class frmProducto extends javax.swing.JFrame {
                         productoModificado.setStock(stock);
                         productoModificado.setProveedor(proveedor);
                         productoModificado.setPrecioCompra(precioCompra);
+                        precioVentaOriginal = productoModificado.getPrecioVenta();
                         productoModificado.setPrecioVenta(precioVenta);
                         try {
                             negocioProd.editarProd(productoModificado);
+                            // Si se modificó el precio de venta
+                            if (precioVentaOriginal != precioVenta) {
+                                negocioReserva.actualizarPrecioTotalProdReserva(productoModificado);
+                            }
                             mensaje = "¡Producto modificado exitosamente!";
                         } catch (Exception ex) {
                             mensaje = "Error al editar el producto. " + ex.getMessage();
