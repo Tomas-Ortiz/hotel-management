@@ -112,7 +112,7 @@ public class UtilidadJFrame implements IJFrame {
 
         setConfiguracionPanelTitulo(panel);
 
-        contentPane.add(panel, BorderLayout.PAGE_START);
+        contentPane.add(panel, BorderLayout.CENTER);
     }
 
     @Override

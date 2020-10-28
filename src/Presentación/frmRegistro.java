@@ -2,14 +2,17 @@ package Presentación;
 
 import Negocio.Entidades.Usuario;
 import Negocio.NegocioUsuario;
+import Negocio.UtilidadIcono;
 import Negocio.UtilidadJFrame;
 import Negocio.UtilidadJOptionPane;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.RollbackException;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -25,9 +28,22 @@ public class frmRegistro extends javax.swing.JFrame {
         negocioUsuario = NegocioUsuario.getNegocioUsuario();
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Registrarse", this);
-
         iniciarPanelTitulo();
         iniciarPanelRegistro();
+        mostrarIconos();
+    }
+
+    private void mostrarIconos() {
+        Image iconoIniciarSesion = new ImageIcon("src/Recursos/Iconos/iconoInicioSesion.png").getImage();
+        UtilidadIcono.cargarIconoButtonRedimensionable(iconoIniciarSesion, jbtnIniciarSesion, 17, 17);
+
+        Image iconoRegistro = new ImageIcon("src/Recursos/Iconos/iconoRegistro.png").getImage();
+        UtilidadIcono.cargarIconoButtonRedimensionable(iconoRegistro, jbtnRegistrarse, 20, 20);
+
+        Image iconoSalir = new ImageIcon("src/Recursos/Iconos/iconoSalir.png").getImage();
+        UtilidadIcono.cargarIconoButton(iconoSalir, jbtnSalir, 35, 35);
+
+        UtilidadIcono.cargarIconoFrame(this);
     }
 
     private void iniciarPanelTitulo() {
@@ -107,31 +123,32 @@ public class frmRegistro extends javax.swing.JFrame {
         jtfContraseña = new javax.swing.JPasswordField();
         jtfConfirmarContraseña = new javax.swing.JPasswordField();
         jSeparator1 = new javax.swing.JSeparator();
+        lblIconoHotel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblTituloHotel.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
         lblTituloHotel.setText("MyHotel");
 
-        lblRegistro.setFont(new java.awt.Font("Microsoft JhengHei Light", 1, 24)); // NOI18N
+        lblRegistro.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 40)); // NOI18N
         lblRegistro.setText("Registrarse");
 
-        lblNombre.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        lblNombre.setFont(new java.awt.Font("Maiandra GD", 0, 16)); // NOI18N
         lblNombre.setText("Nombre");
 
-        lblApellido.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        lblApellido.setFont(new java.awt.Font("Maiandra GD", 0, 16)); // NOI18N
         lblApellido.setText("Apellido");
 
-        lblEmail.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        lblEmail.setFont(new java.awt.Font("Maiandra GD", 0, 16)); // NOI18N
         lblEmail.setText("Correo electrónico");
 
-        lblUsuario.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        lblUsuario.setFont(new java.awt.Font("Maiandra GD", 0, 16)); // NOI18N
         lblUsuario.setText("Usuario");
 
-        lblContraseña.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        lblContraseña.setFont(new java.awt.Font("Maiandra GD", 0, 16)); // NOI18N
         lblContraseña.setText("Contraseña");
 
-        lblConfirmarContraseña.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        lblConfirmarContraseña.setFont(new java.awt.Font("Maiandra GD", 0, 16)); // NOI18N
         lblConfirmarContraseña.setText("Confirmar contraseña");
 
         jtfUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -140,8 +157,8 @@ public class frmRegistro extends javax.swing.JFrame {
             }
         });
 
-        jbtnRegistrarse.setBackground(new java.awt.Color(102, 153, 255));
-        jbtnRegistrarse.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        jbtnRegistrarse.setBackground(new java.awt.Color(0, 153, 102));
+        jbtnRegistrarse.setFont(new java.awt.Font("Microsoft JhengHei Light", 1, 14)); // NOI18N
         jbtnRegistrarse.setForeground(new java.awt.Color(255, 255, 255));
         jbtnRegistrarse.setText("Registrarse");
         jbtnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
@@ -153,8 +170,8 @@ public class frmRegistro extends javax.swing.JFrame {
         lblO.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
         lblO.setText("o");
 
-        jbtnIniciarSesion.setBackground(new java.awt.Color(102, 153, 255));
-        jbtnIniciarSesion.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        jbtnIniciarSesion.setBackground(new java.awt.Color(0, 102, 204));
+        jbtnIniciarSesion.setFont(new java.awt.Font("Microsoft JhengHei Light", 1, 14)); // NOI18N
         jbtnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
         jbtnIniciarSesion.setText("Iniciar sesión");
         jbtnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
@@ -166,7 +183,6 @@ public class frmRegistro extends javax.swing.JFrame {
         jbtnSalir.setBackground(new java.awt.Color(251, 51, 51));
         jbtnSalir.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 18)); // NOI18N
         jbtnSalir.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnSalir.setText("Salir");
         jbtnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnSalirActionPerformed(evt);
@@ -182,26 +198,21 @@ public class frmRegistro extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(176, 176, 176)
-                                .addComponent(lblTituloHotel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(349, 349, 349)
-                                .addComponent(lblRegistro))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(356, 356, 356)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblApellido)
-                                    .addComponent(lblNombre)
-                                    .addComponent(lblUsuario)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jbtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(356, 356, 356)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblEmail)
                                     .addComponent(jtfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(357, 357, 357)
+                                .addGap(351, 351, 351)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(lblConfirmarContraseña)
                                     .addComponent(jtfContraseña)
@@ -210,34 +221,42 @@ public class frmRegistro extends javax.swing.JFrame {
                                     .addComponent(lblContraseña)
                                     .addComponent(jtfConfirmarContraseña)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(356, 356, 356)
-                                .addComponent(jtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(426, 426, 426)
                                 .addComponent(lblO))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(396, 396, 396)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jbtnIniciarSesion)
-                                    .addComponent(jbtnRegistrarse))))
-                        .addGap(0, 838, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 1247, Short.MAX_VALUE)
-                                .addComponent(jbtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jSeparator1))))
+                                    .addComponent(jbtnRegistrarse)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(356, 356, 356)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblApellido)
+                                        .addComponent(lblNombre)
+                                        .addComponent(lblUsuario))
+                                    .addComponent(lblRegistro)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(356, 356, 356)
+                                .addComponent(jtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(176, 176, 176)
+                                .addComponent(lblTituloHotel)
+                                .addGap(484, 484, 484)
+                                .addComponent(lblIconoHotel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 479, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTituloHotel)
-                .addGap(74, 74, 74)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTituloHotel)
+                    .addComponent(lblIconoHotel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54)
                 .addComponent(lblRegistro)
-                .addGap(44, 44, 44)
+                .addGap(50, 50, 50)
                 .addComponent(lblNombre)
                 .addGap(2, 2, 2)
                 .addComponent(jtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,7 +286,7 @@ public class frmRegistro extends javax.swing.JFrame {
                 .addComponent(lblO)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnIniciarSesion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -382,6 +401,7 @@ public class frmRegistro extends javax.swing.JFrame {
     private javax.swing.JLabel lblConfirmarContraseña;
     private javax.swing.JLabel lblContraseña;
     private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblIconoHotel;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblO;
     private javax.swing.JLabel lblRegistro;

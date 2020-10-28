@@ -24,8 +24,10 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="182" max="-2" attributes="0"/>
-              <Component id="lblTituloHotel" pref="1005" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="770" max="-2" attributes="0"/>
+              <Component id="lblIconoHotel" min="-2" pref="78" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="171" max="-2" attributes="0"/>
+              <Component id="lblTituloHotel" pref="168" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="179" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
@@ -76,8 +78,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblTituloHotel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblTituloHotel" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblIconoHotel" min="-2" pref="58" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
               <Component id="lblIniciarSesion" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
               <Component id="lblUsuario" min="-2" max="-2" attributes="0"/>
@@ -93,7 +98,7 @@
               <Component id="lblO" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
               <Component id="jtbnRegistrarse" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="179" max="32767" attributes="0"/>
+              <EmptySpace pref="164" max="32767" attributes="0"/>
               <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jbtnSalir" min="-2" pref="40" max="-2" attributes="0"/>
@@ -114,7 +119,7 @@
     <Component class="javax.swing.JLabel" name="lblIniciarSesion">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft JhengHei Light" size="24" style="1"/>
+          <Font name="Bodoni MT Condensed" size="40" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Iniciar sesi&#xf3;n"/>
       </Properties>
@@ -122,7 +127,7 @@
     <Component class="javax.swing.JLabel" name="lblUsuario">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft JhengHei Light" size="14" style="0"/>
+          <Font name="Maiandra GD" size="16" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Usuario"/>
       </Properties>
@@ -130,7 +135,7 @@
     <Component class="javax.swing.JLabel" name="lblContrase&#xf1;a">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft JhengHei Light" size="14" style="0"/>
+          <Font name="Maiandra GD" size="16" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Contrase&#xf1;a"/>
       </Properties>
@@ -142,10 +147,10 @@
     <Component class="javax.swing.JButton" name="jbtnIniciarSesion">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="99" red="66" type="rgb"/>
+          <Color blue="cc" green="66" red="0" type="rgb"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft JhengHei Light" size="14" style="0"/>
+          <Font name="Microsoft JhengHei Light" size="14" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -159,10 +164,10 @@
     <Component class="javax.swing.JButton" name="jtbnRegistrarse">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="99" red="66" type="rgb"/>
+          <Color blue="66" green="99" red="0" type="rgb"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft JhengHei Light" size="14" style="0"/>
+          <Font name="Microsoft JhengHei Light" size="14" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -192,7 +197,6 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Salir"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnSalirActionPerformed"/>
@@ -204,6 +208,8 @@
           <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblIconoHotel">
     </Component>
   </SubComponents>
 </Form>

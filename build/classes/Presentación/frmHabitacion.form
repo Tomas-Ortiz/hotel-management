@@ -26,32 +26,35 @@
           <Component id="jpTitulo" alignment="0" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="359" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="lblPrecio" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jtfPrecioHabitacion" min="-2" pref="364" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblTipoHabitacion" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblNumeroHabitacion" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblTipoHabitacion2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblDetalles" alignment="0" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="lblPrecio" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jtfPrecioHabitacion" min="-2" pref="364" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jScrollPane1" min="-2" pref="364" max="-2" attributes="0"/>
-                          <Component id="jcbEstadoHabitacion" max="32767" attributes="0"/>
-                          <Component id="jcbTipoHabitacion" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="jbtnGuardarHabitacion" min="-2" pref="146" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jtbnCancelarHabitacion" min="-2" pref="146" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblTipoHabitacion" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblNumeroHabitacion" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTipoHabitacion2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblDetalles" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jsNroHabitacion" min="-2" pref="90" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jScrollPane1" min="-2" pref="364" max="-2" attributes="0"/>
+                              <Component id="jcbEstadoHabitacion" max="32767" attributes="0"/>
+                              <Component id="jcbTipoHabitacion" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jbtnGuardarHabitacion" min="-2" pref="146" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="jtbnCancelarHabitacion" min="-2" pref="146" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="jsNroHabitacion" min="-2" pref="90" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
+                  <Component id="jSeparator1" min="-2" pref="364" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="480" max="32767" attributes="0"/>
           </Group>
@@ -86,7 +89,9 @@
                   <Component id="jtfPrecioHabitacion" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                   <Component id="lblPrecio" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jSeparator1" min="-2" pref="2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jtbnCancelarHabitacion" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
                   <Component id="jbtnGuardarHabitacion" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
@@ -110,6 +115,8 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="591" max="-2" attributes="0"/>
                   <Component id="lblTituloPrincipal" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="lblIconoHabitacion" min="-2" pref="62" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -118,7 +125,10 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                  <Component id="lblTituloPrincipal" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="lblIconoHabitacion" max="32767" attributes="0"/>
+                      <Component id="lblTituloPrincipal" max="32767" attributes="0"/>
+                  </Group>
                   <EmptySpace pref="31" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -137,6 +147,8 @@
             <Property name="text" type="java.lang.String" value="Habitaci&#xf3;n"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JLabel" name="lblIconoHabitacion">
+        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="lblTipoHabitacion">
@@ -149,6 +161,9 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="jcbTipoHabitacion">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="cc" red="66" type="rgb"/>
+        </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Maiandra GD" size="18" style="0"/>
         </Property>
@@ -179,6 +194,9 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="jcbEstadoHabitacion">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="cc" red="66" type="rgb"/>
+        </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Maiandra GD" size="18" style="0"/>
         </Property>
@@ -217,8 +235,14 @@
     </Container>
     <Component class="javax.swing.JButton" name="jtbnCancelarHabitacion">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="0" red="99" type="rgb"/>
+        </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Maiandra GD" size="14" style="0"/>
+          <Font name="Bodoni MT Condensed" size="20" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Salir"/>
       </Properties>
@@ -228,8 +252,14 @@
     </Component>
     <Component class="javax.swing.JButton" name="jbtnGuardarHabitacion">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="cc" green="66" red="0" type="rgb"/>
+        </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Maiandra GD" size="14" style="0"/>
+          <Font name="Bodoni MT Condensed" size="20" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
@@ -254,6 +284,16 @@
         </Property>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
           <SpinnerModel initial="1" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
       </Properties>
     </Component>

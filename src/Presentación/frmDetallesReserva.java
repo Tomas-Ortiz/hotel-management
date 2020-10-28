@@ -2,20 +2,23 @@ package Presentación;
 
 import Negocio.Entidades.Reserva;
 import Negocio.Entidades.ReservaProducto;
+import Negocio.HeaderRenderer;
 import Negocio.NegocioReserva;
 import Negocio.UtilidadGeneral;
+import Negocio.UtilidadIcono;
 import Negocio.UtilidadJFrame;
 import Negocio.UtilidadJTable;
+import java.awt.Image;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 public class frmDetallesReserva extends javax.swing.JFrame {
 
     private final UtilidadJFrame utilidadJframe;
-    private final UtilidadJTable utilidadJtable;
 
     private final DefaultTableModel dtmProductos;
 
@@ -25,13 +28,24 @@ public class frmDetallesReserva extends javax.swing.JFrame {
 
     public frmDetallesReserva() {
         initComponents();
+        mostrarIconos();
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Detalles de reserva", this);
-        utilidadJtable = UtilidadJTable.getUtilidadJTable();
         negocioReserva = NegocioReserva.getNegocioReserva();
         sdf = new SimpleDateFormat("dd-MM-yyyy");
         dtmProductos = (DefaultTableModel) jtbProdutosReserva.getModel();
-        utilidadJtable.centrarElementosTable(jtbProdutosReserva);
+        configurarJTable();
+    }
+
+    private void configurarJTable() {
+        UtilidadJTable.setCellRender(jtbProdutosReserva);
+        jtbProdutosReserva.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+    }
+
+    private void mostrarIconos() {
+        UtilidadIcono.cargarIconoFrame(this);
+        Image iconoReserva = new ImageIcon("src/Recursos/Iconos/iconoReserva2.png").getImage();
+        UtilidadIcono.cargarIconoLabel(iconoReserva, lblIconoReserva, 50, 50);
     }
 
     public void mostrarDetallesReserva(Reserva reserva) {
@@ -99,6 +113,7 @@ public class frmDetallesReserva extends javax.swing.JFrame {
         lblNombre = new javax.swing.JLabel();
         jpTitulo = new javax.swing.JPanel();
         lblTituloPrincipal = new javax.swing.JLabel();
+        lblIconoReserva = new javax.swing.JLabel();
         lblDocumento = new javax.swing.JLabel();
         lblFechaNacimiento = new javax.swing.JLabel();
         lblDatosCliente = new javax.swing.JLabel();
@@ -168,13 +183,17 @@ public class frmDetallesReserva extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTituloLayout.createSequentialGroup()
                 .addContainerGap(526, Short.MAX_VALUE)
                 .addComponent(lblTituloPrincipal)
-                .addGap(502, 502, 502))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblIconoReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(421, 421, 421))
         );
         jpTituloLayout.setVerticalGroup(
             jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTituloLayout.createSequentialGroup()
                 .addContainerGap(34, Short.MAX_VALUE)
-                .addComponent(lblTituloPrincipal)
+                .addGroup(jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblIconoReserva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTituloPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(32, 32, 32))
         );
 
@@ -268,8 +287,10 @@ public class frmDetallesReserva extends javax.swing.JFrame {
         getContentPane().add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 150, 480, 10));
         getContentPane().add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 360, 10));
 
-        jtbnSalir.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jtbnSalir.setText("Salir");
+        jtbnSalir.setBackground(new java.awt.Color(153, 0, 51));
+        jtbnSalir.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jtbnSalir.setForeground(new java.awt.Color(255, 255, 255));
         jtbnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnSalirActionPerformed(evt);
@@ -292,7 +313,7 @@ public class frmDetallesReserva extends javax.swing.JFrame {
         getContentPane().add(jSeparator12, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 180, 410, 10));
         getContentPane().add(jSeparator13, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 150, 410, 10));
 
-        jtbProdutosReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbProdutosReserva.setFont(new java.awt.Font("Arial Narrow", 0, 20)); // NOI18N
         jtbProdutosReserva.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -322,9 +343,10 @@ public class frmDetallesReserva extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jtbProdutosReserva.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jtbProdutosReserva.setRowHeight(21);
-        jtbProdutosReserva.setRowMargin(5);
         jtbProdutosReserva.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        jtbProdutosReserva.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jtbProdutosReserva.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtbProdutosReserva.getTableHeader().setReorderingAllowed(false);
         jspProductosReserva.setViewportView(jtbProdutosReserva);
@@ -434,6 +456,7 @@ public class frmDetallesReserva extends javax.swing.JFrame {
     private javax.swing.JLabel lblHabitacion;
     private javax.swing.JLabel lblHoraEntrada;
     private javax.swing.JLabel lblHoraSalida;
+    private javax.swing.JLabel lblIconoReserva;
     private javax.swing.JLabel lblNacionalidad;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNroHabitacion;

@@ -14,21 +14,23 @@ import javax.swing.table.DefaultTableModel;
 import Negocio.NegocioHabitacion;
 import Negocio.NegocioProducto;
 import Negocio.NegocioReserva;
+import Negocio.CellRenderer;
+import Negocio.HeaderRenderer;
 import Negocio.UtilidadGeneral;
+import Negocio.UtilidadIcono;
 import Negocio.UtilidadJDialog;
 import Negocio.UtilidadJOptionPane;
 import Negocio.UtilidadJTable;
 import Negocio.sesionUsuario;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private final UtilidadJFrame utilidadJframe;
-    private final UtilidadJTable utilidadJtable;
 
     private final DefaultTableModel dtmHabitaciones;
     private List<Habitacion> habitaciones;
@@ -47,20 +49,18 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private List<Producto> productosDisp;
     private final NegocioProducto negocioProducto;
 
+    CellRenderer renderTable;
+
     Thread hilo;
 
     public frmPrincipal() {
-
         initComponents();
-
         iniciarHiloHora();
 
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
-        utilidadJframe.configurarFrame("Gestión hotelera", this);
+        utilidadJframe.configurarFrame("MyHotel", this);
 
         utilidadJframe.guardarPanelesPrincipal(jpHabitaciones, jpClientes, jpReservas, jpProductos, jpInicio);
-
-        utilidadJframe.activarPanelPrincipal(true, false, false, false, false);
 
         mostrarUsuariologueado();
 
@@ -79,14 +79,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         negocioCliente = NegocioCliente.getNegocioCliente();
         negocioProducto = NegocioProducto.getNegocioProducto();
 
-        utilidadJtable = UtilidadJTable.getUtilidadJTable();
-
-        utilidadJtable.centrarElementosTable(jtbHabitaciones);
-        utilidadJtable.centrarElementosTable(jtbReservas);
-        utilidadJtable.centrarElementosTable(jtbClientes);
-        utilidadJtable.centrarElementosTable(jtbProductos);
-
+        configurarJTables();
         activarPanelInicio();
+        mostrarIconos();
     }
 
     private void iniciarHiloHora() {
@@ -94,8 +89,48 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         hilo.start();
     }
 
-    private void activarPanelHabitaciones() {
+    private void configurarJTables() {
+        UtilidadJTable.setCellRender(jtbClientes);
+        UtilidadJTable.setCellRender(jtbHabitaciones);
+        UtilidadJTable.setCellRender(jtbReservas);
+        UtilidadJTable.setCellRender(jtbProductos);
 
+        jtbHabitaciones.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+        jtbClientes.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+        jtbReservas.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+        jtbProductos.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+    }
+
+    private void mostrarIconos() {
+        Image iconoHotel = new ImageIcon("src/Recursos/Iconos/iconoHotel.png").getImage();
+        UtilidadIcono.cargarIconoLabel(iconoHotel, lblIconoHotelTitulo, 90, 90);
+
+        Image iconoUsuario = new ImageIcon("src/Recursos/Iconos/iconoUsuario.png").getImage();
+        UtilidadIcono.cargarIconoLabel(iconoUsuario, lblIconoUsuario, 53, 53);
+
+        Image iconoInicio = new ImageIcon("src/Recursos/Iconos/iconoInicio.jpg").getImage();
+        UtilidadIcono.cargarIconoLabel(iconoInicio, lblIconoInicio, 53, 53);
+
+        Image iconoHab = new ImageIcon("src/Recursos/Iconos/iconoHabitacion.png").getImage();
+        UtilidadIcono.cargarIconoLabel(iconoHab, lblIconoHabitaciones, 53, 53);
+
+        Image iconoCliente = new ImageIcon("src/Recursos/Iconos/iconoCliente.png").getImage();
+        UtilidadIcono.cargarIconoLabel(iconoCliente, lblIconoClientes, 45, 45);
+
+        Image iconoReserva = new ImageIcon("src/Recursos/Iconos/iconoReserva.png").getImage();
+        UtilidadIcono.cargarIconoLabel(iconoReserva, lblIconoReserva, 40, 40);
+
+        Image iconoProd = new ImageIcon("src/Recursos/Iconos/iconoProducto.png").getImage();
+        UtilidadIcono.cargarIconoLabel(iconoProd, lblIconoProductos, 40, 40);
+
+        Image iconoSalir = new ImageIcon("src/Recursos/Iconos/iconoSalir.png").getImage();
+
+        UtilidadIcono.cargarIconoButton(iconoSalir, jbtnSalir, 35, 35);
+
+        UtilidadIcono.cargarIconoFrame(this);
+    }
+
+    private void activarPanelHabitaciones() {
         utilidadJframe.activarPanelPrincipal(true, false, false, false, false);
         activarBotonesPanelHabitaciones(false, false);
         actualizarTablaHabitaciones();
@@ -160,13 +195,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }
 
     private void mostrarDatosHabitaciones(List<Habitacion> habitaciones) {
-
         if (habitaciones.isEmpty()) {
             habitaciones = negocioHabitacion.getHabitaciones();
         }
 
         dtmHabitaciones.setRowCount(0);
-
         for (Habitacion habitacion : habitaciones) {
             dtmHabitaciones.addRow(new Object[]{habitacion.getId(), habitacion.getNumero(), habitacion.getTipo(), habitacion.getEstado(), habitacion.getDetalles(), habitacion.getPrecioDia()});
         }
@@ -382,6 +415,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblLimpieza = new javax.swing.JLabel();
         lblReparación = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
+        lblIconoHabitaciones = new javax.swing.JLabel();
         jpClientes = new javax.swing.JPanel();
         lblClientes = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
@@ -396,6 +430,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jspClientes = new javax.swing.JScrollPane();
         jtbClientes = new javax.swing.JTable();
         jbtnActualizarTablaCliente = new javax.swing.JButton();
+        lblIconoClientes = new javax.swing.JLabel();
         jpReservas = new javax.swing.JPanel();
         lblTituloReservas = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
@@ -415,6 +450,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblCobradasReserva = new javax.swing.JLabel();
         lblPendientesReserva = new javax.swing.JLabel();
         jbtnVenderProducto = new javax.swing.JButton();
+        lblIconoReserva = new javax.swing.JLabel();
         jpProductos = new javax.swing.JPanel();
         lblCantProd = new javax.swing.JLabel();
         jSeparator10 = new javax.swing.JSeparator();
@@ -429,11 +465,16 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jtbProductos = new javax.swing.JTable();
         jbtnActualizarTablaProductos = new javax.swing.JButton();
         jbtnModificarProducto = new javax.swing.JButton();
+        lblIconoProductos = new javax.swing.JLabel();
         jpTitulo = new javax.swing.JPanel();
         lblTituloPrincipal = new javax.swing.JLabel();
         lblUsuarioLogueado = new javax.swing.JLabel();
         lblFechaHoraTitulo = new javax.swing.JLabel();
+        lblIconoHotelTitulo = new javax.swing.JLabel();
+        lblIconoUsuario = new javax.swing.JLabel();
+        jSeparator12 = new javax.swing.JSeparator();
         jpInicio = new javax.swing.JPanel();
+        lblIconoInicio = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         lblTituloInicio = new javax.swing.JLabel();
         lblBienvenida = new javax.swing.JLabel();
@@ -453,7 +494,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jspCantProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         jspCantProd.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
-        jbtnAgregarProdReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnAgregarProdReserva.setBackground(new java.awt.Color(0, 102, 204));
+        jbtnAgregarProdReserva.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnAgregarProdReserva.setForeground(new java.awt.Color(255, 255, 255));
         jbtnAgregarProdReserva.setText("Agregar");
         jbtnAgregarProdReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -461,21 +504,23 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jbtnCancelarProdReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        jbtnCancelarProdReserva.setText("cancelar");
+        jbtnCancelarProdReserva.setBackground(new java.awt.Color(153, 0, 51));
+        jbtnCancelarProdReserva.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnCancelarProdReserva.setForeground(new java.awt.Color(255, 255, 255));
+        jbtnCancelarProdReserva.setText("Cancelar");
         jbtnCancelarProdReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnCancelarProdReservaActionPerformed(evt);
             }
         });
 
-        seleccionarProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        seleccionarProd.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         seleccionarProd.setText("Seleccionar producto");
 
-        lblSeleccionarCant.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblSeleccionarCant.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblSeleccionarCant.setText("Seleccionar cantidad");
 
-        lblMarcaProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblMarcaProd.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblMarcaProd.setText("Marca");
 
         lblMarca.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
@@ -503,7 +548,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                         .addComponent(lblMarcaProd)
                         .addGap(18, 18, 18)
                         .addComponent(lblMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(58, 82, Short.MAX_VALUE))
         );
         jdMostrarProductosLayout.setVerticalGroup(
             jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -528,12 +573,12 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jbtnSalir.setBackground(new java.awt.Color(255, 51, 51));
         jbtnSalir.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 18)); // NOI18N
         jbtnSalir.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnSalir.setText("Salir");
         jbtnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnSalirActionPerformed(evt);
@@ -544,10 +589,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 640, 1360, 10));
 
-        jpBotoneraNavegacion.setBackground(new java.awt.Color(0, 102, 153));
+        jpBotoneraNavegacion.setBackground(new java.awt.Color(102, 102, 102));
 
         jbtnClientes.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnClientes.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jbtnClientes.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 24)); // NOI18N
         jbtnClientes.setForeground(new java.awt.Color(255, 255, 255));
         jbtnClientes.setText("Clientes");
         jbtnClientes.addActionListener(new java.awt.event.ActionListener() {
@@ -557,7 +602,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         });
 
         jtbnProductos.setBackground(new java.awt.Color(0, 0, 0));
-        jtbnProductos.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jtbnProductos.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 24)); // NOI18N
         jtbnProductos.setForeground(new java.awt.Color(255, 255, 255));
         jtbnProductos.setText("Productos");
         jtbnProductos.addActionListener(new java.awt.event.ActionListener() {
@@ -567,7 +612,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         });
 
         jbtnReservas.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnReservas.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jbtnReservas.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 24)); // NOI18N
         jbtnReservas.setForeground(new java.awt.Color(255, 255, 255));
         jbtnReservas.setText("Reservas");
         jbtnReservas.addActionListener(new java.awt.event.ActionListener() {
@@ -577,7 +622,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         });
 
         jbtnHabitaciones.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnHabitaciones.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jbtnHabitaciones.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 24)); // NOI18N
         jbtnHabitaciones.setForeground(new java.awt.Color(255, 255, 255));
         jbtnHabitaciones.setText("Habitaciones");
         jbtnHabitaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -587,7 +632,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         });
 
         jbtnInicio.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnInicio.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jbtnInicio.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 24)); // NOI18N
         jbtnInicio.setForeground(new java.awt.Color(255, 255, 255));
         jbtnInicio.setText("Inicio");
         jbtnInicio.addActionListener(new java.awt.event.ActionListener() {
@@ -632,12 +677,12 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jpHabitaciones.setPreferredSize(new java.awt.Dimension(200, 200));
 
         lblTituloHabitaciones.setBackground(new java.awt.Color(255, 255, 255));
-        lblTituloHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
+        lblTituloHabitaciones.setFont(new java.awt.Font("OCR A Extended", 1, 26)); // NOI18N
         lblTituloHabitaciones.setText("Habitaciones");
 
         jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
 
-        jtbHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbHabitaciones.setFont(new java.awt.Font("Arial Narrow", 0, 20)); // NOI18N
         jtbHabitaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -675,9 +720,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
         jtbHabitaciones.setGridColor(new java.awt.Color(0, 0, 0));
+        jtbHabitaciones.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jtbHabitaciones.setRowHeight(30);
-        jtbHabitaciones.setRowMargin(5);
-        jtbHabitaciones.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        jtbHabitaciones.setSelectionBackground(new java.awt.Color(102, 204, 255));
+        jtbHabitaciones.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jtbHabitaciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtbHabitaciones.getTableHeader().setReorderingAllowed(false);
         jtbHabitaciones.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -690,19 +736,20 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             jtbHabitaciones.getColumnModel().getColumn(0).setPreferredWidth(1);
         }
 
-        lblDisponibles.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblDisponibles.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblDisponibles.setText("Disponibles:");
 
-        lblOcupadas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblOcupadas.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblOcupadas.setText("Ocupadas: ");
 
-        lblRegistradas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblRegistradas.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblRegistradas.setText("Registradas:");
 
-        jLabel1.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         jLabel1.setText("Filtrar por ");
 
-        jcbFiltroHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jcbFiltroHabitaciones.setBackground(new java.awt.Color(102, 204, 255));
+        jcbFiltroHabitaciones.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         jcbFiltroHabitaciones.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Numero", "Tipo", "Estado", "Precio" }));
         jcbFiltroHabitaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -710,7 +757,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jtbnCrearHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbnCrearHabitacion.setBackground(new java.awt.Color(0, 102, 153));
+        jtbnCrearHabitacion.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jtbnCrearHabitacion.setForeground(new java.awt.Color(255, 255, 255));
         jtbnCrearHabitacion.setText("Crear habitación");
         jtbnCrearHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -718,7 +767,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        lblBuscar.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblBuscar.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         lblBuscar.setText("Buscar");
 
         jtfBuscarHabitacion.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -732,7 +781,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jtbnModificarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbnModificarHabitacion.setBackground(new java.awt.Color(153, 153, 0));
+        jtbnModificarHabitacion.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jtbnModificarHabitacion.setForeground(new java.awt.Color(255, 255, 255));
         jtbnModificarHabitacion.setText("Actualizar habitación");
         jtbnModificarHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -740,7 +791,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jtbnEliminarHabitacion.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbnEliminarHabitacion.setBackground(new java.awt.Color(153, 0, 51));
+        jtbnEliminarHabitacion.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jtbnEliminarHabitacion.setForeground(new java.awt.Color(255, 255, 255));
         jtbnEliminarHabitacion.setText("Eliminar habitación");
         jtbnEliminarHabitacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -748,7 +801,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        jbtnActualizarTablaHabitaciones.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnActualizarTablaHabitaciones.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnActualizarTablaHabitaciones.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnActualizarTablaHabitaciones.setForeground(new java.awt.Color(255, 255, 255));
         jbtnActualizarTablaHabitaciones.setText("Actualizar tabla");
         jbtnActualizarTablaHabitaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -756,13 +811,15 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        lblLimpieza.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblLimpieza.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblLimpieza.setText("Limpieza:");
 
-        lblReparación.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblReparación.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblReparación.setText("Reparación:");
 
         jSeparator6.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblIconoHabitaciones.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jpHabitacionesLayout = new javax.swing.GroupLayout(jpHabitaciones);
         jpHabitaciones.setLayout(jpHabitacionesLayout);
@@ -798,7 +855,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                         .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpHabitacionesLayout.createSequentialGroup()
                                 .addGap(461, 461, 461)
-                                .addComponent(lblTituloHabitaciones))
+                                .addComponent(lblTituloHabitaciones)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblIconoHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jpHabitacionesLayout.createSequentialGroup()
                                 .addGap(84, 84, 84)
                                 .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -820,11 +879,14 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jpHabitacionesLayout.setVerticalGroup(
             jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpHabitacionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTituloHabitaciones)
-                .addGap(18, 18, 18)
+                .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpHabitacionesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblTituloHabitaciones))
+                    .addComponent(lblIconoHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpHabitacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblBuscar)
@@ -859,46 +921,40 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         jpClientes.setBackground(new java.awt.Color(255, 255, 255));
         jpClientes.setPreferredSize(new java.awt.Dimension(200, 200));
-        jpClientes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblClientes.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblClientes.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblClientes.setText("Clientes:");
-        jpClientes.add(lblClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, -1, -1));
 
         jSeparator8.setForeground(new java.awt.Color(0, 0, 0));
-        jpClientes.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 1020, 10));
 
-        jLabel3.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         jLabel3.setText("Filtrar por ");
-        jpClientes.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 75, -1, -1));
 
-        jcbFiltroClientes.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jcbFiltroClientes.setBackground(new java.awt.Color(102, 204, 255));
+        jcbFiltroClientes.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         jcbFiltroClientes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Nombre", "Apellido", "DNI", "Fecha nacimiento", "País", "Correo", "Teléfono" }));
         jcbFiltroClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbFiltroClientesActionPerformed(evt);
             }
         });
-        jpClientes.add(jcbFiltroClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 148, -1));
-        jcbFiltroClientes.getAccessibleContext().setAccessibleDescription("");
 
-        jbtnModificarCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnModificarCliente.setBackground(new java.awt.Color(153, 153, 0));
+        jbtnModificarCliente.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnModificarCliente.setForeground(new java.awt.Color(255, 255, 255));
         jbtnModificarCliente.setText("Actualizar cliente");
         jbtnModificarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnModificarClienteActionPerformed(evt);
             }
         });
-        jpClientes.add(jbtnModificarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(1005, 160, 160, 53));
 
-        lblBuscarCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblBuscarCliente.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         lblBuscarCliente.setText("Buscar");
-        jpClientes.add(lblBuscarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(708, 78, -1, -1));
 
         lblTituloClientes.setBackground(new java.awt.Color(255, 255, 255));
-        lblTituloClientes.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
+        lblTituloClientes.setFont(new java.awt.Font("OCR A Extended", 1, 26)); // NOI18N
         lblTituloClientes.setText("Clientes");
-        jpClientes.add(lblTituloClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 5, -1, -1));
 
         jtfBuscarCliente.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -910,21 +966,20 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jtfBuscarClienteKeyReleased(evt);
             }
         });
-        jpClientes.add(jtfBuscarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 75, 227, -1));
 
         jSeparator9.setForeground(new java.awt.Color(0, 0, 0));
-        jpClientes.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 1020, 10));
 
-        jbtnImprimirListaCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnImprimirListaCliente.setBackground(new java.awt.Color(153, 204, 255));
+        jbtnImprimirListaCliente.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnImprimirListaCliente.setForeground(new java.awt.Color(255, 255, 255));
         jbtnImprimirListaCliente.setText("Imprimir lista");
         jbtnImprimirListaCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnImprimirListaClienteActionPerformed(evt);
             }
         });
-        jpClientes.add(jbtnImprimirListaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 450, 160, 53));
 
-        jtbClientes.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbClientes.setFont(new java.awt.Font("Arial Narrow", 0, 20)); // NOI18N
         jtbClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -956,9 +1011,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
         jtbClientes.setGridColor(new java.awt.Color(0, 0, 0));
+        jtbClientes.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jtbClientes.setRowHeight(30);
-        jtbClientes.setRowMargin(5);
         jtbClientes.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        jtbClientes.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jtbClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtbClientes.getTableHeader().setReorderingAllowed(false);
         jtbClientes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -971,40 +1027,115 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             jtbClientes.getColumnModel().getColumn(0).setPreferredWidth(1);
         }
 
-        jpClientes.add(jspClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 810, 280));
-
-        jbtnActualizarTablaCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnActualizarTablaCliente.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnActualizarTablaCliente.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnActualizarTablaCliente.setForeground(new java.awt.Color(255, 255, 255));
         jbtnActualizarTablaCliente.setText("Actualizar tabla");
         jbtnActualizarTablaCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnActualizarTablaClienteActionPerformed(evt);
             }
         });
-        jpClientes.add(jbtnActualizarTablaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 450, 160, 53));
+
+        lblIconoClientes.setBackground(new java.awt.Color(255, 255, 255));
+        lblIconoClientes.setForeground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jpClientesLayout = new javax.swing.GroupLayout(jpClientes);
+        jpClientes.setLayout(jpClientesLayout);
+        jpClientesLayout.setHorizontalGroup(
+            jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpClientesLayout.createSequentialGroup()
+                .addGap(170, 170, 170)
+                .addComponent(jLabel3)
+                .addGap(4, 4, 4)
+                .addComponent(jcbFiltroClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblBuscarCliente)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtfBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(203, 203, 203))
+            .addGroup(jpClientesLayout.createSequentialGroup()
+                .addGroup(jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpClientesLayout.createSequentialGroup()
+                        .addGap(490, 490, 490)
+                        .addComponent(lblTituloClientes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblIconoClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpClientesLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 1020, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpClientesLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 1020, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpClientesLayout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(lblClientes))
+                    .addGroup(jpClientesLayout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(jspClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 810, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addComponent(jbtnModificarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpClientesLayout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(jbtnActualizarTablaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(490, 490, 490)
+                        .addComponent(jbtnImprimirListaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jpClientesLayout.setVerticalGroup(
+            jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpClientesLayout.createSequentialGroup()
+                .addGroup(jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpClientesLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(lblTituloClientes))
+                    .addComponent(lblIconoClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addGroup(jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jtfBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblBuscarCliente))
+                    .addGroup(jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jcbFiltroClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(24, 24, 24)
+                .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(lblClientes)
+                .addGap(12, 12, 12)
+                .addGroup(jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jspClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnModificarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jpClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtnActualizarTablaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnImprimirListaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        jcbFiltroClientes.getAccessibleContext().setAccessibleDescription("");
 
         getContentPane().add(jpClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 123, 1185, 510));
 
         jpReservas.setBackground(new java.awt.Color(255, 255, 255));
-        jpReservas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTituloReservas.setBackground(new java.awt.Color(255, 255, 255));
-        lblTituloReservas.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
+        lblTituloReservas.setFont(new java.awt.Font("OCR A Extended", 1, 26)); // NOI18N
         lblTituloReservas.setText("Reservas");
-        jpReservas.add(lblTituloReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(484, 11, -1, -1));
 
         jSeparator5.setForeground(new java.awt.Color(0, 0, 0));
-        jpReservas.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 59, 1067, -1));
 
-        jcbFiltroReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jcbFiltroReservas.setBackground(new java.awt.Color(102, 204, 255));
+        jcbFiltroReservas.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         jcbFiltroReservas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Nombre", "Apellido", "DNI", "Nro. habitación", "Fecha entrada", "Fecha salida", "Hora entrada", "Hora salida", "Estado", "Precio total" }));
         jcbFiltroReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbFiltroReservasActionPerformed(evt);
             }
         });
-        jpReservas.add(jcbFiltroReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 89, 148, -1));
 
-        jtbReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbReservas.setFont(new java.awt.Font("Arial Narrow", 0, 20)); // NOI18N
         jtbReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null, null},
@@ -1042,9 +1173,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
         jtbReservas.setGridColor(new java.awt.Color(0, 0, 0));
+        jtbReservas.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jtbReservas.setRowHeight(30);
-        jtbReservas.setRowMargin(5);
         jtbReservas.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        jtbReservas.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jtbReservas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtbReservas.getTableHeader().setReorderingAllowed(false);
         jtbReservas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1057,47 +1189,48 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             jtbReservas.getColumnModel().getColumn(0).setPreferredWidth(1);
         }
 
-        jpReservas.add(jspReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 195, 946, 254));
-
-        jtbnCrearReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbnCrearReserva.setBackground(new java.awt.Color(0, 102, 153));
+        jtbnCrearReserva.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jtbnCrearReserva.setForeground(new java.awt.Color(255, 255, 255));
         jtbnCrearReserva.setText("Crear reserva");
         jtbnCrearReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnCrearReservaActionPerformed(evt);
             }
         });
-        jpReservas.add(jtbnCrearReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(1014, 197, 158, 53));
 
-        jtbnModificarReserva.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbnModificarReserva.setBackground(new java.awt.Color(153, 153, 0));
+        jtbnModificarReserva.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jtbnModificarReserva.setForeground(new java.awt.Color(255, 255, 255));
         jtbnModificarReserva.setText("Actualizar reserva");
         jtbnModificarReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnModificarReservaActionPerformed(evt);
             }
         });
-        jpReservas.add(jtbnModificarReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(1014, 268, 158, 53));
 
-        jbtnActualizarTablaReservas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnActualizarTablaReservas.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnActualizarTablaReservas.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnActualizarTablaReservas.setForeground(new java.awt.Color(255, 255, 255));
         jbtnActualizarTablaReservas.setText("Actualizar tabla");
         jbtnActualizarTablaReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnActualizarTablaReservasActionPerformed(evt);
             }
         });
-        jpReservas.add(jbtnActualizarTablaReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 455, 158, 53));
 
-        jLabel2.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         jLabel2.setText("Filtrar por ");
-        jpReservas.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 87, -1, 28));
 
-        jtbnVerDetalles.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbnVerDetalles.setBackground(new java.awt.Color(102, 153, 0));
+        jtbnVerDetalles.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jtbnVerDetalles.setForeground(new java.awt.Color(255, 255, 255));
         jtbnVerDetalles.setText("Ver detalles");
         jtbnVerDetalles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnVerDetallesActionPerformed(evt);
             }
         });
-        jpReservas.add(jtbnVerDetalles, new org.netbeans.lib.awtextra.AbsoluteConstraints(837, 455, 158, 53));
 
         jtfBuscarReserva.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -1109,87 +1242,171 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jtfBuscarReservaKeyReleased(evt);
             }
         });
-        jpReservas.add(jtfBuscarReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(768, 92, 227, -1));
 
-        lblBuscar1.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblBuscar1.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         lblBuscar1.setText("Buscar");
-        jpReservas.add(lblBuscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(725, 92, -1, -1));
 
         jSeparator7.setForeground(new java.awt.Color(0, 0, 0));
-        jpReservas.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 139, 1067, -1));
 
-        jtbnCobrar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        jtbnCobrar.setBackground(new java.awt.Color(255, 255, 255));
+        jtbnCobrar.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
         jtbnCobrar.setText("Cobrar");
         jtbnCobrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbnCobrarActionPerformed(evt);
             }
         });
-        jpReservas.add(jtbnCobrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(443, 455, 158, 53));
 
-        lblCantReservas.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblCantReservas.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblCantReservas.setText("Reservas:");
-        jpReservas.add(lblCantReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 159, -1, -1));
 
-        lblCobradasReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblCobradasReserva.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblCobradasReserva.setText("Cobradas:");
-        jpReservas.add(lblCobradasReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(184, 159, -1, -1));
 
-        lblPendientesReserva.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblPendientesReserva.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblPendientesReserva.setText("Pendientes:");
-        jpReservas.add(lblPendientesReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 159, -1, -1));
 
-        jbtnVenderProducto.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnVenderProducto.setBackground(new java.awt.Color(0, 102, 102));
+        jbtnVenderProducto.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnVenderProducto.setForeground(new java.awt.Color(255, 255, 255));
         jbtnVenderProducto.setText("Vender producto");
         jbtnVenderProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnVenderProductoActionPerformed(evt);
             }
         });
-        jpReservas.add(jbtnVenderProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(1013, 339, 158, 53));
+
+        javax.swing.GroupLayout jpReservasLayout = new javax.swing.GroupLayout(jpReservas);
+        jpReservas.setLayout(jpReservasLayout);
+        jpReservasLayout.setHorizontalGroup(
+            jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpReservasLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jLabel2)
+                .addGap(4, 4, 4)
+                .addComponent(jcbFiltroReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblBuscar1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtfBuscarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(187, 187, 187))
+            .addGroup(jpReservasLayout.createSequentialGroup()
+                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(484, 484, 484)
+                        .addComponent(lblTituloReservas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblIconoReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 1067, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 1067, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(lblCantReservas)
+                        .addGap(69, 69, 69)
+                        .addComponent(lblCobradasReserva)
+                        .addGap(69, 69, 69)
+                        .addComponent(lblPendientesReserva))
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(jspReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 946, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtnVenderProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jpReservasLayout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtbnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jtbnModificarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(jbtnActualizarTablaReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(236, 236, 236)
+                        .addComponent(jtbnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(236, 236, 236)
+                        .addComponent(jtbnVerDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jpReservasLayout.setVerticalGroup(
+            jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpReservasLayout.createSequentialGroup()
+                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(lblTituloReservas))
+                    .addComponent(lblIconoReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcbFiltroReservas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfBuscarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBuscar1)
+                    .addComponent(jLabel2))
+                .addGap(29, 29, 29)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCantReservas)
+                    .addComponent(lblCobradasReserva)
+                    .addComponent(lblPendientesReserva))
+                .addGap(18, 18, 18)
+                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jspReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpReservasLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jtbnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtbnModificarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbtnVenderProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addGroup(jpReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtnActualizarTablaReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtbnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtbnVerDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         getContentPane().add(jpReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 123, 1185, 510));
 
         jpProductos.setBackground(new java.awt.Color(255, 255, 255));
-        jpProductos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblCantProd.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        lblCantProd.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
         lblCantProd.setText("Productos:");
-        jpProductos.add(lblCantProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, -1, -1));
 
         jSeparator10.setForeground(new java.awt.Color(0, 0, 0));
-        jpProductos.add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 1020, 10));
 
-        lblFiltrarPor.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblFiltrarPor.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         lblFiltrarPor.setText("Filtrar por ");
-        jpProductos.add(lblFiltrarPor, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 75, -1, -1));
 
-        jcbFiltroProductos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jcbFiltroProductos.setBackground(new java.awt.Color(102, 204, 255));
+        jcbFiltroProductos.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         jcbFiltroProductos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Id", "Nombre", "Marca", "Categoria", "Stock", "Proveedor", "Precio de compra", "Precio de venta" }));
         jcbFiltroProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbFiltroProductosActionPerformed(evt);
             }
         });
-        jpProductos.add(jcbFiltroProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 148, -1));
 
-        jbtnAgregarProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnAgregarProd.setBackground(new java.awt.Color(0, 102, 153));
+        jbtnAgregarProd.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnAgregarProd.setForeground(new java.awt.Color(255, 255, 255));
         jbtnAgregarProd.setText("Agregar producto");
         jbtnAgregarProd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnAgregarProdActionPerformed(evt);
             }
         });
-        jpProductos.add(jbtnAgregarProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(1005, 160, 160, 53));
 
-        lblBuscarProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        lblBuscarProd.setFont(new java.awt.Font("OCR A Extended", 0, 14)); // NOI18N
         lblBuscarProd.setText("Buscar");
-        jpProductos.add(lblBuscarProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(708, 78, -1, -1));
 
         lblProductos.setBackground(new java.awt.Color(255, 255, 255));
-        lblProductos.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
+        lblProductos.setFont(new java.awt.Font("OCR A Extended", 1, 26)); // NOI18N
         lblProductos.setText("Productos");
-        jpProductos.add(lblProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 5, -1, -1));
 
         jtfBuscarProd.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -1201,12 +1418,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 jtfBuscarProdKeyReleased(evt);
             }
         });
-        jpProductos.add(jtfBuscarProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 75, 227, -1));
 
         jSeparator11.setForeground(new java.awt.Color(0, 0, 0));
-        jpProductos.add(jSeparator11, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 1020, 10));
 
-        jtbProductos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbProductos.setFont(new java.awt.Font("Arial Narrow", 0, 20)); // NOI18N
         jtbProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -1238,9 +1453,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
         jtbProductos.setGridColor(new java.awt.Color(0, 0, 0));
+        jtbProductos.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jtbProductos.setRowHeight(30);
-        jtbProductos.setRowMargin(5);
         jtbProductos.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        jtbProductos.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jtbProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtbProductos.getTableHeader().setReorderingAllowed(false);
         jtbProductos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1253,25 +1469,98 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             jtbProductos.getColumnModel().getColumn(0).setPreferredWidth(1);
         }
 
-        jpProductos.add(jspProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 810, 280));
-
-        jbtnActualizarTablaProductos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnActualizarTablaProductos.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnActualizarTablaProductos.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnActualizarTablaProductos.setForeground(new java.awt.Color(255, 255, 255));
         jbtnActualizarTablaProductos.setText("Actualizar tabla");
         jbtnActualizarTablaProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnActualizarTablaProductosActionPerformed(evt);
             }
         });
-        jpProductos.add(jbtnActualizarTablaProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 450, 160, 53));
 
-        jbtnModificarProducto.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnModificarProducto.setBackground(new java.awt.Color(153, 153, 0));
+        jbtnModificarProducto.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnModificarProducto.setForeground(new java.awt.Color(255, 255, 255));
         jbtnModificarProducto.setText("Actualizar producto");
         jbtnModificarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnModificarProductoActionPerformed(evt);
             }
         });
-        jpProductos.add(jbtnModificarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(1005, 230, 160, 53));
+
+        javax.swing.GroupLayout jpProductosLayout = new javax.swing.GroupLayout(jpProductos);
+        jpProductos.setLayout(jpProductosLayout);
+        jpProductosLayout.setHorizontalGroup(
+            jpProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpProductosLayout.createSequentialGroup()
+                .addGap(170, 170, 170)
+                .addComponent(lblFiltrarPor)
+                .addGap(4, 4, 4)
+                .addComponent(jcbFiltroProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblBuscarProd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtfBuscarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(204, 204, 204))
+            .addGroup(jpProductosLayout.createSequentialGroup()
+                .addGroup(jpProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpProductosLayout.createSequentialGroup()
+                        .addGap(490, 490, 490)
+                        .addComponent(lblProductos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblIconoProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpProductosLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 1020, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpProductosLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 1020, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpProductosLayout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(lblCantProd))
+                    .addGroup(jpProductosLayout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(jspProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 810, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
+                        .addGroup(jpProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtnAgregarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtnModificarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jpProductosLayout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(jbtnActualizarTablaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jpProductosLayout.setVerticalGroup(
+            jpProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpProductosLayout.createSequentialGroup()
+                .addGroup(jpProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpProductosLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(lblProductos))
+                    .addComponent(lblIconoProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addGroup(jpProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcbFiltroProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfBuscarProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBuscarProd)
+                    .addComponent(lblFiltrarPor))
+                .addGap(24, 24, 24)
+                .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(lblCantProd)
+                .addGap(12, 12, 12)
+                .addGroup(jpProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jspProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpProductosLayout.createSequentialGroup()
+                        .addComponent(jbtnAgregarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(jbtnModificarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10)
+                .addComponent(jbtnActualizarTablaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         getContentPane().add(jpProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 123, 1185, 510));
 
@@ -1291,14 +1580,27 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblFechaHoraTitulo.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         lblFechaHoraTitulo.setForeground(new java.awt.Color(255, 255, 255));
 
+        lblIconoHotelTitulo.setText("jLabel4");
+
+        lblIconoUsuario.setText("jLabel4");
+
+        jSeparator12.setForeground(new java.awt.Color(255, 255, 255));
+        jSeparator12.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
         javax.swing.GroupLayout jpTituloLayout = new javax.swing.GroupLayout(jpTitulo);
         jpTitulo.setLayout(jpTituloLayout);
         jpTituloLayout.setHorizontalGroup(
             jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTituloLayout.createSequentialGroup()
-                .addContainerGap(623, Short.MAX_VALUE)
+                .addContainerGap(581, Short.MAX_VALUE)
                 .addComponent(lblTituloPrincipal)
-                .addGap(385, 385, 385)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblIconoHotelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(186, 186, 186)
+                .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblIconoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblFechaHoraTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblUsuarioLogueado, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1306,15 +1608,20 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         );
         jpTituloLayout.setVerticalGroup(
             jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblIconoHotelTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jpTituloLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTituloPrincipal)
+                .addGap(30, 30, 30)
+                .addGroup(jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jSeparator12)
                     .addGroup(jpTituloLayout.createSequentialGroup()
                         .addComponent(lblUsuarioLogueado, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblFechaHoraTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addComponent(lblFechaHoraTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpTituloLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(lblTituloPrincipal))
+                    .addComponent(lblIconoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         getContentPane().add(jpTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -4, 1360, 120));
@@ -1325,13 +1632,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         jSeparator3.setForeground(new java.awt.Color(0, 0, 0));
 
         lblTituloInicio.setBackground(new java.awt.Color(255, 255, 255));
-        lblTituloInicio.setFont(new java.awt.Font("Maiandra GD", 0, 24)); // NOI18N
+        lblTituloInicio.setFont(new java.awt.Font("OCR A Extended", 1, 26)); // NOI18N
         lblTituloInicio.setText("Inicio");
         lblTituloInicio.setPreferredSize(new java.awt.Dimension(133, 30));
 
         lblBienvenida.setBackground(new java.awt.Color(255, 255, 255));
         lblBienvenida.setFont(new java.awt.Font("Maiandra GD", 3, 24)); // NOI18N
-        lblBienvenida.setForeground(new java.awt.Color(255, 153, 153));
+        lblBienvenida.setForeground(new java.awt.Color(51, 153, 255));
         lblBienvenida.setText("¡Bienvenido usuario!");
         lblBienvenida.setPreferredSize(new java.awt.Dimension(133, 30));
 
@@ -1373,6 +1680,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                         .addGap(240, 240, 240)
                         .addComponent(jcCalendarioInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(89, Short.MAX_VALUE))
+            .addGroup(jpInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpInicioLayout.createSequentialGroup()
+                    .addGap(599, 599, 599)
+                    .addComponent(lblIconoInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(474, Short.MAX_VALUE)))
         );
         jpInicioLayout.setVerticalGroup(
             jpInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1385,11 +1697,15 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 .addComponent(lblBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jcCalendarioInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
                 .addComponent(lblFechaHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
+            .addGroup(jpInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpInicioLayout.createSequentialGroup()
+                    .addComponent(lblIconoInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 471, Short.MAX_VALUE)))
         );
 
         getContentPane().add(jpInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(183, 118, 1180, 520));
@@ -1448,7 +1764,6 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtbnModificarHabitacionActionPerformed
 
     private void jtbnEliminarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnEliminarHabitacionActionPerformed
-
         int filaIndice = jtbHabitaciones.getSelectedRow();
         Long habitacionId = (Long) dtmHabitaciones.getValueAt(filaIndice, 0);
         String mensaje = "¿Estás seguro que deseas eliminar la habitación con id " + habitacionId + "?";
@@ -1860,6 +2175,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
+    private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
@@ -1932,6 +2248,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel lblFechaHora;
     private javax.swing.JLabel lblFechaHoraTitulo;
     private javax.swing.JLabel lblFiltrarPor;
+    private javax.swing.JLabel lblIconoClientes;
+    private javax.swing.JLabel lblIconoHabitaciones;
+    private javax.swing.JLabel lblIconoHotelTitulo;
+    private javax.swing.JLabel lblIconoInicio;
+    private javax.swing.JLabel lblIconoProductos;
+    private javax.swing.JLabel lblIconoReserva;
+    private javax.swing.JLabel lblIconoUsuario;
     private javax.swing.JLabel lblLimpieza;
     private javax.swing.JLabel lblMarca;
     private javax.swing.JLabel lblMarcaProd;

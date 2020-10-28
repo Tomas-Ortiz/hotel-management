@@ -3,8 +3,11 @@ package Presentación;
 import Negocio.Entidades.Producto;
 import Negocio.NegocioProducto;
 import Negocio.NegocioReserva;
+import Negocio.UtilidadIcono;
 import Negocio.UtilidadJFrame;
 import Negocio.UtilidadJOptionPane;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class frmProducto extends javax.swing.JFrame {
@@ -18,10 +21,17 @@ public class frmProducto extends javax.swing.JFrame {
 
     public frmProducto() {
         initComponents();
+        mostrarIconos();
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("Producto", this);
         negocioProd = NegocioProducto.getNegocioProducto();
         negocioReserva = NegocioReserva.getNegocioReserva();
+    }
+
+    private void mostrarIconos() {
+        UtilidadIcono.cargarIconoFrame(this);
+        Image iconoProd = new ImageIcon("src/Recursos/Iconos/iconoProducto2.png").getImage();
+        UtilidadIcono.cargarIconoLabel(iconoProd, lblIconoProducto, 50, 50);
     }
 
     public void mostrarProd(Producto prod) {
@@ -56,6 +66,7 @@ public class frmProducto extends javax.swing.JFrame {
         jtbnCancelarProd = new javax.swing.JButton();
         jpTitulo = new javax.swing.JPanel();
         lblTituloPrincipal = new javax.swing.JLabel();
+        lblIconoProducto = new javax.swing.JLabel();
         jbtnGuardarProd = new javax.swing.JButton();
         lblProveedor = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
@@ -69,17 +80,20 @@ public class frmProducto extends javax.swing.JFrame {
         jtfProveedor = new javax.swing.JTextField();
         jtfNombre = new javax.swing.JTextField();
         jspStock = new javax.swing.JSpinner();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1370, 730));
 
+        jcbCategoria.setBackground(new java.awt.Color(102, 204, 255));
         jcbCategoria.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         jcbCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Alimento", "Bebida" }));
 
         lblStock.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblStock.setText("Stock");
 
-        jtbnCancelarProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jtbnCancelarProd.setBackground(new java.awt.Color(153, 0, 51));
+        jtbnCancelarProd.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jtbnCancelarProd.setForeground(new java.awt.Color(255, 255, 255));
         jtbnCancelarProd.setText("Salir");
         jtbnCancelarProd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,17 +115,23 @@ public class frmProducto extends javax.swing.JFrame {
             .addGroup(jpTituloLayout.createSequentialGroup()
                 .addGap(605, 605, 605)
                 .addComponent(lblTituloPrincipal)
-                .addContainerGap(608, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblIconoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(540, Short.MAX_VALUE))
         );
         jpTituloLayout.setVerticalGroup(
             jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpTituloLayout.createSequentialGroup()
                 .addContainerGap(29, Short.MAX_VALUE)
-                .addComponent(lblTituloPrincipal)
-                .addGap(29, 29, 29))
+                .addGroup(jpTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTituloPrincipal)
+                    .addComponent(lblIconoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19))
         );
 
-        jbtnGuardarProd.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        jbtnGuardarProd.setBackground(new java.awt.Color(0, 102, 204));
+        jbtnGuardarProd.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
+        jbtnGuardarProd.setForeground(new java.awt.Color(255, 255, 255));
         jbtnGuardarProd.setText("Guardar");
         jbtnGuardarProd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,11 +165,6 @@ public class frmProducto extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jpTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(540, 540, 540)
-                .addComponent(jbtnGuardarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
-                .addComponent(jtbnCancelarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(371, 371, 371)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -180,6 +195,14 @@ public class frmProducto extends javax.swing.JFrame {
                         .addComponent(lblPrecioVenta)
                         .addGap(47, 47, 47)
                         .addComponent(jtfPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(540, 540, 540)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jSeparator1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbtnGuardarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(jtbnCancelarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,7 +236,9 @@ public class frmProducto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jtfPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrecioVenta))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbtnGuardarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtbnCancelarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -357,6 +382,7 @@ public class frmProducto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jbtnGuardarProd;
     private javax.swing.JComboBox jcbCategoria;
     private javax.swing.JPanel jpTitulo;
@@ -368,6 +394,7 @@ public class frmProducto extends javax.swing.JFrame {
     private javax.swing.JTextField jtfPrecioVenta;
     private javax.swing.JTextField jtfProveedor;
     private javax.swing.JLabel lblCategoria;
+    private javax.swing.JLabel lblIconoProducto;
     private javax.swing.JLabel lblMarca;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPrecioCompra;

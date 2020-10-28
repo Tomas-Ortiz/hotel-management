@@ -2,14 +2,18 @@ package Presentación;
 
 import Negocio.Entidades.Usuario;
 import Negocio.NegocioUsuario;
+import Negocio.UtilidadIcono;
 import Negocio.UtilidadJFrame;
 import Negocio.UtilidadJOptionPane;
 import Negocio.sesionUsuario;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractButton;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -32,6 +36,20 @@ public class frmInicioSesion extends javax.swing.JFrame {
 
         iniciarPanelTitulo();
         iniciarPanelLogin();
+        mostrarIconos();
+    }
+
+    private void mostrarIconos() {
+        Image iconoIniciarSesion = new ImageIcon("src/Recursos/Iconos/iconoInicioSesion.png").getImage();
+        UtilidadIcono.cargarIconoButtonRedimensionable(iconoIniciarSesion, jbtnIniciarSesion, 18, 18);
+
+        Image iconoRegistro = new ImageIcon("src/Recursos/Iconos/iconoRegistro.png").getImage();
+        UtilidadIcono.cargarIconoButtonRedimensionable(iconoRegistro, jtbnRegistrarse, 20, 20);
+
+        Image iconoSalir = new ImageIcon("src/Recursos/Iconos/iconoSalir.png").getImage();
+        UtilidadIcono.cargarIconoButton(iconoSalir, jbtnSalir, 35, 35);
+
+        UtilidadIcono.cargarIconoFrame(this);
     }
 
     private void iniciarPanelTitulo() {
@@ -97,23 +115,24 @@ public class frmInicioSesion extends javax.swing.JFrame {
         lblO = new javax.swing.JLabel();
         jbtnSalir = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
+        lblIconoHotel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblTituloHotel.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
         lblTituloHotel.setText("MyHotel");
 
-        lblIniciarSesion.setFont(new java.awt.Font("Microsoft JhengHei Light", 1, 24)); // NOI18N
+        lblIniciarSesion.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 40)); // NOI18N
         lblIniciarSesion.setText("Iniciar sesión");
 
-        lblUsuario.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        lblUsuario.setFont(new java.awt.Font("Maiandra GD", 0, 16)); // NOI18N
         lblUsuario.setText("Usuario");
 
-        lblContraseña.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        lblContraseña.setFont(new java.awt.Font("Maiandra GD", 0, 16)); // NOI18N
         lblContraseña.setText("Contraseña");
 
-        jbtnIniciarSesion.setBackground(new java.awt.Color(102, 153, 255));
-        jbtnIniciarSesion.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        jbtnIniciarSesion.setBackground(new java.awt.Color(0, 102, 204));
+        jbtnIniciarSesion.setFont(new java.awt.Font("Microsoft JhengHei Light", 1, 14)); // NOI18N
         jbtnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
         jbtnIniciarSesion.setText("Iniciar sesión");
         jbtnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
@@ -122,8 +141,8 @@ public class frmInicioSesion extends javax.swing.JFrame {
             }
         });
 
-        jtbnRegistrarse.setBackground(new java.awt.Color(102, 153, 255));
-        jtbnRegistrarse.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 14)); // NOI18N
+        jtbnRegistrarse.setBackground(new java.awt.Color(0, 153, 102));
+        jtbnRegistrarse.setFont(new java.awt.Font("Microsoft JhengHei Light", 1, 14)); // NOI18N
         jtbnRegistrarse.setForeground(new java.awt.Color(255, 255, 255));
         jtbnRegistrarse.setText("Registrarse");
         jtbnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
@@ -138,7 +157,6 @@ public class frmInicioSesion extends javax.swing.JFrame {
         jbtnSalir.setBackground(new java.awt.Color(255, 51, 51));
         jbtnSalir.setFont(new java.awt.Font("Microsoft JhengHei Light", 0, 18)); // NOI18N
         jbtnSalir.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnSalir.setText("Salir");
         jbtnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnSalirActionPerformed(evt);
@@ -152,8 +170,10 @@ public class frmInicioSesion extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(182, 182, 182)
-                .addComponent(lblTituloHotel, javax.swing.GroupLayout.DEFAULT_SIZE, 1005, Short.MAX_VALUE)
+                .addGap(770, 770, 770)
+                .addComponent(lblIconoHotel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(171, 171, 171)
+                .addComponent(lblTituloHotel, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                 .addGap(179, 179, 179))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,8 +211,10 @@ public class frmInicioSesion extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTituloHotel)
-                .addGap(97, 97, 97)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTituloHotel)
+                    .addComponent(lblIconoHotel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(83, 83, 83)
                 .addComponent(lblIniciarSesion)
                 .addGap(38, 38, 38)
                 .addComponent(lblUsuario)
@@ -208,7 +230,7 @@ public class frmInicioSesion extends javax.swing.JFrame {
                 .addComponent(lblO)
                 .addGap(2, 2, 2)
                 .addComponent(jtbnRegistrarse)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -308,6 +330,7 @@ public class frmInicioSesion extends javax.swing.JFrame {
     private javax.swing.JPasswordField jtfContraseña;
     private javax.swing.JTextField jtfUsuario;
     private javax.swing.JLabel lblContraseña;
+    private javax.swing.JLabel lblIconoHotel;
     private javax.swing.JLabel lblIniciarSesion;
     private javax.swing.JLabel lblO;
     private javax.swing.JLabel lblTituloHotel;
