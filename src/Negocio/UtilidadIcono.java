@@ -27,7 +27,7 @@ public class UtilidadIcono {
     }
 
     public static void cargarIconoFrame(JFrame frame) {
-        Image iconoFrame = new ImageIcon("src/Recursos/Iconos/iconoFrame.png").getImage();
+        Image iconoFrame = new ImageIcon("Recursos\\Iconos\\iconoFrame.png").getImage();
         frame.setIconImage(iconoFrame);
     }
 }

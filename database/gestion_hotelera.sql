@@ -31,7 +31,8 @@ CREATE TABLE `clientes` (
   `fechaNacimiento` varchar(70) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `dni` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
+
 
 /*Table structure for table `habitaciones` */
 
@@ -46,6 +47,7 @@ CREATE TABLE `habitaciones` (
   `precioDia` float NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4;
+
 
 /*Table structure for table `productos` */
 
@@ -79,7 +81,20 @@ CREATE TABLE `reservas` (
   `estado` enum('Cobrado','Pendiente') DEFAULT NULL,
   `precioTotal` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4;
+
+
+/*Table structure for table `reservas_productos` */
+
+DROP TABLE IF EXISTS `reservas_productos`;
+
+CREATE TABLE `reservas_productos` (
+  `reserva_id` bigint(20) NOT NULL,
+  `producto_id` bigint(20) NOT NULL,
+  `cantProducto` int(11) DEFAULT NULL,
+  `precioTotal` float DEFAULT NULL,
+  PRIMARY KEY (`producto_id`,`reserva_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `usuarios` */
 
@@ -98,7 +113,6 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `unico_email` (`email`),
   UNIQUE KEY `unico_usuario` (`usuario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
-
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
