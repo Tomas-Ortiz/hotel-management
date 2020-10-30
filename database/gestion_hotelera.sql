@@ -31,8 +31,7 @@ CREATE TABLE `clientes` (
   `fechaNacimiento` varchar(70) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `dni` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
-
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `habitaciones` */
 
@@ -48,6 +47,7 @@ CREATE TABLE `habitaciones` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4;
 
+/*Data for the table `habitaciones` */
 
 /*Table structure for table `productos` */
 
@@ -65,6 +65,7 @@ CREATE TABLE `productos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
+
 /*Table structure for table `reservas` */
 
 DROP TABLE IF EXISTS `reservas`;
@@ -79,10 +80,11 @@ CREATE TABLE `reservas` (
   `fk_habitacion` int(11) NOT NULL,
   `tipoPago` varchar(50) DEFAULT NULL,
   `estado` enum('Cobrado','Pendiente') DEFAULT NULL,
+  `precioAlojamiento` float NOT NULL,
+  `precioProductos` float DEFAULT 0,
   `precioTotal` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4;
-
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `reservas_productos` */
 

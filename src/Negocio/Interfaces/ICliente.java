@@ -3,7 +3,9 @@ package Negocio.Interfaces;
 import Datos.exceptions.NonexistentEntityException;
 import Negocio.Entidades.Cliente;
 import com.toedter.calendar.JDateChooser;
+import java.awt.print.PrinterException;
 import java.util.List;
+import javax.swing.JTable;
 
 public interface ICliente {
 
@@ -24,4 +26,6 @@ public interface ICliente {
     List<Cliente> buscarClientes(String busqueda);
 
     Cliente encontrarCliente(Long id);
+    
+    void impirmirClientes(JTable jtbClientes) throws PrinterException;
 }

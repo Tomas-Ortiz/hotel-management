@@ -6,7 +6,11 @@ import Negocio.Entidades.Cliente;
 import Negocio.Interfaces.ICliente;
 import com.mysql.jdbc.StringUtils;
 import com.toedter.calendar.JDateChooser;
+import java.awt.print.PrinterException;
+import java.text.MessageFormat;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 public class NegocioCliente implements ICliente {
 
@@ -74,4 +78,9 @@ public class NegocioCliente implements ICliente {
         return clienteController.findCliente(id);
     }
 
+    @Override
+    public void impirmirClientes(JTable jtbClientes) throws PrinterException {
+        MessageFormat mensajeHeader = new MessageFormat("Reporte de clientes (" + jtbClientes.getRowCount() + ")");
+        jtbClientes.print(JTable.PrintMode.NORMAL, mensajeHeader, null);
+    }
 }

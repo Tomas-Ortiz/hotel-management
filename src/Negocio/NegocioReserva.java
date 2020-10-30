@@ -9,9 +9,17 @@ import Negocio.Interfaces.IReserva;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.mysql.jdbc.StringUtils;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JPanel;
 
 public class NegocioReserva implements IReserva {
 
@@ -113,22 +121,24 @@ public class NegocioReserva implements IReserva {
     // Finalmente, se modifica cada reserva
     public void actualizarPrecioTotalProdReserva(Producto productoModificado) throws Exception {
         int indiceProd;
-        float precioProductos, precioAlojamiento;
+        float precioProductos, precioTotalProd;
         sdf = new SimpleDateFormat("dd-MM-yyyy");
         for (ReservaProducto reservaProd : productoModificado.getReservas()) {
-            float precioTotal = calcularPrecioTotalXProducto(reservaProd.getCantProducto(), productoModificado.getPrecioVenta());
-            try {
-                indiceProd = reservaProd.getReserva().getProductos().indexOf(reservaProd);
-                reservaProd.getReserva().getProductos().get(indiceProd).setPrecioTotal(precioTotal);
+            // Solo a las reservas que no están cobradas se le aplica el aumento
+            if (!reservaProd.getReserva().getEstado().equals("Cobrado")) {
+                precioTotalProd = calcularPrecioTotalXProducto(reservaProd.getCantProducto(), productoModificado.getPrecioVenta());
+                try {
+                    indiceProd = reservaProd.getReserva().getProductos().indexOf(reservaProd);
+                    reservaProd.getReserva().getProductos().get(indiceProd).setPrecioTotal(precioTotalProd);
 
-                Date fechaEntrada = sdf.parse(reservaProd.getReserva().getFechaEntrada());
-                Date fechaSalida = sdf.parse(reservaProd.getReserva().getFechaSalida());
-                precioProductos = negocioReserva.calcularPrecioTotalProductos(reservaProd.getReserva().getProductos());
-                precioAlojamiento = negocioReserva.calcularPrecioTotalAlojamiento(reservaProd.getReserva().getHabitacion(), fechaEntrada, fechaSalida);
-                reservaProd.getReserva().setPrecioTotal(precioAlojamiento + precioProductos);
-                reservaController.edit(reservaProd.getReserva());
-            } catch (Exception ex) {
-                System.out.println("Error al actualizar el precio total del prod. de la reserva. " + ex);
+                    precioProductos = negocioReserva.calcularPrecioTotalProductos(reservaProd.getReserva().getProductos());
+                    reservaProd.getReserva().setPrecioProductos(precioProductos);
+                    reservaProd.getReserva().setPrecioTotal(reservaProd.getReserva().getPrecioAlojamiento() + precioProductos);
+
+                    reservaController.edit(reservaProd.getReserva());
+                } catch (Exception ex) {
+                    System.out.println("Error al actualizar el precio total del prod. de la reserva. " + ex);
+                }
             }
         }
     }
@@ -146,7 +156,6 @@ public class NegocioReserva implements IReserva {
 
     @Override
     public ReservaProducto verificarExistenciaProdReserva(List<ReservaProducto> reservaProd, Long idProdSeleccionado) {
-
         for (ReservaProducto resProd : reservaProd) {
             if (resProd.getId().getProductoId().equals(idProdSeleccionado)) {
                 return resProd;
@@ -165,13 +174,44 @@ public class NegocioReserva implements IReserva {
         }
     }
 
+    @Override
     public Reserva encontrarReservaHabitacion(Habitacion hab) {
+        // Se devuelve la reserva que no está cobrada 
         for (Reserva reserva : getReservas()) {
-            if (reserva.getHabitacion().getId().equals(hab.getId())) {
+            if (reserva.getHabitacion().getId().equals(hab.getId()) && !reserva.getEstado().equals("Cobrado")) {
                 return reserva;
             }
         }
         return null;
     }
 
+    @Override
+    public void imprimirDetallesReserva(JPanel jpDetallesReserva) {
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setJobName("Detalles de Reserva");
+
+        job.setPrintable((Graphics graphics, PageFormat pageFormat, int pageIndex) -> {
+            // Solo una página
+            if (pageIndex > 0) {
+                return Printable.NO_SUCH_PAGE;
+            }
+            Graphics2D g2 = (Graphics2D) graphics;
+            g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+            g2.scale(0.44, 0.90);
+
+            jpDetallesReserva.paint(g2);
+            return Printable.PAGE_EXISTS;
+        });
+
+        boolean ok = job.printDialog();
+        if (ok) {
+            try {
+                jpDetallesReserva.setBackground(Color.WHITE);
+                job.print();
+                jpDetallesReserva.setBackground(new Color(164, 221, 234));
+            } catch (PrinterException e) {
+                System.err.println("Error al imprimir los detalles de la reserva. " + e.getMessage());
+            }
+        }
+    }
 }

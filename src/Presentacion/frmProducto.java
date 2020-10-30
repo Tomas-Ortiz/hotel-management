@@ -89,13 +89,14 @@ public class frmProducto extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(51, 204, 255));
 
-        jcbCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Alimento", "Bebida" }));
         jcbCategoria.setBackground(new java.awt.Color(102, 204, 255));
         jcbCategoria.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        jcbCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Alimento", "Bebida" }));
 
-        lblStock.setText("Stock");
         lblStock.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblStock.setText("Stock");
 
         jtbnCancelarProd.setBackground(new java.awt.Color(153, 0, 51));
         jtbnCancelarProd.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
@@ -108,10 +109,10 @@ public class frmProducto extends javax.swing.JFrame {
 
         jpTitulo.setBackground(new java.awt.Color(0, 0, 0));
 
-        lblTituloPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTituloPrincipal.setText("Producto");
         lblTituloPrincipal.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
         lblTituloPrincipal.setForeground(new java.awt.Color(255, 255, 255));
+        lblTituloPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTituloPrincipal.setText("Producto");
 
         javax.swing.GroupLayout jpTituloLayout = new javax.swing.GroupLayout(jpTitulo);
         jpTitulo.setLayout(jpTituloLayout);
@@ -143,25 +144,29 @@ public class frmProducto extends javax.swing.JFrame {
             }
         });
 
-        lblProveedor.setText("Proveedor");
         lblProveedor.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblProveedor.setText("Proveedor");
 
-        lblNombre.setText("Nombre");
         lblNombre.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblNombre.setText("Nombre");
 
-        lblMarca.setText("Marca");
         lblMarca.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblMarca.setText("Marca");
 
-        lblCategoria.setText("Categoria");
         lblCategoria.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblCategoria.setText("Categoria");
 
-        lblPrecioCompra.setText("Precio de compra");
         lblPrecioCompra.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblPrecioCompra.setText("Precio de compra");
 
-        lblPrecioVenta.setText("Precio de venta");
         lblPrecioVenta.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblPrecioVenta.setText("Precio de venta");
 
         jspStock.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+
+        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -257,7 +262,6 @@ public class frmProducto extends javax.swing.JFrame {
     }//GEN-LAST:event_jtbnCancelarProdActionPerformed
 
     private void jbtnGuardarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarProdActionPerformed
-
         String nombre = "", marca = "", categoria = "", proveedor = "", mensaje = "", titulo = "";
         int stock = -1;
         float precioCompra = -1, precioVenta = -1, precioVentaOriginal = -1;
@@ -295,8 +299,8 @@ public class frmProducto extends javax.swing.JFrame {
                     UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
                     mensaje = "";
                 } else {
-                    mensaje = "¿Estás seguro que deseas modificar el producto?";
-                    titulo = "Confirmar modificación";
+                    mensaje = "¿Estás seguro que deseas actualizar el producto?";
+                    titulo = "Confirmar actualización";
                     int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo(mensaje, titulo);
                     if (confirmado == JOptionPane.YES_OPTION) {
                         productoModificado.setNombre(nombre);
@@ -309,11 +313,11 @@ public class frmProducto extends javax.swing.JFrame {
                         productoModificado.setPrecioVenta(precioVenta);
                         try {
                             negocioProd.editarProd(productoModificado);
-                            // Si se modificó el precio de venta
+                            // Si se modificó el precio de venta del producto
                             if (precioVentaOriginal != precioVenta) {
                                 negocioReserva.actualizarPrecioTotalProdReserva(productoModificado);
                             }
-                            mensaje = "¡Producto modificado exitosamente!";
+                            mensaje = "¡Producto actualizado exitosamente!";
                         } catch (Exception ex) {
                             mensaje = "Error al editar el producto. " + ex.getMessage();
                         }

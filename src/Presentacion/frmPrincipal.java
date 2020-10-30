@@ -24,9 +24,12 @@ import Negocio.UtilidadJTable;
 import Negocio.sesionUsuario;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
@@ -149,8 +152,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private void activarPanelInicio() {
         try {
             utilidadJframe.activarPanelPrincipal(false, false, false, false, true);
-            //String nombreUsuario = sesionUsuario.getSesionUsuario().getUsuario().getUsuario();
-            String nombreUsuario = "temporal";
+            String nombreUsuario = sesionUsuario.getSesionUsuario().getUsuario().getUsuario();
             lblBienvenida.setText("¡Bienvenido usuario " + nombreUsuario + "!");
             mostrarFechaHoraInicio();
         } catch (Exception e) {
@@ -359,18 +361,13 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         }
     }
 
-    private void mostrarMarca(String nombreProd) {
-        for (Producto prod : productosDisp) {
-            if (nombreProd.equals(prod.getNombre())) {
-                lblMarca.setText(prod.getMarca());
-            }
-        }
+    private void mostrarMarca() {
+        lblMarca.setText(productosDisp.get(jcbProductos.getSelectedIndex()).getMarca());
     }
 
     private void reiniciarJDialogProd() {
         jcbProductos.setSelectedIndex(0);
-        String nombreProd = (String) jcbProductos.getSelectedItem();
-        mostrarMarca(nombreProd);
+        mostrarMarca();
         jspCantProd.setValue(1);
     }
 
@@ -968,10 +965,10 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
         jSeparator9.setForeground(new java.awt.Color(0, 0, 0));
 
-        jbtnImprimirListaCliente.setBackground(new java.awt.Color(153, 204, 255));
+        jbtnImprimirListaCliente.setBackground(new java.awt.Color(102, 102, 255));
         jbtnImprimirListaCliente.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
         jbtnImprimirListaCliente.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnImprimirListaCliente.setText("Imprimir lista");
+        jbtnImprimirListaCliente.setText("Imprimir Clientes");
         jbtnImprimirListaCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnImprimirListaClienteActionPerformed(evt);
@@ -1993,6 +1990,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtfBuscarClienteKeyReleased
 
     private void jbtnImprimirListaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnImprimirListaClienteActionPerformed
+        try {
+            negocioCliente.impirmirClientes(jtbClientes);
+        } catch (PrinterException e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
 
     }//GEN-LAST:event_jbtnImprimirListaClienteActionPerformed
 
@@ -2068,6 +2070,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         boolean superaStock = false;
         Producto productoSeleccionado = null;
         Reserva reservaSeleccionada = null;
+        float precioProductos = -1f;
 
         String producto = (String) jcbProductos.getSelectedItem();
         int cantProd = (int) jspCantProd.getValue();
@@ -2102,20 +2105,25 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 if (reservaProd != null) {
                     indiceProd = reservaSeleccionada.getProductos().indexOf(reservaProd);
                     cantProdExistente = reservaSeleccionada.getProductos().get(indiceProd).getCantProducto();
+
                     reservaSeleccionada.getProductos().get(indiceProd).setCantProducto(cantProdExistente + cantProd);
                     nuevoPrecioTotalProd = negocioReserva.calcularPrecioTotalXProducto((cantProdExistente + cantProd), productoSeleccionado.getPrecioVenta());
+
                     reservaSeleccionada.getProductos().get(indiceProd).setPrecioTotal(nuevoPrecioTotalProd);
-                    reservaSeleccionada.setPrecioTotal(reservaSeleccionada.getPrecioTotal() + precioTotalProd);
                 } else {
                     reservaSeleccionada.addProducto(productoSeleccionado, cantProd, precioTotalProd);
-                    reservaSeleccionada.setPrecioTotal(reservaSeleccionada.getPrecioTotal() + precioTotalProd);
                 }
                 try {
+                    precioProductos = negocioReserva.calcularPrecioTotalProductos(reservaSeleccionada.getProductos());
+                    reservaSeleccionada.setPrecioProductos(precioProductos);
+                    reservaSeleccionada.setPrecioTotal(reservaSeleccionada.getPrecioAlojamiento() + precioProductos);
+
                     productoSeleccionado.setStock(productoSeleccionado.getStock() - cantProd);
                     negocioProducto.actualizarStock(productoSeleccionado);
                     negocioReserva.modificarReserva(reservaSeleccionada);
                     UtilidadJOptionPane.mostrarMensajeInformacion("El producto ha sido agregado a la reserva. Para visualizarlo ir a los detalles de la misma.", "Producto agregado");
                     actualizarTablaReservas();
+                    mostrarProdJDialog();
                     jdMostrarProductos.dispose();
                 } catch (Exception ex) {
                     System.out.println("Error al agregar el producto. " + ex.getMessage());
@@ -2127,7 +2135,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private void jcbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbProductosActionPerformed
         String producto = (String) jcbProductos.getSelectedItem();
         if (producto != null) {
-            mostrarMarca(producto);
+            mostrarMarca();
         }
     }//GEN-LAST:event_jcbProductosActionPerformed
 

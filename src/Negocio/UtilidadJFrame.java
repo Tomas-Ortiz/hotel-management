@@ -1,6 +1,7 @@
 package Negocio;
 
 import Negocio.Interfaces.IJFrame;
+import Presentacion.frmPrincipal;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -39,7 +40,11 @@ public class UtilidadJFrame implements IJFrame {
         frame.setSize(limitesMaximos.width, limitesMaximos.height);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
-        frame.getContentPane().setBackground(Color.WHITE);
+        if (frame instanceof frmPrincipal) {
+            frame.getContentPane().setBackground(Color.WHITE);
+        } else {
+            frame.getContentPane().setBackground(new Color(164, 221, 234));
+        }
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

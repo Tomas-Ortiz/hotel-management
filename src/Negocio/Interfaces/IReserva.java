@@ -7,6 +7,7 @@ import com.github.lgooddatepicker.components.TimePicker;
 import com.toedter.calendar.JDateChooser;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JPanel;
 
 public interface IReserva {
 
@@ -33,6 +34,10 @@ public interface IReserva {
     float calcularPrecioTotalProductos(List<ReservaProducto> reservaProductos);
 
     ReservaProducto verificarExistenciaProdReserva(List<ReservaProducto> reservaProd, Long idProdSeleccionado);
-    
+
     void cobrarReserva(Reserva reserva) throws Exception;
+
+    Reserva encontrarReservaHabitacion(Habitacion hab);
+    
+    void imprimirDetallesReserva(JPanel jpDetallesReserva);
 }

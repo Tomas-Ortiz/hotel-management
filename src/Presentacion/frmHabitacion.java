@@ -7,6 +7,7 @@ import Negocio.NegocioHabitacion;
 import Negocio.NegocioReserva;
 import Negocio.UtilidadIcono;
 import Negocio.UtilidadJOptionPane;
+import java.awt.Color;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -164,6 +165,7 @@ public class frmHabitacion extends javax.swing.JFrame {
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -240,7 +242,7 @@ public class frmHabitacion extends javax.swing.JFrame {
     private void jbtnGuardarHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarHabitacionActionPerformed
         String tipo = "", estado = "", detalles = "", titulo = "", mensaje = "";
         int numero = -1;
-        float precio = -1;
+        float precio = -1, precioAlojamiento, precioProductos;
         boolean datosValidos = true;
         Habitacion habitacionExistente;
 
@@ -274,8 +276,8 @@ public class frmHabitacion extends javax.swing.JFrame {
                         habitacionExistente = negocioHabitacion.verificarExistenciaHabitacion(numero);
                     }
                     if (habitacionExistente == null) {
-                        mensaje = "¿Estás seguro que deseas modificar la habitación con id " + habitacionModificada.getId() + "?";
-                        titulo = "Confirmar modificación";
+                        mensaje = "¿Estás seguro que deseas actualizar la habitación con id " + habitacionModificada.getId() + "?";
+                        titulo = "Confirmar actualización";
                         int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo(mensaje, titulo);
 
                         if (confirmado == JOptionPane.YES_OPTION) {
@@ -295,16 +297,20 @@ public class frmHabitacion extends javax.swing.JFrame {
 
                             // Si existe una reserva asociada a la habitacion modificada
                             // y se modificó el precio/dia
-                            if (reservaHab != null && precio != flagPrecioHab) {
+                            // y la reserva no está cobrada
+                            if (reservaHab != null && precio != flagPrecioHab && !reservaHab.getEstado().equals("Cobrado")) {
                                 sdf = new SimpleDateFormat("dd-MM-yyyy");
                                 Date fechaEntrada = sdf.parse(reservaHab.getFechaEntrada());
                                 Date fechaSalida = sdf.parse(reservaHab.getFechaSalida());
-                                float precioAlojamiento = negocioReserva.calcularPrecioTotalAlojamiento(habitacionModificada, fechaEntrada, fechaSalida);
-                                float precioPrductos = negocioReserva.calcularPrecioTotalProductos(reservaHab.getProductos());
-                                reservaHab.setPrecioTotal(precioAlojamiento + precioPrductos);
+
+                                precioAlojamiento = negocioReserva.calcularPrecioTotalAlojamiento(habitacionModificada, fechaEntrada, fechaSalida);
+                                precioProductos = negocioReserva.calcularPrecioTotalProductos(reservaHab.getProductos());
+
+                                reservaHab.setPrecioAlojamiento(precioAlojamiento);
+                                reservaHab.setPrecioTotal(precioAlojamiento + precioProductos);
                                 negocioReserva.modificarReserva(reservaHab);
                             }
-                            mensaje = "¡Habitación modificada exitosamente!";
+                            mensaje = "¡Habitación actualizada exitosamente!";
                             modificarHabitacion = false;
                         } else {
                             mensaje = "";
@@ -316,7 +322,7 @@ public class frmHabitacion extends javax.swing.JFrame {
                         mensaje = "";
                     }
                 } catch (Exception e) {
-                    mensaje = "Error al modificar la habitación." + e.getMessage();
+                    mensaje = "Error al actualizar la habitación." + e.getMessage();
                 }
             } else {
                 habitacionExistente = negocioHabitacion.verificarExistenciaHabitacion(numero);

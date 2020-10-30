@@ -6,6 +6,7 @@ import Negocio.UtilidadGeneral;
 import Negocio.UtilidadIcono;
 import Negocio.UtilidadJFrame;
 import Negocio.UtilidadJOptionPane;
+import java.awt.Color;
 import java.awt.Image;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +29,8 @@ public class frmCliente extends javax.swing.JFrame {
         sdf = new SimpleDateFormat("dd-MM-yyyy");
         negocioCliente = NegocioCliente.getNegocioCliente();
         mostrarListaPaises();
+        jSeparator2.setBackground(Color.BLACK);
+        jSeparator2.setForeground(Color.BLACK);
     }
 
     private void mostrarIconos() {
@@ -90,37 +93,37 @@ public class frmCliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblNombre.setText("Nombre");
         lblNombre.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblNombre.setText("Nombre");
 
-        lblApellido.setText("Apellido");
         lblApellido.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblApellido.setText("Apellido");
 
-        lblDocumento.setText("DNI");
         lblDocumento.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblDocumento.setText("DNI");
 
-        lblFechaNacimiento.setText("Fecha de nacimiento");
         lblFechaNacimiento.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblFechaNacimiento.setText("Fecha de nacimiento");
 
-        lblNacionalidad.setText("Nacionalidad");
         lblNacionalidad.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblNacionalidad.setText("Nacionalidad");
 
-        lblCorreo.setText("Correo electrónico");
         lblCorreo.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblCorreo.setText("Correo electrónico");
 
-        lblNroTeléfono.setText("Nro. teléfono");
         lblNroTeléfono.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
+        lblNroTeléfono.setText("Nro. teléfono");
 
-        jdcFechaNacimiento.setBackground(new java.awt.Color(255, 255, 255));
+        jdcFechaNacimiento.setBackground(new java.awt.Color(164, 221, 234));
 
         jcbPaises.setBackground(new java.awt.Color(102, 204, 255));
 
         jpTitulo.setBackground(new java.awt.Color(0, 0, 0));
 
-        lblTituloPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTituloPrincipal.setText("Cliente");
         lblTituloPrincipal.setFont(new java.awt.Font("Maiandra GD", 1, 36)); // NOI18N
         lblTituloPrincipal.setForeground(new java.awt.Color(255, 255, 255));
+        lblTituloPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTituloPrincipal.setText("Cliente");
 
         javax.swing.GroupLayout jpTituloLayout = new javax.swing.GroupLayout(jpTitulo);
         jpTitulo.setLayout(jpTituloLayout);
@@ -144,9 +147,9 @@ public class frmCliente extends javax.swing.JFrame {
         );
 
         jbtnModificarCliente.setBackground(new java.awt.Color(0, 102, 204));
-        jbtnModificarCliente.setBorder(null);
         jbtnModificarCliente.setFont(new java.awt.Font("Bodoni MT Condensed", 1, 20)); // NOI18N
         jbtnModificarCliente.setForeground(new java.awt.Color(255, 255, 255));
+        jbtnModificarCliente.setBorder(null);
         jbtnModificarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnModificarClienteActionPerformed(evt);
@@ -164,6 +167,11 @@ public class frmCliente extends javax.swing.JFrame {
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+
+        jSeparator2.setBackground(new java.awt.Color(0, 0, 0));
+        jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
+        jSeparator2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jSeparator2.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -309,10 +317,9 @@ public class frmCliente extends javax.swing.JFrame {
             titulo = "Error";
             UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
         }
-
         if (datosValidos) {
-            mensaje = "¿Estás seguro que deseas modificar el cliente con id " + cliente.getId() + "?";
-            titulo = "Confirmar modificación";
+            mensaje = "¿Estás seguro que deseas actualizar el cliente con id " + cliente.getId() + "?";
+            titulo = "Confirmar actualización";
             int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo(mensaje, titulo);
 
             if (confirmado == JOptionPane.YES_OPTION) {
@@ -326,7 +333,7 @@ public class frmCliente extends javax.swing.JFrame {
                 if (cliente.getDni().equals(dni)) {
                     try {
                         negocioCliente.modificarCliente(cliente);
-                        mensaje = "¡Cliente modificado exitosamente!";
+                        mensaje = "¡Cliente actualizado exitosamente!";
                     } catch (Exception ex) {
                         mensaje = "";
                         System.out.println("Error " + ex.getMessage());
@@ -340,7 +347,7 @@ public class frmCliente extends javax.swing.JFrame {
                         } catch (Exception ex) {
                             System.out.println("Error " + ex.getMessage());
                         }
-                        mensaje = "¡Cliente modificado exitosamente!";
+                        mensaje = "¡Cliente actualizado exitosamente!";
                     } else {
                         mensaje = "El cliente con el dni adjunto ya existe.";
                         titulo = "Error";

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -28,10 +27,9 @@ public class Reserva implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fechaEntrada, fechaSalida, tipoPago, horaEntrada, horaSalida;
-    private float precioTotal;
+    private float precioAlojamiento, precioProductos, precioTotal;
 
     enum enumEstado {
-
         Cobrado,
         Pendiente
     }
@@ -59,12 +57,14 @@ public class Reserva implements Serializable {
     public Reserva() {
     }
 
-    public Reserva(String fechaEntrada, String fechaSalida, String tipoPago, String horaEntrada, String horaSalida, float precioTotal, String estado, Cliente cliente, Habitacion habitacion) {
+    public Reserva(String fechaEntrada, String fechaSalida, String tipoPago, String horaEntrada, String horaSalida, String estado, Cliente cliente, Habitacion habitacion, float precioAlojamiento, float precioProductos, float precioTotal) {
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;
         this.tipoPago = tipoPago;
         this.horaEntrada = horaEntrada;
         this.horaSalida = horaSalida;
+        this.precioAlojamiento = precioAlojamiento;
+        this.precioProductos = precioProductos;
         this.precioTotal = precioTotal;
         this.estado = enumEstado.valueOf(estado);
         this.cliente = cliente;
@@ -151,6 +151,22 @@ public class Reserva implements Serializable {
         this.horaSalida = horaSalida;
     }
 
+    public float getPrecioAlojamiento() {
+        return precioAlojamiento;
+    }
+
+    public void setPrecioAlojamiento(float precioAlojamiento) {
+        this.precioAlojamiento = precioAlojamiento;
+    }
+
+    public float getPrecioProductos() {
+        return precioProductos;
+    }
+
+    public void setPrecioProductos(float precioProductos) {
+        this.precioProductos = precioProductos;
+    }
+
     public List<ReservaProducto> getProductos() {
         return productos;
     }
@@ -181,6 +197,6 @@ public class Reserva implements Serializable {
 
     @Override
     public String toString() {
-        return "Reserva{" + "id=" + id + ", fechaEntrada=" + fechaEntrada + ", fechaSalida=" + fechaSalida + ", tipoPago=" + tipoPago + ", horaEntrada=" + horaEntrada + ", horaSalida=" + horaSalida + ", precioTotal=" + precioTotal + ", estado=" + estado + ", cliente=" + cliente + ", habitacion=" + habitacion + ", productos=" + productos + '}';
+        return "Reserva{" + "id=" + id + ", fechaEntrada=" + fechaEntrada + ", fechaSalida=" + fechaSalida + ", tipoPago=" + tipoPago + ", horaEntrada=" + horaEntrada + ", horaSalida=" + horaSalida + ", precioAlojamiento=" + precioAlojamiento + ", precioProductos=" + precioProductos + ", precioTotal=" + precioTotal + ", estado=" + estado.name() + ", cliente=" + cliente + ", habitacion=" + habitacion + ", productos=" + productos + '}';
     }
 }
