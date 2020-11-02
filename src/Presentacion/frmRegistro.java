@@ -329,12 +329,12 @@ public class frmRegistro extends javax.swing.JFrame {
             }
             try {
                 negocioUsuario.crearUsuario(usuario);
-                mensaje = "Usuario registrado exitosamente.";
+                mensaje = "Usuario registrado exitosamente. Inicia sesión para acceder al sistema.";
                 UtilidadJOptionPane.mostrarMensajeInformacion(mensaje, titulo);
                 limpiarCamposForm();
 
             } catch (RollbackException rbe) {
-                mensaje = "El email o usuario ingresado ya está registrado, pruebe con otro.";
+                mensaje = "El email o usuario ingresado ya está registrado, prueba con otro.";
                 UtilidadJOptionPane.mostrarMensajeError(mensaje, titulo);
             }
             limpiarContraseñas();

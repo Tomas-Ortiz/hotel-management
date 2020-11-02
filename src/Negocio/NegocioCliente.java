@@ -9,7 +9,6 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.print.PrinterException;
 import java.text.MessageFormat;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 public class NegocioCliente implements ICliente {

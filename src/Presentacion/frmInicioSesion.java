@@ -264,6 +264,7 @@ public class frmInicioSesion extends javax.swing.JFrame {
                 System.out.println("Error en la encriptación de la contraseña" + ex.getMessage());
             }
 
+            //buscarUsuario solo trae a los usuarios activos
             List<Usuario> usuarios = negocioUsuario.buscarUsuario(usuario, contraseñaCifrada);
             // Si existe el usuario
             if (usuarios.size() > 0) {

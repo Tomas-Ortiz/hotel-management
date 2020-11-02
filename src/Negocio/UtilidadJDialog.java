@@ -9,6 +9,6 @@ public class UtilidadJDialog {
         dialog.setLocationRelativeTo(null);
         dialog.setLocation(500, 300);
         dialog.setResizable(false);
-        dialog.setSize(378, 185);
+        dialog.setSize(420, 185);
     }
 }

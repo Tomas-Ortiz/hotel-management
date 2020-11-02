@@ -162,7 +162,7 @@ public class frmProducto extends javax.swing.JFrame {
         lblPrecioVenta.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblPrecioVenta.setText("Precio de venta");
 
-        jspStock.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        jspStock.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));

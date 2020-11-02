@@ -25,7 +25,7 @@ public class UtilidadJOptionPane {
     }
 
     public static int mostrarMensajePreguntaPersonalizada(String mensaje, String titulo, Object[] botones) {
-        return JOptionPane.showOptionDialog(null, mensaje, titulo, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botones, botones[0]);
+        return JOptionPane.showOptionDialog(null, mensaje, titulo, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botones, botones[0]);
 
     }
 }

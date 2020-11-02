@@ -18,7 +18,10 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="seleccionarProd" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblSeleccionarCant" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                  <Component id="lblMarcaProd" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSeleccionarCant" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -31,11 +34,7 @@
                               <Component id="jcbProductos" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="lblMarcaProd" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="lblMarca" min="-2" pref="190" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lblMarca" min="-2" pref="190" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="58" pref="82" max="32767" attributes="0"/>
               </Group>

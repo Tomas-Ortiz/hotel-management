@@ -72,7 +72,7 @@ public class frmDetallesReserva extends javax.swing.JFrame {
         lblFechaNacimiento.setText("Fecha de nacimiento: " + cliente.getFechaNacimiento());
         lblNacionalidad.setText("Nacionalidad: " + cliente.getNacionalidad());
         lblCorreo.setText("Correo electrónico: " + cliente.getCorreo());
-        lblNroTeléfono.setText("Nro. teléfono: " + cliente.getNroTelefono());
+        lblNroTeléfono.setText("Nro. de teléfono: " + cliente.getNroTelefono());
     }
 
     private void mostrarReserva(Reserva reserva) {
@@ -259,7 +259,7 @@ public class frmDetallesReserva extends javax.swing.JFrame {
         lblInfoPrecios.setText("<html><b>Nota:</b> Si el precio total de productos, alojamiento y reserva no coinciden con los precios unitarios, se debe a que la modificación de los precios (habitacion y productos) no afectan a las reservas ya cobradas.</html>");
 
         lblNroTeléfono.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
-        lblNroTeléfono.setText("Nro. teléfono:");
+        lblNroTeléfono.setText("Nro. de teléfono:");
 
         lblCorreo.setFont(new java.awt.Font("Maiandra GD", 0, 18)); // NOI18N
         lblCorreo.setText("Correo electrónico:");
@@ -592,10 +592,13 @@ public class frmDetallesReserva extends javax.swing.JFrame {
                                 .addGroup(jpDetallesReservaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblTipoHabitacion)
                                     .addComponent(lblEstadoHabitacion))))))
-                .addGap(17, 17, 17)
-                .addGroup(jpDetallesReservaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDetalles)
-                    .addComponent(lblNroTeléfono))
+                .addGroup(jpDetallesReservaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpDetallesReservaLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(lblDetalles))
+                    .addGroup(jpDetallesReservaLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(lblNroTeléfono)))
                 .addGap(17, 17, 17)
                 .addGroup(jpDetallesReservaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpDetallesReservaLayout.createSequentialGroup()

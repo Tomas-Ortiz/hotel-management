@@ -25,121 +25,120 @@ import Negocio.sesionUsuario;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
-import java.text.MessageFormat;
 import java.text.ParseException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 
 public class frmPrincipal extends javax.swing.JFrame implements Runnable {
-
+    
     private final UtilidadJFrame utilidadJframe;
-
+    
     private final DefaultTableModel dtmHabitaciones;
     private List<Habitacion> habitaciones;
     private final NegocioHabitacion negocioHabitacion;
-
+    
     private final DefaultTableModel dtmReservas;
     private List<Reserva> reservas;
     private final NegocioReserva negocioReserva;
-
+    
     private final DefaultTableModel dtmClientes;
     private List<Cliente> clientes;
     private final NegocioCliente negocioCliente;
-
+    
     private final DefaultTableModel dtmProd;
     private List<Producto> productos;
     private List<Producto> productosDisp;
     private final NegocioProducto negocioProducto;
-
+    
     CellRenderer renderTable;
-
+    
     Thread hilo;
-
+    
     public frmPrincipal() {
         initComponents();
         iniciarHiloHora();
-
+        
         utilidadJframe = UtilidadJFrame.getUtilidadFrame();
         utilidadJframe.configurarFrame("MyHotel", this);
-
+        
         utilidadJframe.guardarPanelesPrincipal(jpHabitaciones, jpClientes, jpReservas, jpProductos, jpInicio);
-
+        
         mostrarUsuariologueado();
-
+        
         dtmHabitaciones = (DefaultTableModel) jtbHabitaciones.getModel();
         dtmReservas = (DefaultTableModel) jtbReservas.getModel();
         dtmClientes = (DefaultTableModel) jtbClientes.getModel();
         dtmProd = (DefaultTableModel) jtbProductos.getModel();
-
+        
         habitaciones = new ArrayList<>();
         reservas = new ArrayList<>();
         clientes = new ArrayList<>();
         productos = new ArrayList<>();
-
+        
         negocioHabitacion = NegocioHabitacion.getNegocioHabitacion();
         negocioReserva = NegocioReserva.getNegocioReserva();
         negocioCliente = NegocioCliente.getNegocioCliente();
         negocioProducto = NegocioProducto.getNegocioProducto();
-
+        
         configurarJTables();
         activarPanelInicio();
         mostrarIconos();
     }
-
+    
     private void iniciarHiloHora() {
         hilo = new Thread(this);
         hilo.start();
     }
-
+    
     private void configurarJTables() {
         UtilidadJTable.setCellRender(jtbClientes);
         UtilidadJTable.setCellRender(jtbHabitaciones);
         UtilidadJTable.setCellRender(jtbReservas);
         UtilidadJTable.setCellRender(jtbProductos);
-
+        
         jtbHabitaciones.getTableHeader().setDefaultRenderer(new HeaderRenderer());
         jtbClientes.getTableHeader().setDefaultRenderer(new HeaderRenderer());
         jtbReservas.getTableHeader().setDefaultRenderer(new HeaderRenderer());
         jtbProductos.getTableHeader().setDefaultRenderer(new HeaderRenderer());
     }
-
+    
     private void mostrarIconos() {
         Image iconoHotel = new ImageIcon("Recursos\\Iconos\\iconoHotel.png").getImage();
         UtilidadIcono.cargarIconoLabel(iconoHotel, lblIconoHotelTitulo, 90, 90);
-
+        
         Image iconoUsuario = new ImageIcon("Recursos\\Iconos\\iconoUsuario.png").getImage();
         UtilidadIcono.cargarIconoLabel(iconoUsuario, lblIconoUsuario, 53, 53);
-
+        
         Image iconoInicio = new ImageIcon("Recursos\\Iconos\\iconoInicio.jpg").getImage();
         UtilidadIcono.cargarIconoLabel(iconoInicio, lblIconoInicio, 53, 53);
-
+        
         Image iconoHab = new ImageIcon("Recursos\\Iconos\\iconoHabitacion.png").getImage();
         UtilidadIcono.cargarIconoLabel(iconoHab, lblIconoHabitaciones, 53, 53);
-
+        
         Image iconoCliente = new ImageIcon("Recursos\\Iconos\\iconoCliente.png").getImage();
         UtilidadIcono.cargarIconoLabel(iconoCliente, lblIconoClientes, 45, 45);
-
+        
         Image iconoReserva = new ImageIcon("Recursos\\Iconos\\iconoReserva.png").getImage();
         UtilidadIcono.cargarIconoLabel(iconoReserva, lblIconoReserva, 40, 40);
-
+        
         Image iconoProd = new ImageIcon("Recursos\\Iconos\\iconoProducto.png").getImage();
         UtilidadIcono.cargarIconoLabel(iconoProd, lblIconoProductos, 40, 40);
-
+        
         Image iconoSalir = new ImageIcon("Recursos\\Iconos\\iconoSalir.png").getImage();
-
+        
         UtilidadIcono.cargarIconoButton(iconoSalir, jbtnSalir, 35, 35);
-
+        
         UtilidadIcono.cargarIconoFrame(this);
     }
-
+    
     private void activarPanelHabitaciones() {
         utilidadJframe.activarPanelPrincipal(true, false, false, false, false);
         activarBotonesPanelHabitaciones(false, false);
         actualizarTablaHabitaciones();
         mostrarCantEstadosHabitaciones();
+        jcbFiltroHabitaciones.setSelectedItem("Id");
     }
-
+    
     private void activarPanelReservas() {
         utilidadJframe.activarPanelPrincipal(false, false, true, false, false);
         activarBotonesPanelReservas(false, false, false, false);
@@ -147,8 +146,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         mostrarProdJDialog();
         actualizarTablaReservas();
         mostrarCantEstadosReservas();
+        jcbFiltroReservas.setSelectedItem("Id");
     }
-
+    
     private void activarPanelInicio() {
         try {
             utilidadJframe.activarPanelPrincipal(false, false, false, false, true);
@@ -160,26 +160,28 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             System.exit(0);
         }
     }
-
+    
     private void activarPanelClientes() {
         utilidadJframe.activarPanelPrincipal(false, true, false, false, false);
         activarBotonesPanelCliente(false);
         actualizarTablaClientes();
         mostrarCantClientes();
+        jcbFiltroClientes.setSelectedItem("Id");
     }
-
+    
     private void activarPanelProd() {
         utilidadJframe.activarPanelPrincipal(false, false, false, true, false);
         activarBotonesPanelProd(false);
         actualizarTablaProd();
         mostrarCantProd();
+        jcbFiltroProductos.setSelectedItem("Id");
     }
-
+    
     private void mostrarFechaHoraInicio() {
         lblFechaHora.setText(UtilidadGeneral.getFechaActual() + ", " + UtilidadGeneral.getHoraActual());
         lblFechaHoraTitulo.setText(UtilidadGeneral.getFechaActual() + ", " + UtilidadGeneral.getHoraActual());
     }
-
+    
     private void mostrarUsuariologueado() {
         try {
             String nombreUsuario = sesionUsuario.getSesionUsuario().getUsuario().getUsuario();
@@ -189,23 +191,23 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             System.exit(0);
         }
     }
-
+    
     private void activarBotonesPanelHabitaciones(boolean modificarHabitacion, boolean EliminarHabitacion) {
         jtbnModificarHabitacion.setEnabled(modificarHabitacion);
         jtbnEliminarHabitacion.setEnabled(EliminarHabitacion);
     }
-
+    
     private void mostrarDatosHabitaciones(List<Habitacion> habitaciones) {
         if (habitaciones.isEmpty()) {
             habitaciones = negocioHabitacion.getHabitaciones();
         }
-
+        
         dtmHabitaciones.setRowCount(0);
         for (Habitacion habitacion : habitaciones) {
             dtmHabitaciones.addRow(new Object[]{habitacion.getId(), habitacion.getNumero(), habitacion.getTipo(), habitacion.getEstado(), habitacion.getDetalles(), habitacion.getPrecioDia()});
         }
     }
-
+    
     private void mostrarCantEstadosHabitaciones() {
         lblRegistradas.setText("Registradas (" + negocioHabitacion.getHabitaciones().size() + ")");
         lblDisponibles.setText("Disponibles (" + negocioHabitacion.getCountHabitacionesByEstado("Disponible") + ")");
@@ -213,16 +215,16 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         lblLimpieza.setText("Limpieza (" + negocioHabitacion.getCountHabitacionesByEstado("Limpieza") + ")");
         lblReparación.setText("Reparación (" + negocioHabitacion.getCountHabitacionesByEstado("Reparación") + ")");
     }
-
+    
     private void mostrarCantClientes() {
         lblClientes.setText("Clientes (" + negocioCliente.getClientes().size() + ")");
     }
-
+    
     public void actualizarTablaHabitaciones() {
         mostrarDatosHabitaciones(negocioHabitacion.getHabitaciones());
         activarBotonesPanelHabitaciones(false, false);
     }
-
+    
     private void mostrarDatosReservas(List<Reserva> reservas) {
         if (reservas.isEmpty()) {
             reservas = negocioReserva.getReservas();
@@ -232,25 +234,25 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             dtmReservas.addRow(new Object[]{reserva.getId(), reserva.getCliente().getNombres(), reserva.getCliente().getApellidos(), reserva.getCliente().getDni(), reserva.getHabitacion().getNumero(), reserva.getFechaEntrada(), reserva.getFechaSalida(), reserva.getHoraEntrada(), reserva.getHoraSalida(), reserva.getEstado(), reserva.getPrecioTotal()});
         }
     }
-
+    
     private void actualizarTablaReservas() {
         mostrarDatosReservas(negocioReserva.getReservas());
         activarBotonesPanelReservas(false, false, false, false);
     }
-
+    
     private void mostrarCantEstadosReservas() {
         lblCantReservas.setText("Reservas (" + negocioReserva.getReservas().size() + ")");
         lblCobradasReserva.setText("Cobradas (" + negocioReserva.getCountReservasByEstado("Cobrado") + ")");
         lblPendientesReserva.setText("Pendientes (" + negocioReserva.getCountReservasByEstado("Pendiente") + ")");
     }
-
+    
     private void activarBotonesPanelReservas(boolean modificarReserva, boolean cobrar, boolean verDetalles, boolean venderProducto) {
         jtbnModificarReserva.setEnabled(modificarReserva);
         jtbnCobrar.setEnabled(cobrar);
         jtbnVerDetalles.setEnabled(verDetalles);
         jbtnVenderProducto.setEnabled(venderProducto);
     }
-
+    
     private void mostrarDatosClientes(List<Cliente> clientes) {
         if (clientes.isEmpty()) {
             clientes = negocioCliente.getClientes();
@@ -262,12 +264,12 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 cliente.getCorreo(), cliente.getNroTelefono()});
         }
     }
-
+    
     private void actualizarTablaClientes() {
         mostrarDatosClientes(negocioCliente.getClientes());
         activarBotonesPanelCliente(false);
     }
-
+    
     private void mostrarDatosProd(List<Producto> productos) {
         if (productos.isEmpty()) {
             productos = negocioProducto.getProductos();
@@ -278,16 +280,16 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 prod.getStock(), prod.getProveedor(), prod.getPrecioCompra(), prod.getPrecioVenta()});
         }
     }
-
+    
     private void actualizarTablaProd() {
         mostrarDatosProd(negocioProducto.getProductos());
         activarBotonesPanelProd(false);
     }
-
+    
     private void mostrarCantProd() {
         lblCantProd.setText("Productos (" + negocioProducto.getProductos().size() + ")");
     }
-
+    
     private void mostrarBusquedaClientes(String busqueda, int keyCode) {
         if (keyCode != KeyEvent.VK_CAPS_LOCK) {
             if (busqueda.equals("")) {
@@ -301,7 +303,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         }
     }
-
+    
     private void mostrarBusquedaHabitacion(String busqueda, int keyCode) {
         // Por algún motivo se ejecutaba con bloq mayus
         if (keyCode != KeyEvent.VK_CAPS_LOCK) {
@@ -316,7 +318,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         }
     }
-
+    
     private void mostrarBusquedaProd(String busqueda, int keyCode) {
         if (keyCode != KeyEvent.VK_CAPS_LOCK) {
             if (busqueda.equals("")) {
@@ -330,15 +332,15 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         }
     }
-
+    
     private void activarBotonesPanelCliente(boolean modificarCliente) {
         jbtnModificarCliente.setEnabled(modificarCliente);
     }
-
+    
     private void activarBotonesPanelProd(boolean modificarProd) {
         jbtnModificarProducto.setEnabled(modificarProd);
     }
-
+    
     private void mostrarBusquedaReserva(String busqueda, int keyCode) {
         if (keyCode != KeyEvent.VK_CAPS_LOCK) {
             if (busqueda.equals("")) {
@@ -352,25 +354,26 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             }
         }
     }
-
+    
     private void mostrarProdJDialog() {
+        int contadorProd = 0;
         productosDisp = negocioProducto.getProductosDisponibles();
         jcbProductos.removeAllItems();
         for (Producto prod : productosDisp) {
-            jcbProductos.addItem(prod.getNombre());
+            jcbProductos.addItem(prod.getNombre() + " (" + ++contadorProd + ")");
         }
     }
-
+    
     private void mostrarMarca() {
         lblMarca.setText(productosDisp.get(jcbProductos.getSelectedIndex()).getMarca());
     }
-
+    
     private void reiniciarJDialogProd() {
         jcbProductos.setSelectedIndex(0);
         mostrarMarca();
         jspCantProd.setValue(1);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -531,7 +534,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                     .addGroup(jdMostrarProductosLayout.createSequentialGroup()
                         .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(seleccionarProd)
-                            .addComponent(lblSeleccionarCant))
+                            .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblMarcaProd)
+                                .addComponent(lblSeleccionarCant)))
                         .addGap(18, 18, 18)
                         .addGroup(jdMostrarProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jdMostrarProductosLayout.createSequentialGroup()
@@ -540,10 +545,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                                 .addComponent(jbtnCancelarProdReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jspCantProd, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jcbProductos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jdMostrarProductosLayout.createSequentialGroup()
-                        .addComponent(lblMarcaProd)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(lblMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(58, 82, Short.MAX_VALUE))
         );
         jdMostrarProductosLayout.setVerticalGroup(
@@ -1748,11 +1750,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         frmHabitacion frmHabitacion = new frmHabitacion();
         int filaIndice = jtbHabitaciones.getSelectedRow();
         habitaciones = negocioHabitacion.getHabitaciones();
-
+        
         Long habitacionId = Long.parseLong(dtmHabitaciones.getValueAt(filaIndice, 0).toString());
-
+        
         Habitacion habitacion = negocioHabitacion.encontrarHabitacion(habitacionId);
-
+        
         if (habitacion != null) {
             frmHabitacion.mostrarHabitacion(habitacion);
             frmHabitacion.setVisible(true);
@@ -1765,7 +1767,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         String mensaje = "¿Estás seguro que deseas eliminar la habitación con id " + habitacionId + "?";
         String titulo = "Confirmar eliminación";
         int confirmado = UtilidadJOptionPane.mostrarMensajeConfirmacion(mensaje, titulo);
-
+        
         if (confirmado == JOptionPane.YES_OPTION) {
             try {
                 negocioHabitacion.eliminarHabitacion(habitacionId);
@@ -1781,11 +1783,11 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private void jcbFiltroHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroHabitacionesActionPerformed
         String campo = (String) jcbFiltroHabitaciones.getSelectedItem();
-
+        
         if (campo.equals("Precio")) {
             campo = "precioDia";
         }
-
+        
         habitaciones = negocioHabitacion.ordenarHabitaciones(campo);
         mostrarDatosHabitaciones(habitaciones);
         activarBotonesPanelHabitaciones(false, false);
@@ -1799,7 +1801,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         String campo = (String) jcbFiltroReservas.getSelectedItem();
         //Si el campo seleccionado corresponde a otra tabla (consulta diferente)
         boolean otraTabla = false;
-
+        
         switch (campo) {
             case "Precio total":
                 campo = "precioTotal";
@@ -1835,7 +1837,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
             default:
                 break;
         }
-
+        
         reservas = negocioReserva.ordenarReservas(campo, otraTabla);
         mostrarDatosReservas(reservas);
         activarBotonesPanelReservas(false, false, false, false);
@@ -1844,7 +1846,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     private void jtbReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbReservasMouseClicked
         int filaIndice = jtbReservas.getSelectedRow();
         String estado = dtmReservas.getValueAt(filaIndice, 9).toString();
-
+        
         if (estado.equals("Cobrado")) {
             activarBotonesPanelReservas(false, false, true, false);
         } else {
@@ -1861,9 +1863,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         frmReserva frmReserva = new frmReserva();
         int filaIndice = jtbReservas.getSelectedRow();
         Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
-
+        
         Reserva reserva = negocioReserva.encontrarReserva(reservaId);
-
+        
         if (reserva != null) {
             try {
                 frmReserva.mostrarReserva(reserva);
@@ -1884,9 +1886,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         frmDetallesReserva frmDetallesReserva = new frmDetallesReserva();
         int filaIndice = jtbReservas.getSelectedRow();
         Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
-
+        
         Reserva reserva = negocioReserva.encontrarReserva(reservaId);
-
+        
         if (reserva != null) {
             frmDetallesReserva.mostrarDetallesReserva(reserva);
             frmDetallesReserva.setVisible(true);
@@ -1897,7 +1899,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         int filaIndice = jtbReservas.getSelectedRow();
         Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
         Reserva reserva = negocioReserva.encontrarReserva(reservaId);
-
+        
         try {
             int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo("¿Estás seguro que deseas cobrar la reserva con id " + reserva.getId() + "?", "Confirmar cobro");
             if (confirmado == JOptionPane.YES_OPTION) {
@@ -1939,7 +1941,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private void jcbFiltroClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroClientesActionPerformed
         String campo = (String) jcbFiltroClientes.getSelectedItem();
-
+        
         switch (campo) {
             case "Nombre":
                 campo = "nombres";
@@ -1966,9 +1968,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         frmCliente frmCliente = new frmCliente();
         int filaIndice = jtbClientes.getSelectedRow();
         Long clienteId = Long.parseLong(dtmClientes.getValueAt(filaIndice, 0).toString());
-
+        
         Cliente cliente = negocioCliente.encontrarCliente(clienteId);
-
+        
         if (cliente != null) {
             try {
                 frmCliente.mostrarCliente(cliente);
@@ -2010,7 +2012,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
 
     private void jcbFiltroProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFiltroProductosActionPerformed
         String campo = (String) jcbFiltroProductos.getSelectedItem();
-
+        
         switch (campo) {
             case "Precio de compra":
                 campo = "precioCompra";
@@ -2053,9 +2055,9 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         frmProducto frmProducto = new frmProducto();
         int filaIndice = jtbProductos.getSelectedRow();
         Long productoId = Long.parseLong(dtmProd.getValueAt(filaIndice, 0).toString());
-
+        
         Producto producto = negocioProducto.encontrarProd(productoId);
-
+        
         if (producto != null) {
             frmProducto.mostrarProd(producto);
             frmProducto.setVisible(true);
@@ -2071,18 +2073,18 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
         Producto productoSeleccionado = null;
         Reserva reservaSeleccionada = null;
         float precioProductos = -1f;
-
-        String producto = (String) jcbProductos.getSelectedItem();
+        
+        String producto = productosDisp.get(jcbProductos.getSelectedIndex()).getNombre();
         int cantProd = (int) jspCantProd.getValue();
-
+        
         int filaIndice = jtbReservas.getSelectedRow();
         Long reservaId = Long.parseLong(dtmReservas.getValueAt(filaIndice, 0).toString());
-
+        
         int confirmado = UtilidadJOptionPane.mostrarMensajePreguntaYesNo("¿Estás seguro que deseas agregar este producto a la reserva " + reservaId + "?", "Confirmar producto");
-
+        
         if (confirmado == JOptionPane.YES_OPTION) {
             for (Producto prod : productosDisp) {
-                if (producto.equals(prod.getNombre())) {
+                if (producto.equals(prod.getNombre()) && prod.getMarca().equals(lblMarca.getText())) {
                     if (cantProd > prod.getStock()) {
                         superaStock = true;
                         UtilidadJOptionPane.mostrarMensajeError("La cantidad ingresada supera al stock del producto seleccionado (" + prod.getStock() + ").", "Error");
@@ -2101,14 +2103,14 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                 // Se calcula el nuevo precio total del producto
                 ReservaProducto reservaProd = negocioReserva.verificarExistenciaProdReserva(reservaSeleccionada.getProductos(), productoSeleccionado.getId());
                 precioTotalProd = negocioReserva.calcularPrecioTotalXProducto(cantProd, productoSeleccionado.getPrecioVenta());
-
+                
                 if (reservaProd != null) {
                     indiceProd = reservaSeleccionada.getProductos().indexOf(reservaProd);
                     cantProdExistente = reservaSeleccionada.getProductos().get(indiceProd).getCantProducto();
-
+                    
                     reservaSeleccionada.getProductos().get(indiceProd).setCantProducto(cantProdExistente + cantProd);
                     nuevoPrecioTotalProd = negocioReserva.calcularPrecioTotalXProducto((cantProdExistente + cantProd), productoSeleccionado.getPrecioVenta());
-
+                    
                     reservaSeleccionada.getProductos().get(indiceProd).setPrecioTotal(nuevoPrecioTotalProd);
                 } else {
                     reservaSeleccionada.addProducto(productoSeleccionado, cantProd, precioTotalProd);
@@ -2117,7 +2119,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
                     precioProductos = negocioReserva.calcularPrecioTotalProductos(reservaSeleccionada.getProductos());
                     reservaSeleccionada.setPrecioProductos(precioProductos);
                     reservaSeleccionada.setPrecioTotal(reservaSeleccionada.getPrecioAlojamiento() + precioProductos);
-
+                    
                     productoSeleccionado.setStock(productoSeleccionado.getStock() - cantProd);
                     negocioProducto.actualizarStock(productoSeleccionado);
                     negocioReserva.modificarReserva(reservaSeleccionada);
@@ -2283,7 +2285,7 @@ public class frmPrincipal extends javax.swing.JFrame implements Runnable {
     @Override
     public void run() {
         Thread ct = Thread.currentThread();
-
+        
         while (ct == hilo) {
             mostrarFechaHoraInicio();
             try {

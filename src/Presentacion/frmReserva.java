@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -522,7 +523,7 @@ public class frmReserva extends javax.swing.JFrame {
         String nombre = "", apellido = "", nacionalidad = "", correo = "", mensaje = "", titulo = "";
         String fechaNacimiento = "", fechaEntrada = "", fechaSalida = "", tipoPago = "";
         String horaEntrada = "", horaSalida = "";
-        Long dni = -1L, nroTelefono = -1L;
+        Long dni = -1L, nroTelefono = -1L, flagDni;
         int nroHabitacion = -1;
         float precioAlojamiento, precioProductos;
         Habitacion habitacionSeleccionada;
@@ -584,7 +585,7 @@ public class frmReserva extends javax.swing.JFrame {
 
                         reservaModificada.getCliente().setNombres(nombre);
                         reservaModificada.getCliente().setApellidos(apellido);
-                        reservaModificada.getCliente().setDni(dni);
+                        flagDni = reservaModificada.getCliente().getDni();
                         reservaModificada.getCliente().setFechaNacimiento(fechaNacimiento);
                         reservaModificada.getCliente().setCorreo(correo);
                         reservaModificada.getCliente().setNacionalidad(nacionalidad);
@@ -592,52 +593,45 @@ public class frmReserva extends javax.swing.JFrame {
 
                         Cliente clienteExistente = negocioCliente.verificarExistenciaCliente(dni);
 
-                        if (clienteExistente == null) {
+                        if (Objects.equals(flagDni, dni) || clienteExistente == null) {
+                            reservaModificada.getCliente().setDni(dni);
                             negocioCliente.modificarCliente(reservaModificada.getCliente());
                         } else {
                             mensaje = "El cliente ingresado con el dni adjunto ya existe,\n"
-                                    + "¿deseas actualizar los datos del cliente existente o asociarse al cliente existente "
-                                    + "sin actualizar sus datos?";
-                            titulo = "Actualizar cliente";
-                            Object[] botones = {"Actualizar datos", "Mantener datos"};
+                                    + "¿deseas asociar la reserva al cliente existente?";
+                            titulo = "Cliente existente";
 
-                            confirmado = UtilidadJOptionPane.mostrarMensajePreguntaPersonalizada(mensaje, titulo, botones);
-
+                            confirmado = UtilidadJOptionPane.mostrarMensajePreguntaOkCancel(mensaje, titulo);
                             if (confirmado == JOptionPane.YES_OPTION) {
-                                clienteExistente.setNombres(reservaModificada.getCliente().getNombres());
-                                clienteExistente.setApellidos(reservaModificada.getCliente().getApellidos());
-                                clienteExistente.setFechaNacimiento(reservaModificada.getCliente().getFechaNacimiento());
-                                clienteExistente.setCorreo(reservaModificada.getCliente().getCorreo());
-                                clienteExistente.setNacionalidad(reservaModificada.getCliente().getNacionalidad());
-                                clienteExistente.setNroTelefono(reservaModificada.getCliente().getNroTelefono());
-
-                                negocioCliente.modificarCliente(clienteExistente);
+                                reservaModificada.setCliente(clienteExistente);
                             }
-                            reservaModificada.setCliente(clienteExistente);
                         }
-                        // Si se modifico la habitación
-                        if (reservaModificada.getHabitacion().getNumero() != nroHabitacion) {
-                            reservaModificada.getHabitacion().setEstado("Disponible");
-                            negocioHabitacion.modificarHabitacion(reservaModificada.getHabitacion());
+                        //Si el usuario no canceló
+                        if (confirmado != JOptionPane.CANCEL_OPTION) {
+                            // Si se modifico la habitación
+                            if (reservaModificada.getHabitacion().getNumero() != nroHabitacion) {
+                                reservaModificada.getHabitacion().setEstado("Disponible");
+                                negocioHabitacion.modificarHabitacion(reservaModificada.getHabitacion());
 
-                            reservaModificada.setHabitacion(null);
+                                reservaModificada.setHabitacion(null);
 
-                            habitacionSeleccionada = negocioHabitacion.getHabitacionSeleccionada(habitacionesDisponibles, nroHabitacion);
-                            habitacionSeleccionada.setEstado("Ocupada");
+                                habitacionSeleccionada = negocioHabitacion.getHabitacionSeleccionada(habitacionesDisponibles, nroHabitacion);
+                                habitacionSeleccionada.setEstado("Ocupada");
 
-                            negocioHabitacion.modificarHabitacion(habitacionSeleccionada);
-                            reservaModificada.setHabitacion(habitacionSeleccionada);
+                                negocioHabitacion.modificarHabitacion(habitacionSeleccionada);
+                                reservaModificada.setHabitacion(habitacionSeleccionada);
+                            }
+                            precioAlojamiento = negocioReserva.calcularPrecioTotalAlojamiento(reservaModificada.getHabitacion(), jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
+                            precioProductos = negocioReserva.calcularPrecioTotalProductos(reservaModificada.getProductos());
+                            reservaModificada.setPrecioAlojamiento(precioAlojamiento);
+                            reservaModificada.setPrecioProductos(precioProductos);
+                            reservaModificada.setPrecioTotal(precioAlojamiento + precioProductos);
+                            negocioReserva.modificarReserva(reservaModificada);
+                            mensaje = "¡Reserva actualizada exitosamente!";
+                            modificarReserva = false;
+                        } else {
+                            mensaje = "";
                         }
-                        precioAlojamiento = negocioReserva.calcularPrecioTotalAlojamiento(reservaModificada.getHabitacion(), jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
-                        precioProductos = negocioReserva.calcularPrecioTotalProductos(reservaModificada.getProductos());
-                        reservaModificada.setPrecioAlojamiento(precioAlojamiento);
-                        reservaModificada.setPrecioProductos(precioProductos);
-                        reservaModificada.setPrecioTotal(precioAlojamiento + precioProductos);
-                        negocioReserva.modificarReserva(reservaModificada);
-                        mensaje = "¡Reserva actualizada exitosamente!";
-                        modificarReserva = false;
-                    } else {
-                        mensaje = "";
                     }
                 } catch (Exception e) {
                     mensaje = "Error al actualizar la reserva." + e.getMessage();
@@ -652,9 +646,7 @@ public class frmReserva extends javax.swing.JFrame {
                     habitacionSeleccionada.setEstado("Ocupada");
 
                     precioAlojamiento = negocioReserva.calcularPrecioTotalAlojamiento(habitacionSeleccionada, jdcFechaEntrada.getDate(), jdcFechaSalida.getDate());
-
                     Cliente clienteNuevo = new Cliente(nombre, apellido, nacionalidad, correo, fechaNacimiento, nroTelefono, dni);
-
                     try {
                         negocioHabitacion.modificarHabitacion(habitacionSeleccionada);
                     } catch (Exception ex) {
@@ -673,7 +665,6 @@ public class frmReserva extends javax.swing.JFrame {
                         titulo = "Cliente existente";
                         UtilidadJOptionPane.mostrarMensajeInformacion(mensaje, titulo);
                     }
-
                     String estado = "Pendiente";
                     Reserva reserva = new Reserva(fechaEntrada, fechaSalida, tipoPago, horaEntrada, horaSalida, estado, clienteAux, habitacionSeleccionada, precioAlojamiento, 0f, precioAlojamiento);
                     negocioReserva.crearReserva(reserva);
@@ -682,14 +673,14 @@ public class frmReserva extends javax.swing.JFrame {
                     mensaje = "";
                 }
             }
-            //actualizar las habitaciones disponibles
-            mostrarHabitacionesDisponibles();
 
             if (!mensaje.equals("")) {
+                //actualizar las habitaciones disponibles
+                mostrarHabitacionesDisponibles();
                 titulo = "Reserva";
                 UtilidadJOptionPane.mostrarMensajeInformacion(mensaje, titulo);
+                this.dispose();
             }
-            this.dispose();
         }
     }//GEN-LAST:event_jbtnGuardarReservaActionPerformed
 
